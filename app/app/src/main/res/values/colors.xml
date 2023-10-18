@@ -10,6 +10,7 @@
 
     <color name="major">#F47878</color>
     <color name="minor">#FFBABA</color>
+    <color name="btn_gray">#ADADAD</color>
 
     <color name="underline">#777777</color>
     <color name="headerline">#EFEFEF</color>

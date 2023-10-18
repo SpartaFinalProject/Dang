@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle" >
     <padding
-        android:top="20dp"
-        android:bottom="20dp"
+        android:top="25dp"
+        android:bottom="25dp"
         android:right="20dp"
         android:left="20dp"
         />
     <solid
-        android:color="@color/edit" />
+        android:color="@color/white" />
     <corners
         android:bottomLeftRadius="8dp"
         android:bottomRightRadius="8dp"
