@@ -6,9 +6,11 @@
 <!--    text, icon -->
     <color name="basic">#3C444C</color>
     <color name="edit">#F5F7F9</color>
+    <color name="dialog">#F5F5F5</color>
 
     <color name="major">#F47878</color>
     <color name="minor">#FFBABA</color>
+    <color name="btn_gray">#ADADAD</color>
 
     <color name="underline">#777777</color>
     <color name="headerline">#EFEFEF</color>
