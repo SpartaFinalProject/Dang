@@ -1,13 +1,14 @@
-package com.android.dang
+package com.android.dang.pretest
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.View.OnClickListener
 import androidx.appcompat.app.AppCompatActivity
+import com.android.dang.R
 import com.android.dang.databinding.DialogPretestBinding
 
-class PretestDialog(private val activity: AppCompatActivity, var isYesDialog: Boolean) :
+class PretestDialog(private val activity: AppCompatActivity, private var isYesDialog: Boolean, private var listener: OnClickListener) :
     Dialog(activity, R.style.RoundedDialogTheme) {
 
     private lateinit var binding: DialogPretestBinding
@@ -19,21 +20,25 @@ class PretestDialog(private val activity: AppCompatActivity, var isYesDialog: Bo
         if (isYesDialog) {
             binding.tvQuestion.setText(R.string.pretest_pass)
             binding.btnYesDialog.visibility = View.VISIBLE
-            binding.btnNoDialog.visibility = View.GONE
+            binding.btnNoDialogContinue.visibility = View.GONE
+
+            binding.btnYesDialog.setOnClickListener {
+                listener.onClick(it)
+                dismiss()
+            }
         } else {
             binding.tvQuestion.setText(R.string.pretest_fail)
             binding.btnYesDialog.visibility = View.GONE
-            binding.btnNoDialog.visibility = View.VISIBLE
-        }
+            binding.btnNoDialogContinue.visibility = View.VISIBLE
 
-        binding.btnNoDialog.setOnClickListener {
-            dismiss()
-        }
+            binding.btnNoDialogBack.setOnClickListener {
+                listener.onClick(it)
+                dismiss()
+            }
 
-        binding.btnYesDialog.setOnClickListener {
-            val intent = Intent(activity, MainActivity::class.java)
-            activity.startActivity(intent)
-            activity.finish()
+            binding.btnNoDialogContinue.setOnClickListener {
+                dismiss()
+            }
         }
     }
 }
