@@ -23,6 +23,7 @@
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toTopOf="@id/navigation" />
 
+
     <LinearLayout
         android:id="@+id/navigation"
         android:layout_width="match_parent"

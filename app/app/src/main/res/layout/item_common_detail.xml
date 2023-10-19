@@ -28,6 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:fontFamily="@font/kcc_ganpan"
             android:textSize="16sp"
+            android:textColor="@color/basic"
             android:text="닥스훈트"/>
         <TextView
             android:id="@+id/dog_tag"
@@ -37,6 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/hakgyoansimwooju"
+            android:textColor="@color/basic"
             android:text="#17년생 #접종완료 #귀욤 #서울 강북구 #보호중"/>
 
         <ImageView

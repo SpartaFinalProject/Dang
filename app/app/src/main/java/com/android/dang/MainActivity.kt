@@ -1,14 +1,28 @@
 package com.android.dang
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.android.dang.databinding.ActivityMainBinding
+import com.android.dang.search.SearchFragment
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val searchFragment = SearchFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_view, searchFragment)
+            .commit()
+
+    }
+
+    private fun switchFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_view, fragment)
+            .commit()
     }
 }
