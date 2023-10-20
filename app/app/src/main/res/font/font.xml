@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:font="@font/kcc_ganpan" />
+    <font
+        android:font="@font/hakgyoansimwooju" />
+    <font
+        android:font="@font/lora_semibold" />
+
+</font-family>
