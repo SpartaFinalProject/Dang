@@ -64,9 +64,7 @@
                     \n\n\n보호센터명 - 서울유기동물입양센터
                     \n보호소전화번호 - 02-6958-6224"
         app:layout_constraintBottom_toTopOf="@id/shelter_call"
-        app:layout_constraintTop_toBottomOf="@id/division"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintTop_toBottomOf="@id/division" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/shelter_call"
@@ -91,7 +89,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
-            android:background="@drawable/background_btn_long_red"
+            android:background="@drawable/background_btn_red_no_padding"
             android:textColor="@color/white"
             android:fontFamily="@font/kcc_ganpan"
             android:textSize="15sp"
