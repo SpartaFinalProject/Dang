@@ -1,4 +1,4 @@
-package com.android.dang.search.searchAdapter
+package com.android.dang.search.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import com.android.dang.search.searchItemModel.SearchDogData
 import com.bumptech.glide.Glide
 
 
-class SearchAdapter() : RecyclerView.Adapter<SearchAdapter.Holder>() {
+class SearchAdapter : RecyclerView.Adapter<SearchAdapter.Holder>() {
 
     private var searchesList = mutableListOf<SearchDogData>()
 
@@ -30,7 +30,6 @@ class SearchAdapter() : RecyclerView.Adapter<SearchAdapter.Holder>() {
     }
 
     override fun onBindViewHolder(holder: SearchAdapter.Holder, position: Int) {
-
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, position)
         }
@@ -49,7 +48,6 @@ class SearchAdapter() : RecyclerView.Adapter<SearchAdapter.Holder>() {
 //        holder.sexCd.text = text2
 //        holder.details.text = currentItem.specialMark
         Log.d("recyclerView", searchesList.size.toString())
-
     }
 
     override fun getItemCount(): Int {
@@ -65,7 +63,7 @@ class SearchAdapter() : RecyclerView.Adapter<SearchAdapter.Holder>() {
 
     fun searchesData(list: List<SearchDogData>) {
         Log.d("aaa", list.toString())
-
+        searchesList.clear()
         searchesList.addAll(list)
         Log.d("aaaa", searchesList.toString())
         notifyDataSetChanged()
