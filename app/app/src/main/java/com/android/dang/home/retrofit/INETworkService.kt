@@ -9,6 +9,7 @@ interface INETworkService {
     fun homeDang(
         @Query("serviceKey") serviceKey: String,
         @Query("numOfRows") numOfRows: Int,
-        @Query("_type") type: String
+        @Query("_type") type: String,
+        @Query("upkind") upkind: Int
     ) : Call<HomeData?>
 }
