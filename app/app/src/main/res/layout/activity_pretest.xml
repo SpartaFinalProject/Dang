@@ -10,7 +10,7 @@
         android:paddingTop="60dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_logo"
@@ -30,7 +30,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
 
         <!-- 질문 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,13 +76,13 @@
                 android:textAlignment="center"
                 android:textColor="@color/basic"
                 android:textSize="30sp"
-                app:layout_constraintBottom_toTopOf="@id/btnYes"
+                app:layout_constraintBottom_toTopOf="@id/btn_yes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnYes"
+                android:id="@+id/btn_yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -94,13 +94,13 @@
                 android:textColor="@drawable/selector_text_press_white"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnNo"
+                app:layout_constraintEnd_toStartOf="@+id/btn_no"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_question" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnNo"
+                android:id="@+id/btn_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
@@ -110,10 +110,10 @@
                 android:textAllCaps="false"
                 android:textColor="@drawable/selector_text_press_white"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/btnYes"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_yes"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btnYes"
-                app:layout_constraintTop_toTopOf="@+id/btnYes" />
+                app:layout_constraintStart_toEndOf="@+id/btn_yes"
+                app:layout_constraintTop_toTopOf="@+id/btn_yes" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 인트로 레이아웃 -->
@@ -124,7 +124,7 @@
             android:paddingHorizontal="40dp"
             android:paddingBottom="20dp"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/imageView">
+            app:layout_constraintTop_toBottomOf="@id/iv_logo">
 
             <ImageView
                 android:id="@+id/iv_dog1"

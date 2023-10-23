@@ -30,7 +30,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_question">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnNoDialogBack"
+                android:id="@+id/btn_no_dialog_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -42,13 +42,13 @@
                 android:textSize="15sp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnNoDialogContinue"
+                app:layout_constraintEnd_toStartOf="@+id/btn_no_dialog_continue"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnNoDialogContinue"
+                android:id="@+id/btn_no_dialog_continue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
@@ -60,16 +60,17 @@
                 android:textColor="@drawable/selector_text_press_basic"
                 android:textSize="15sp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@id/btnNoDialogBack"
+                app:layout_constraintBottom_toBottomOf="@id/btn_no_dialog_back"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btnNoDialogBack"
-                app:layout_constraintTop_toTopOf="@id/btnNoDialogBack" />
+                app:layout_constraintStart_toEndOf="@+id/btn_no_dialog_back"
+                app:layout_constraintTop_toTopOf="@id/btn_no_dialog_back" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnYesDialog"
+                android:id="@+id/btn_yes_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/selector_red_to_white"
                 android:fontFamily="@font/kcc_ganpan"
                 android:text="시작하기"

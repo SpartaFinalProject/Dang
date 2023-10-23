@@ -4,5 +4,5 @@
         android:state_pressed="true"
         android:drawable="@drawable/background_btn_long_white"/>
     <item
-        android:drawable="@drawable/background_btn_long_red"/>
+        android:drawable="@drawable/background_btn_red_no_padding"/>
 </selector>
