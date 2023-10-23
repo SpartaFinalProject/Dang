@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
         val headerBinding = HeaderBinding.inflate(inflater, container, false)
         header = headerBinding
 
-        intentSearch()
+//        intentSearch()
 
 
         recyclerView = binding.homeRc
@@ -112,15 +112,15 @@ class HomeFragment : Fragment() {
             })
     }
 
-    private fun intentSearch() {
-        header.icSearch.setOnClickListener {
-            val searchFragment = SearchFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_view, searchFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-    }
+//    private fun intentSearch() {
+//        header.icSearch.setOnClickListener {
+//            val searchFragment = SearchFragment()
+//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//            transaction.replace(R.id.fragment_view, searchFragment)
+//            transaction.addToBackStack(null)
+//            transaction.commit()
+//        }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
