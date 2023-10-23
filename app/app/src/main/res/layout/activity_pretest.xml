@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="60dp">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_logo"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.08" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_test_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -30,20 +27,23 @@
             android:text="@string/pretest_title"
             android:textColor="@color/basic"
             android:textSize="25sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+        <!-- 질문 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_pretest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:paddingBottom="40dp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/textView">
+            app:layout_constraintTop_toBottomOf="@id/tv_test_title">
 
             <TextView
-                android:id="@+id/tvQusetionNumber"
+                android:id="@+id/tv_qusetion_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/kcc_ganpan"
@@ -61,10 +61,10 @@
                 android:background="@color/basic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvQusetionNumber" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_qusetion_number" />
 
             <TextView
-                android:id="@+id/tvQuestion"
+                android:id="@+id/tv_question"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -86,18 +86,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/selector_white_to_red"
                 android:fontFamily="@font/kcc_ganpan"
                 android:text="예"
                 android:textAllCaps="false"
                 android:textColor="@drawable/selector_text_press_white"
                 android:textSize="15sp"
-                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnNo"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvQuestion" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_question" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnNo"
@@ -116,63 +116,111 @@
                 app:layout_constraintTop_toTopOf="@+id/btnYes" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- 인트로 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_pretest_intro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="40dp"
+            android:paddingHorizontal="40dp"
+            android:paddingBottom="20dp"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/textView"
-            tools:layout_editor_absoluteX="0dp">
+            app:layout_constraintTop_toBottomOf="@id/imageView">
 
-            <TextView
-                android:id="@+id/tv_intro_question"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_pretest_testview"
-                android:fontFamily="@font/hakgyoansimwooju"
-                android:text="@string/test_intro"
-                android:textAlignment="center"
-                android:textColor="@color/basic"
-                android:textSize="30sp"
-                app:layout_constraintBottom_toTopOf="@id/btn_skip"
+            <ImageView
+                android:id="@+id/iv_dog1"
+                android:layout_width="80dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/icon_dog1"
+                app:layout_constraintBottom_toTopOf="@id/layout_intro_question"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_skip"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_intro_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_dog1">
+
+                <TextView
+                    android:id="@+id/tv_intro_question"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_pretest_testview"
+                    android:fontFamily="@font/hakgyoansimwooju"
+                    android:text="@string/test_intro"
+                    android:textAlignment="center"
+                    android:textColor="@color/basic"
+                    android:textSize="30sp"
+                    app:layout_constraintBottom_toTopOf="@id/btn_skip"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_skip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/selector_gray_to_white"
+                    android:fontFamily="@font/kcc_ganpan"
+                    android:text="건너뛰기"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/selector_text_press_basic"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_start"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_intro_question" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/selector_red_to_white"
+                    android:fontFamily="@font/kcc_ganpan"
+                    android:text="테스트 시작하기"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/selector_text_press_basic"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_skip"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btn_skip"
+                    app:layout_constraintTop_toTopOf="@+id/btn_skip"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/iv_pawprints"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/animation_lnylvk56" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/av_start_test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/selector_gray_to_white"
-                android:fontFamily="@font/kcc_ganpan"
-                android:text="건너뛰기"
-                android:textAllCaps="false"
-                android:textColor="@drawable/selector_text_press_basic"
-                android:textSize="15sp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_start"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_intro_question" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_start"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/selector_red_to_white"
-                android:fontFamily="@font/kcc_ganpan"
-                android:text="테스트 시작하기"
-                android:textAllCaps="false"
-                android:textColor="@drawable/selector_text_press_basic"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_skip"
+                android:background="@drawable/background_pretest_testview_nopadding"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_skip"
-                app:layout_constraintTop_toTopOf="@+id/btn_skip" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_dog1"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/animation_lny9u46m" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

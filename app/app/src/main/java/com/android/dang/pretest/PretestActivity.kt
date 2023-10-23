@@ -9,6 +9,12 @@ import com.android.dang.MainActivity
 import com.android.dang.common.Constants
 import com.android.dang.databinding.ActivityPretestBinding
 import com.android.dang.util.SharedPref
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PretestActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPretestBinding
@@ -39,11 +45,31 @@ class PretestActivity : AppCompatActivity() {
             }
         }
         binding.btnStart.setOnClickListener {
-            switchIntro(false)
-            nextQuestion()
+            startPretest()
         }
         binding.btnSkip.setOnClickListener {
             gotoMainActivity()
+        }
+    }
+    private fun startPretest() {
+        // 시작 버튼 클릭 시 실행할 코드를 코루틴에서 처리
+        CoroutineScope(Dispatchers.Default).launch {
+            // 메인 스레드에서 UI 업데이트
+            withContext(Main) {
+                binding.layoutIntroQuestion.visibility = View.GONE
+                binding.avStartTest.visibility = View.VISIBLE
+            }
+
+            // 모의 로딩 시간 (예: 2초 대기)
+            delay(2000)
+
+            // 메인 스레드에서 다시 UI 업데이트
+            withContext(Main) {
+                binding.avStartTest.visibility = View.GONE
+                binding.layoutIntroQuestion.visibility = View.VISIBLE
+                switchIntro(false)
+                nextQuestion()
+            }
         }
     }
 
@@ -77,6 +103,7 @@ class PretestActivity : AppCompatActivity() {
     }
 
     private fun switchIntro(isIntroVisible: Boolean) {
+        binding.tvTestTitle.visibility = if (isIntroVisible) View.GONE else View.VISIBLE
         binding.layoutPretest.visibility = if (isIntroVisible) View.GONE else View.VISIBLE
         binding.layoutPretestIntro.visibility = if (isIntroVisible) View.VISIBLE else View.GONE
     }

@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/background_pretest_dialog"
-    >
-
-    <TextView
-        android:id="@+id/tvQuestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pretest_fail"
-        android:textAlignment="center"
-        android:fontFamily="@font/hakgyoansimwooju"
-        android:textSize="22sp"
-        android:textColor="@color/basic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvQuestion"
-        >
+        android:background="@drawable/background_pretest_dialog">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnNoDialogBack"
+        <TextView
+            android:id="@+id/tv_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_red_to_white"
-            android:fontFamily="@font/kcc_ganpan"
-            android:text="처음으로"
-            android:textColor="@drawable/selector_text_press_basic"
-            android:textSize="15sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnNoDialogContinue"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:fontFamily="@font/hakgyoansimwooju"
+            android:text="@string/pretest_fail"
+            android:textAlignment="center"
+            android:textColor="@color/basic"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnNoDialogContinue"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/selector_gray_to_white"
-            android:fontFamily="@font/kcc_ganpan"
-            android:text="계속"
-            android:textColor="@drawable/selector_text_press_basic"
-            android:textSize="15sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnNoDialogBack"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnYesDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/selector_red_to_white"
-            android:fontFamily="@font/kcc_ganpan"
-            android:text="시작하기"
-            android:textColor="@drawable/selector_text_press_basic"
-            android:textSize="15sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnNoDialogBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/selector_red_to_white"
+                android:fontFamily="@font/kcc_ganpan"
+                android:text="처음으로"
+                android:textColor="@drawable/selector_text_press_basic"
+                android:textSize="15sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnNoDialogContinue"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnNoDialogContinue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/selector_gray_to_white"
+                android:fontFamily="@font/kcc_ganpan"
+                android:text="계속하기"
+                android:textColor="@drawable/selector_text_press_basic"
+                android:textSize="15sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/btnNoDialogBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btnNoDialogBack"
+                app:layout_constraintTop_toTopOf="@id/btnNoDialogBack" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnYesDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/selector_red_to_white"
+                android:fontFamily="@font/kcc_ganpan"
+                android:text="시작하기"
+                android:textColor="@drawable/selector_text_press_basic"
+                android:textSize="15sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
