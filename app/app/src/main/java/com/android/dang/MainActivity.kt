@@ -32,6 +32,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-        binding.
+        
     }
 }
