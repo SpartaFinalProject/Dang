@@ -30,4 +30,9 @@ class MainActivity : AppCompatActivity() {
             .replace(binding.fragmentView.id, fragment)
             .commit()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }
