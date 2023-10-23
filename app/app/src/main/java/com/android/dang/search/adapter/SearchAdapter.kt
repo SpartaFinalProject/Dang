@@ -34,19 +34,32 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.Holder>() {
             itemClick?.onClick(it, position)
         }
         val currentItem = searchesList[position]
+
+        val address = currentItem.careAddr
+        val parts = address.split(" ")
+        val result = "#${parts[0]} ${parts[1]}"
+
         Glide.with(holder.itemView.context)
-            .load(currentItem.filename)
+            .load(currentItem.popfile)
             .into(holder.image)
         holder.dogKind.text = currentItem.kindCd
         var text1 = "#${currentItem.age}"
-        text1 += "#${currentItem.careAddr}"
+        text1 += result
         text1 += "#${currentItem.processState}"
+        text1 += when (currentItem.sexCd) {
+            "M" -> "#수컷"
+            "F" -> "#암컷"
+            else -> "#미상"
+        }
+        text1 += when (currentItem.neuterYn){
+            "Y" -> "#중성화"
+            "N" -> ""
+            else -> "#미상"
+        }
+        text1 += "#${currentItem.weight}"
+        text1 += "\n#${currentItem.specialMark}"
         holder.age.text = text1
-        var text2 = "#${currentItem.sexCd}"
-        text2 += "#${currentItem.neuterYn}"
-        text2 += "#${currentItem.weight}"
-//        holder.sexCd.text = text2
-//        holder.details.text = currentItem.specialMark
+
         Log.d("recyclerView", searchesList.size.toString())
     }
 
@@ -62,10 +75,8 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.Holder>() {
     }
 
     fun searchesData(list: List<SearchDogData>) {
-        Log.d("aaa", list.toString())
         searchesList.clear()
         searchesList.addAll(list)
-        Log.d("aaaa", searchesList.toString())
         notifyDataSetChanged()
     }
 }

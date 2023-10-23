@@ -21,18 +21,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="품종 이름"
-        android:textSize="14sp"
+        android:fontFamily="@font/hakgyoansimwooju"
+        android:textColor="@color/basic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/titleImage"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.555" />
 
     <ImageView
+        android:id="@+id/recent_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:clickable="true"
-        android:onClick="onImageViewClick"
         android:src="@drawable/ic_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
