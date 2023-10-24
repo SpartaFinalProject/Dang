@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
 import com.android.dang.databinding.BottomNavigationBinding
 import com.android.dang.databinding.FragmentHomeBinding
-import com.android.dang.databinding.HeaderBinding
 import com.android.dang.home.homeAdapter.HomeAdapter
 import com.android.dang.home.retrofit.HomeData
 import com.android.dang.home.retrofit.HomeItemModel
@@ -31,7 +30,6 @@ class HomeFragment : Fragment() {
     private var resItems: ArrayList<HomeItemModel> = ArrayList()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: HomeAdapter
-    private lateinit var header: HeaderBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,8 +49,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val headerBinding = HeaderBinding.inflate(inflater, container, false)
-        header = headerBinding
 
 //        intentSearch()
 
