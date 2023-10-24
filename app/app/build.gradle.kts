@@ -60,4 +60,6 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
+    implementation ("androidx.preference:preference-ktx:1.2.1")
+
 }

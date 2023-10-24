@@ -1,4 +1,4 @@
-package com.android.dangtheland.retrofit
+package com.android.dang.retrofit
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient

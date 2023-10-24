@@ -1,7 +1,7 @@
 package com.android.dang.search.searchItemModel
 
 data class SearchDogData(
-    val filename : String,
+    val popfile : String,
     val kindCd : String,
     val age : String,
     val careAddr : String,

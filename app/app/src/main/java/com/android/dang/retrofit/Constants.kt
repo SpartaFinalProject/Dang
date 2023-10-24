@@ -1,4 +1,4 @@
-package com.android.dangtheland.retrofit
+package com.android.dang.retrofit
 
 object Constants {
     const val BASE_URL = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/"
