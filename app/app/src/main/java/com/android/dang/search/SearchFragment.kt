@@ -9,8 +9,9 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.dang.R
@@ -20,10 +21,10 @@ import com.android.dang.search.adapter.SearchAdapter
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.search.searchViewModel.RecentViewModel
 import com.android.dang.search.searchViewModel.SearchViewModel
-import com.android.dangtheland.retrofit.Constants
-import com.android.dangtheland.retrofit.DangClient.api
-import com.android.dangtheland.retrofit.abandonedDog.AbandonedDog
-import com.android.dangtheland.retrofit.kind.Kind
+import com.android.dang.retrofit.Constants
+import com.android.dang.retrofit.DangClient.api
+import com.android.dang.retrofit.abandonedDog.AbandonedDog
+import com.android.dang.retrofit.kind.Kind
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,11 +50,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private lateinit var recentAdapter: RecentAdapter
 
     private val year = LocalDate.now().year
+    private var dogKind = ""
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSearchBinding.bind(view)
+
+        var kindNumber = ""
 
         initView()
         viewModel()
@@ -63,18 +67,28 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.searchEdit.setOnClickListener {
             binding.rcvSearchList.visibility = View.INVISIBLE
             binding.rcvRecentList.visibility = View.VISIBLE
+            binding.recent.visibility = View.VISIBLE
+            binding.searchTag.visibility = View.INVISIBLE
         }
 
         binding.searchBtn.setOnClickListener {
             binding.rcvSearchList.visibility = View.VISIBLE
             binding.rcvRecentList.visibility = View.INVISIBLE
-            searchViewModel.clearSearches()
-            searchItem.clear()
-            val dogKind = binding.searchEdit.text
-            val kindNumber = hashMap[dogKind.toString()]
+            binding.recent.visibility = View.INVISIBLE
+            binding.searchTag.visibility = View.VISIBLE
+            binding.textAge.text = "나이"
+            binding.textGender.text = "성별"
+            binding.textSize.text = "크기"
 
-            searchData(kindNumber.toString())
-            recentAdd(dogKind.toString())
+            dogKind = binding.searchEdit.text.toString()
+            if (kindNumber != hashMap[dogKind] && dogKind.isNotEmpty()) {
+                searchViewModel.clearSearches()
+                searchItem.clear()
+                kindNumber = hashMap[dogKind].toString()
+                searchData(kindNumber)
+            } else {
+                toast("공백 이거나 검색이 완료된 검색어 입니다.")
+            }
         }
 
         binding.searchAge.setOnClickListener {
@@ -199,7 +213,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
 
         resetBtn.setOnClickListener {
-            searchViewModel.resetFilter()
+            searchViewModel.resetAgeFilter()
             binding.textAge.text = "나이"
             dialog.dismiss()
         }
@@ -227,14 +241,25 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         male.setOnClickListener {
             gender = "M"
             genderView = "수컷"
+            male.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_male, null))
+            neutrality.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_neutrality_gray, null))
+            female.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_female_gray, null))
+
         }
         neutrality.setOnClickListener {
             neutra = "Y"
             genderView = "중성"
+            male.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_male_gray, null))
+            neutrality.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_neutrality, null))
+            female.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_female_gray, null))
+
         }
         female.setOnClickListener {
             gender = "F"
             genderView = "암컷"
+            male.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_male_gray, null))
+            neutrality.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_neutrality_gray, null))
+            female.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_female, null))
         }
 
         applyBtn.setOnClickListener {
@@ -245,7 +270,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
 
         resetBtn.setOnClickListener {
-            searchViewModel.resetFilter()
+            searchViewModel.resetGenderFilter()
+            searchViewModel.resetNeuterFilter()
             binding.textGender.text = "성별"
             dialog.dismiss()
         }
@@ -291,7 +317,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
 
         resetBtn.setOnClickListener {
-            searchViewModel.resetFilter()
+            searchViewModel.resetSizeFilter()
             binding.textSize.text = "크기"
             dialog.dismiss()
         }
@@ -304,7 +330,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             Constants.AUTH_HEADER,
             417000,
             "json",
-            10,
+            30,
             kind
         ).enqueue(object : Callback<AbandonedDog?> {
             override fun onResponse(call: Call<AbandonedDog?>, response: Response<AbandonedDog?>) {
@@ -339,6 +365,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     Log.e("api", "Error: ${response.errorBody()}")
                 }
                 searchViewModel.searches(searchItem)
+                recentAdd(dogKind)
             }
 
             override fun onFailure(call: Call<AbandonedDog?>, t: Throwable) {
@@ -362,7 +389,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         hashMap[kind] = kindNumber
                         autoWordList.add(kind)
                     }
-                    Log.d("aaaaaa", "$hashMap")
                 } else {
                     Log.e("api", "Error: ${response.errorBody()}")
                 }
@@ -373,5 +399,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             }
 
         })
+    }
+
+    private fun toast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

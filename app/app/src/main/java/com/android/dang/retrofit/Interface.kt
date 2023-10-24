@@ -1,7 +1,7 @@
-package com.android.dangtheland.retrofit
+package com.android.dang.retrofit
 
-import com.android.dangtheland.retrofit.abandonedDog.AbandonedDog
-import com.android.dangtheland.retrofit.kind.Kind
+import com.android.dang.retrofit.abandonedDog.AbandonedDog
+import com.android.dang.retrofit.kind.Kind
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

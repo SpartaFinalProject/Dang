@@ -35,11 +35,23 @@
             android:padding="10dp"
             android:src="@drawable/icon_search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/recent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="최근 검색어"
+        android:visibility="visible"
+        android:fontFamily="@font/hakgyoansimwooju"
+        android:textColor="@color/basic"
+        app:layout_constraintBottom_toTopOf="@+id/rcv_search_list"
+        app:layout_constraintTop_toBottomOf="@+id/search_dog_kind" />
     <LinearLayout
         android:id="@+id/search_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/search_dog_kind"
         app:layout_constraintBottom_toTopOf="@id/rcv_search_list" >
 
@@ -104,7 +116,6 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_arrow_down"/>
         </LinearLayout>
-
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
