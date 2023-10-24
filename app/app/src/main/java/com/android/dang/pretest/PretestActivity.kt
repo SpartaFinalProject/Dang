@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import com.android.dang.MainActivity
 import com.android.dang.common.Constants
@@ -34,6 +35,7 @@ class PretestActivity : AppCompatActivity() {
     }
 
     private fun initEvent() {
+        binding.tvIntroQuestion.movementMethod = ScrollingMovementMethod.getInstance()
         binding.btnYes.setOnClickListener {
             nextQuestion()
         }
