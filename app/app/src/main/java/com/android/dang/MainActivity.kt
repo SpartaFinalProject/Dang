@@ -19,6 +19,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        
+        supportFragmentManager.beginTransaction().replace(binding.fragmentView.id, BlankFragment()).commit()
+
+        binding.navBar.setOnItemSelectedListener {
+            when(it.itemId) {
+                R.id.menu_home -> {
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentView.id, BlankFragment()).commit()
+                }
+                R.id.menu_shelter -> {
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentView.id, BlankFragment2()).commit()
+                }
+                R.id.menu_like -> {
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentView.id, BlankFragment3()).commit()
+                }
+                R.id.menu_dictionary -> {
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentView.id, BlankFragment4()).commit()
+                }
+            }
+            true
+        }
 
         val homeFragment = HomeFragment()
         switchFragment(homeFragment)
