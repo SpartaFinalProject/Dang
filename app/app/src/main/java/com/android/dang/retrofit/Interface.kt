@@ -1,9 +1,7 @@
 package com.android.dang.retrofit
 
 import com.android.dang.retrofit.abandonedDog.AbandonedDog
-import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
 import com.android.dang.retrofit.kind.Kind
-import com.android.dang.retrofit.sido.SidoRes
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,7 +16,7 @@ interface Interface {
         @Query("numOfRows") numOfRows: Int,
         @Query("upr_cd") uprCode: String? = null,
         @Query("org_cd") orgCode: String? = null,
-    ): Call<AbandonedDogRes?>
+    ): Call<AbandonedDog?>
 
 //    @GET("abandonmentShelter")
 //        fun abandonedDogShelter(
