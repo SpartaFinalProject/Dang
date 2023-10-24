@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.android.dang.BlankFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home" />
+<!--    <fragment-->
+<!--        android:id="@+id/shelterFragment"-->
+<!--        android:name="com.android.dang.BlankFragment2"-->
+<!--        android:label="ShelterFragment"-->
+<!--        tools:layout="@layout/fragment_shelter" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/likeFragment"-->
+<!--        android:name="com.android.dang.BlankFragment3"-->
+<!--        android:label="LikeFragment"-->
+<!--        tools:layout="@layout/fragment_like" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/dictionaryFragment"-->
+<!--        android:name="com.android.dang.BlankFragment4"-->
+<!--        android:label="DictionaryFragment"-->
+<!--        tools:layout="@layout/fragment_dictionary" />-->
+
+</navigation>
