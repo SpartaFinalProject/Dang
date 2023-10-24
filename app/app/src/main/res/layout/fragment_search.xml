@@ -14,8 +14,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/background_search"
         app:layout_constraintTop_toTopOf="parent">
-        <AutoCompleteTextView
-            android:id="@+id/search_edit"
+        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +22,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="@android:color/transparent"
             android:fontFamily="@font/hakgyoansimwooju"
-            tools:ignore="RtlCompat"
             android:hint="강아지의 품종을 입력하세요" />
         <ImageView
             android:id="@+id/search_btn"
@@ -35,35 +33,21 @@
             android:padding="10dp"
             android:src="@drawable/icon_search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/recent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="최근 검색어"
-        android:visibility="visible"
-        android:fontFamily="@font/hakgyoansimwooju"
-        android:textColor="@color/basic"
-        app:layout_constraintBottom_toTopOf="@+id/rcv_search_list"
-        app:layout_constraintTop_toBottomOf="@+id/search_dog_kind" />
     <LinearLayout
         android:id="@+id/search_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/search_dog_kind"
         app:layout_constraintBottom_toTopOf="@id/rcv_search_list" >
 
         <LinearLayout
-            android:id="@+id/search_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:background="@drawable/background_search_tag"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/text_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/hakgyoansimwooju"
@@ -77,14 +61,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/search_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:background="@drawable/background_search_tag"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/text_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/hakgyoansimwooju"
@@ -98,13 +80,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/search_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_search_tag"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/hakgyoansimwooju"
@@ -116,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_arrow_down"/>
         </LinearLayout>
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -125,18 +106,6 @@
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/search_tag"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:visibility="invisible"
         tools:listitem="@layout/item_common_detail"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_recent_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/search_tag"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_recycler_view_recent_word"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
