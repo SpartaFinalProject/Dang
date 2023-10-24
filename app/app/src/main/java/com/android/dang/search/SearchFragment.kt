@@ -11,9 +11,10 @@ import com.android.dang.databinding.FragmentSearchBinding
 import com.android.dang.search.searchAdapter.SearchAdapter
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.search.searchViewModel.SearchViewModel
-import com.android.dangtheland.retrofit.Constants
-import com.android.dangtheland.retrofit.DangClient.api
-import com.android.dangtheland.retrofit.abandonedDog.AbandonedDog
+import com.android.dang.retrofit.Constants
+import com.android.dang.retrofit.DangClient.api
+import com.android.dang.retrofit.abandonedDog.AbandonedDog
+import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -72,20 +73,21 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             "json",
             10,
             "000054"
-        ).enqueue(object : Callback<AbandonedDog?> {
-            override fun onResponse(call: Call<AbandonedDog?>, response: Response<AbandonedDog?>) {
+        ).enqueue(object : Callback<AbandonedDogRes?> {
+            override fun onResponse(call: Call<AbandonedDogRes?>, response: Response<AbandonedDogRes?>) {
                 if (response.isSuccessful) {
                     val abandonedDog = response.body()
+
                     abandonedDog?.response?.body?.items?.item?.forEach { item ->
-                        val image = item.filename
-                        val kindCd = item.kindCd
-                        val age = item.age
-                        val careAddr = item.careAddr
-                        val processState = item.processState
-                        val sexCd = item.sexCd
-                        val neuterYn = item.neuterYn
-                        val weight = item.weight
-                        val specialMark = item.specialMark
+                        val image = item?.filename ?: ""
+                        val kindCd = item?.kindCd ?: ""
+                        val age = item?.age ?: ""
+                        val careAddr = item?.careAddr ?: ""
+                        val processState = item?.processState ?: ""
+                        val sexCd = item?.sexCd ?: ""
+                        val neuterYn = item?.neuterYn ?: ""
+                        val weight = item?.weight ?: ""
+                        val specialMark = item?.specialMark ?: ""
 
                         searchItem.add(
                             SearchDogData(
@@ -107,7 +109,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 searchViewModel.searches(searchItem)
             }
 
-            override fun onFailure(call: Call<AbandonedDog?>, t: Throwable) {
+            override fun onFailure(call: Call<AbandonedDogRes?>, t: Throwable) {
                 Log.e("#api1", "실패: ${t.message}")
             }
 

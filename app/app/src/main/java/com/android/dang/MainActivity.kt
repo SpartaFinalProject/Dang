@@ -4,6 +4,7 @@ package com.android.dang
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.android.dang.databinding.ActivityMainBinding
+import com.android.dang.shelter.view.ShelterFragment
 
 class MainActivity : AppCompatActivity() {
 
