@@ -1,18 +1,25 @@
 package com.android.dang
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.ActivityMainBinding
+import com.android.dang.databinding.HeaderBinding
+import com.android.dang.home.HomeFragment
+import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.search.SearchFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityMainBinding
 
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
         supportFragmentManager.beginTransaction().replace(binding.fragmentView.id, BlankFragment()).commit()
 
         binding.navBar.setOnItemSelectedListener {
@@ -32,6 +39,20 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-        
+
+        val homeFragment = HomeFragment()
+        switchFragment(homeFragment)
+
+    }
+
+    private fun switchFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentView.id, fragment)
+            .commit()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }
