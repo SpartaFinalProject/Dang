@@ -15,7 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dog_box"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@id/dog_img"
@@ -35,8 +34,6 @@
             android:id="@+id/dog_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
             app:layout_constraintTop_toBottomOf="@id/dog_name"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="5dp"
