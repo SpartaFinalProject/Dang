@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="60dp">
@@ -75,7 +73,7 @@
                 android:text="@string/pretest_1"
                 android:textAlignment="center"
                 android:textColor="@color/basic"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toTopOf="@id/btn_yes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -154,11 +152,14 @@
                     android:text="@string/test_intro"
                     android:textAlignment="center"
                     android:textColor="@color/basic"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
                     app:layout_constraintBottom_toTopOf="@id/btn_skip"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:scrollbars="vertical"
+                    android:fadeScrollbars="false"
+                    android:scrollbarStyle="insideInset"/>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_skip"
@@ -226,4 +227,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.core.widget.NestedScrollView>
