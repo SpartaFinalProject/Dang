@@ -19,7 +19,7 @@ interface Interface {
         @Query("kind") kind : String
     ): Call<AbandonedDog?>
 
-    @GET("abandonmentShelter")
+    @GET("abandonmentPublic")
         fun abandonedDogShelter(
         @Query("serviceKey") serviceKey: String = Constants.AUTH_HEADER,
         @Query("upkind") upkind: Int = 417000,
