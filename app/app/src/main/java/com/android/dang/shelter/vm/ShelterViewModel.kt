@@ -8,8 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.dang.retrofit.Constants
 import com.android.dang.retrofit.DangClient
-import com.android.dang.retrofit.abandonedDog.AbandonedDog
 import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
+import com.android.dang.retrofit.abandonedDog.AbandonedShelter
 import com.android.dang.retrofit.kind.Items
 import com.android.dang.retrofit.sido.Sido
 import com.android.dang.retrofit.sido.SidoRes
@@ -37,13 +37,13 @@ class ShelterViewModel : ViewModel() {
         get() = _uprCode
     private val _uprCode = MutableLiveData("")
 
-    val abandonedDogsList: LiveData<List<AbandonedDog>>
+    val abandonedDogsList: LiveData<List<AbandonedShelter>>
         get() = _abandonedDogsList
     private val _abandonedDogsList =
-        MutableLiveData((listOf(AbandonedDog())))
+        MutableLiveData((listOf(AbandonedShelter())))
 
     fun getSidoList() {
-        DangClient.api.getSidoList().enqueue(object : retrofit2.Callback<SidoRes> {
+        DangClient.api.getSidoList().enqueue(object : Callback<SidoRes> {
             override fun onResponse(call: Call<SidoRes>, response: Response<SidoRes>) {
                 if (!response.isSuccessful) {
                     // Failed
@@ -83,9 +83,10 @@ class ShelterViewModel : ViewModel() {
         })
     }
 
+
     fun getAbandonedDogs() {
         Log.d("test", "abandonedDogShelter: ${orgCode.value} / $uprCode.value")
-        DangClient.api.abandonedDogSearch(
+        DangClient.api.abandonedDogShelter(
             uprCode = uprCode.value,
             orgCode = orgCode.value,
             upkind = 417000,
@@ -129,7 +130,7 @@ class ShelterViewModel : ViewModel() {
         _uprCode.value = uprCode
     }
 
-    fun getShelterInfo(desertionNo: String): AbandonedDog? {
+    fun getShelterInfo(desertionNo: String): AbandonedShelter? {
         return abandonedDogsList.value?.find {
             it.desertionNo == desertionNo
         }
