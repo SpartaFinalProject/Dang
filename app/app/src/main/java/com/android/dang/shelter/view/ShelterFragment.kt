@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.android.dang.R
 import com.android.dang.databinding.FragmentShelterBinding
 import com.android.dang.retrofit.Constants
-import com.android.dang.retrofit.abandonedDog.AbandonedDog
+import com.android.dang.retrofit.abandonedDog.AbandonedShelter
 import com.android.dang.retrofit.kind.Items
 import com.android.dang.retrofit.sido.Sido
 import com.android.dang.shelter.vm.ShelterViewModel
@@ -69,7 +69,7 @@ class ShelterFragment : Fragment() {
         return binding.root
     }
 
-    private fun setLabel(geoPoint: GeoPoint, dog: AbandonedDog) {
+    private fun setLabel(geoPoint: GeoPoint, dog: AbandonedShelter) {
         val pos = LatLng.from(geoPoint.latitude, geoPoint.longitude)
         val styles = kakaoMap?.labelManager
             ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker)))
@@ -144,7 +144,7 @@ class ShelterFragment : Fragment() {
         binding.selectLocationDetail.text = ""
     }
 
-    private val abandonedDogObserver = Observer<List<AbandonedDog>> {
+    private val abandonedDogObserver = Observer<List<AbandonedShelter>> {
         Log.d("test", "main abandonedDogs: ${it.size}")
         it.forEach { dog ->
             dog.careAddr?.let { it1 ->
@@ -157,13 +157,13 @@ class ShelterFragment : Fragment() {
         Log.d(Constants.TestTAG, "dogsss: $it")
     }
 
-    private fun setShelterInfo(dog: AbandonedDog) = with(binding) {
+    private fun setShelterInfo(dog: AbandonedShelter) = with(binding) {
         shelterName.text = dog.careNm
         shelterLocation.text = dog.careAddr
         shelterPhone.text = dog.careTel
     }
 
-    private fun showInfoWindow(dog: AbandonedDog) {
+    private fun showInfoWindow(dog: AbandonedShelter) {
         kakaoMap?.mapWidgetManager?.infoWindowLayer?.removeAll()
 
         val pos = LatLng.from(dog.pos!!.latitude, dog.pos.longitude)

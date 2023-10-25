@@ -1,7 +1,9 @@
 package com.android.dang.retrofit
 
-import com.android.dang.retrofit.abandonedDog.AbandonedDog
+import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
 import com.android.dang.retrofit.kind.Kind
+import com.android.dang.retrofit.sido.SidoRes
+import com.android.dangtheland.retrofit.abandonedDog.AbandonedDog
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,15 +20,15 @@ interface Interface {
         @Query("org_cd") orgCode: String? = null,
     ): Call<AbandonedDog?>
 
-//    @GET("abandonmentShelter")
-//        fun abandonedDogShelter(
-//        @Query("serviceKey") serviceKey: String = Constants.AUTH_HEADER,
-//        @Query("upkind") upkind: Int = 417000,
-//        @Query("_type") type: String = "json",
-//        @Query("numOfRows") numOfRows: Int,
-//        @Query("upr_cd") uprCode: String? = null,
-//        @Query("org_cd") orgCode: String? = null,
-//        ) : Call<AbandonedDog?>
+    @GET("abandonmentShelter")
+        fun abandonedDogShelter(
+        @Query("serviceKey") serviceKey: String = Constants.AUTH_HEADER,
+        @Query("upkind") upkind: Int = 417000,
+        @Query("_type") type: String = "json",
+        @Query("numOfRows") numOfRows: Int,
+        @Query("upr_cd") uprCode: String? = null,
+        @Query("org_cd") orgCode: String? = null,
+        ) : Call<AbandonedDogRes?>
 
     @GET("kind")
     fun kindSearch(
