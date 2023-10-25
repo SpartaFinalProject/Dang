@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 
 data class AbandonedDogRes(
     @SerializedName("response")
-    val response: Response<AbandonedDog?>
+    val response: Response<AbandonedShelter?>
 )
