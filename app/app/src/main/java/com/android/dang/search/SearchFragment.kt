@@ -23,8 +23,8 @@ import com.android.dang.search.searchViewModel.RecentViewModel
 import com.android.dang.search.searchViewModel.SearchViewModel
 import com.android.dang.retrofit.Constants
 import com.android.dang.retrofit.DangClient.api
-import com.android.dang.retrofit.abandonedDog.AbandonedDog
 import com.android.dang.retrofit.kind.Kind
+import com.android.dangtheland.retrofit.abandonedDog.AbandonedDog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
