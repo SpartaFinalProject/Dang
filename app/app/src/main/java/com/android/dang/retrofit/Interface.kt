@@ -16,8 +16,7 @@ interface Interface {
         @Query("upkind") upkind: Int = 417000,
         @Query("_type") type: String = "json",
         @Query("numOfRows") numOfRows: Int,
-        @Query("upr_cd") uprCode: String? = null,
-        @Query("org_cd") orgCode: String? = null,
+        @Query("kind") kind : String
     ): Call<AbandonedDog?>
 
     @GET("abandonmentShelter")

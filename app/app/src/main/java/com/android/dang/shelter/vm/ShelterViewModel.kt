@@ -71,7 +71,7 @@ class ShelterViewModel : ViewModel() {
                     return
                 }
                 if (!sigunguList?.item.isNullOrEmpty()) {
-                    _sigungu.value = sigunguList
+                    _sigungu.value = sigunguList!!
                     return
                 }
                 _sigungu.value = Items(mutableListOf())
