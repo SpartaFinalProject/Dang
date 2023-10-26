@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.ActivityMainBinding
+import com.android.dang.dictionary.DictionaryFragment
 import com.android.dang.home.HomeFragment
 import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.search.SearchFragment
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val searchFragment = SearchFragment()
         val shelterFragment = ShelterFragment()
         val likeFragment = BlankFragment2()
-        val dictionaryFragment = BlankFragment3()
+        val dictionaryFragment = DictionaryFragment()
 
         switchFragment(homeFragment)
         binding.icBack.visibility = View.INVISIBLE
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_home -> if (activeFragment is HomeFragment) return@setOnItemSelectedListener true
                 R.id.menu_shelter -> if (activeFragment is ShelterFragment) return@setOnItemSelectedListener true
                 R.id.menu_like -> if (activeFragment is BlankFragment2) return@setOnItemSelectedListener true
-                R.id.menu_dictionary -> if (activeFragment is BlankFragment3) return@setOnItemSelectedListener true
+                R.id.menu_dictionary -> if (activeFragment is DictionaryFragment) return@setOnItemSelectedListener true
             }
 
             when(it.itemId) {
@@ -87,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                     is HomeFragment -> binding.navBar.selectedItemId = R.id.menu_home
                     is ShelterFragment -> binding.navBar.selectedItemId = R.id.menu_shelter
                     is BlankFragment2 -> binding.navBar.selectedItemId = R.id.menu_like
-                    is BlankFragment3 -> binding.navBar.selectedItemId = R.id.menu_dictionary
+                    is DictionaryFragment -> binding.navBar.selectedItemId = R.id.menu_dictionary
                 }
             }
         } else {
