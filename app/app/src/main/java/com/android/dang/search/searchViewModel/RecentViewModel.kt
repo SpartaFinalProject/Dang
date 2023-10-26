@@ -29,6 +29,11 @@ class RecentViewModel: ViewModel() {
         recentList.value = currentList
     }
 
+    fun editText(position: Int): String {
+        val currentList = recentList.value?.toMutableList() ?: mutableListOf()
+        return currentList[position]
+    }
+
     fun saveListToPreferences(context: Context){
         val list = recentList.value ?: mutableListOf()
         val sharedPreferences = context.getSharedPreferences("recentWord", Context.MODE_PRIVATE)

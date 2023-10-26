@@ -1,22 +1,22 @@
 package com.android.dang
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.ActivityMainBinding
+import com.android.dang.detailFragment.DogDetailFragment
 import com.android.dang.home.HomeFragment
-import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.search.SearchFragment
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SearchFragment.DogData{
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    val dogDetailFragment = DogDetailFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -24,11 +24,13 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         val searchFragment = SearchFragment()
         val shelterFragment = ShelterFragment()
+
         val likeFragment = BlankFragment2()
         val dictionaryFragment = BlankFragment3()
 
         switchFragment(homeFragment)
         binding.icBack.visibility = View.INVISIBLE
+
 
         binding.navBar.setOnItemSelectedListener {
             when(it.itemId) {
@@ -60,6 +62,8 @@ class MainActivity : AppCompatActivity() {
         binding.icBack.setOnClickListener{
         }
 
+        searchFragment.dogData(this)
+
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -68,8 +72,22 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
+    private fun setFragment(frag: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_view, frag)
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+    }
+
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        finish()
+//    }
+
+    override fun pass(data: SearchDogData) {
+        dogDetailFragment.receiveData(data)
+        Log.d("aaa", "$data aaa")
+        setFragment(dogDetailFragment)
     }
 }

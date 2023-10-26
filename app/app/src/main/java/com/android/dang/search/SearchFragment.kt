@@ -16,14 +16,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.dang.R
 import com.android.dang.databinding.FragmentSearchBinding
+import com.android.dang.retrofit.Constants
+import com.android.dang.retrofit.DangClient.api
+import com.android.dang.retrofit.kind.Kind
 import com.android.dang.search.adapter.RecentAdapter
 import com.android.dang.search.adapter.SearchAdapter
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.search.searchViewModel.RecentViewModel
 import com.android.dang.search.searchViewModel.SearchViewModel
-import com.android.dang.retrofit.Constants
-import com.android.dang.retrofit.DangClient.api
-import com.android.dang.retrofit.kind.Kind
 import com.android.dangtheland.retrofit.abandonedDog.AbandonedDog
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,7 +41,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private var searchItem = mutableListOf<SearchDogData>()
 
-
     private var hashMap = HashMap<String, String>()
 
     private var autoWordList = mutableListOf<String>()
@@ -52,6 +51,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private val year = LocalDate.now().year
     private var dogKind = ""
 
+    private lateinit var passData: DogData
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,8 +62,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         initView()
         viewModel()
+
         context?.let { recentViewModel.getListFromPreferences(it) }
             ?.let { recentViewModel.saveRecent(it) }
+
 
         binding.searchEdit.setOnClickListener {
             binding.rcvSearchList.visibility = View.INVISIBLE
@@ -108,6 +111,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 recentViewModel.recentRemove(position)
             }
 
+            override fun onTextViewClick(position: Int) {
+                val edit = recentViewModel.editText(position)
+                binding.searchEdit.setText(edit)
+            }
+
+        }
+        searchAdapter.itemClick = object : SearchAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                passData.pass(searchItem[position])
+            }
+
         }
 
         val autoCompleteTextView = binding.searchEdit
@@ -117,6 +131,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             autoWordList
         )
         autoCompleteTextView.setAdapter(adapter)
+
     }
 
 
@@ -196,7 +211,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         sixYear.setOnClickListener {
             minAge.setText("6")
-            maxAge.setText("50")
+            maxAge.text = null
         }
 
         applyBtn.setOnClickListener {
@@ -241,25 +256,79 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         male.setOnClickListener {
             gender = "M"
             genderView = "수컷"
-            male.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_male, null))
-            neutrality.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_neutrality_gray, null))
-            female.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_female_gray, null))
+            male.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.icon_male,
+                    null
+                )
+            )
+            neutrality.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.icon_neutrality_gray,
+                    null
+                )
+            )
+            female.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.icon_female_gray,
+                    null
+                )
+            )
 
         }
         neutrality.setOnClickListener {
             neutra = "Y"
             genderView = "중성"
-            male.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_male_gray, null))
-            neutrality.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_neutrality, null))
-            female.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_female_gray, null))
+            male.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.icon_male_gray,
+                    null
+                )
+            )
+            neutrality.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.icon_neutrality,
+                    null
+                )
+            )
+            female.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.icon_female_gray,
+                    null
+                )
+            )
 
         }
         female.setOnClickListener {
             gender = "F"
             genderView = "암컷"
-            male.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_male_gray, null))
-            neutrality.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_neutrality_gray, null))
-            female.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.icon_female, null))
+            male.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.icon_male_gray,
+                    null
+                )
+            )
+            neutrality.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.icon_neutrality_gray,
+                    null
+                )
+            )
+            female.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.icon_female,
+                    null
+                )
+            )
         }
 
         applyBtn.setOnClickListener {
@@ -303,7 +372,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
         largeSize.setOnClickListener {
             minSize.setText("15")
-            maxSize.setText("100")
+            maxSize.text = null
         }
         applyBtn.setOnClickListener {
 
@@ -346,6 +415,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         val neuterYn = item.neuterYn
                         val weight = item.weight
                         val specialMark = item.specialMark
+                        val noticeNo = item.noticeNo
+                        val happenPlace = item.happenPlace
+                        val colorCd = item.colorCd
+                        val careNm = item.careNm
+                        val careTel = item.careTel
 
                         searchItem.add(
                             SearchDogData(
@@ -357,7 +431,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                                 sexCd,
                                 neuterYn,
                                 weight,
-                                specialMark
+                                specialMark,
+                                noticeNo,
+                                happenPlace,
+                                colorCd,
+                                careNm,
+                                careTel
                             )
                         )
                     }
@@ -403,5 +482,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun toast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+
+    interface DogData {
+        fun pass(list: SearchDogData)
+    }
+
+    fun dogData(data: DogData) {
+        passData = data
     }
 }

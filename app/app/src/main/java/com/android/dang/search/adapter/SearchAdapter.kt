@@ -18,7 +18,7 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.Holder>() {
         fun onClick(view: View, position: Int)
     }
 
-    private var itemClick: ItemClick? = null
+    var itemClick: ItemClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.Holder {
         val binding = ItemCommonDetailBinding.inflate(
@@ -42,7 +42,9 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.Holder>() {
         Glide.with(holder.itemView.context)
             .load(currentItem.popfile)
             .into(holder.image)
-        holder.dogKind.text = currentItem.kindCd
+        val text2 = currentItem.kindCd
+        val result2 = text2.replace("[개] ", "")
+        holder.dogKind.text = result2
         var text1 = "#${currentItem.age}"
         text1 += result
         text1 += "#${currentItem.processState}"

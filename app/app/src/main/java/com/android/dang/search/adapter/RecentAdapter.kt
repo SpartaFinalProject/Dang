@@ -11,6 +11,7 @@ class RecentAdapter : RecyclerView.Adapter<RecentAdapter.Holder>() {
 
     interface ItemClick {
         fun onImageViewClick(position: Int)
+        fun onTextViewClick(position: Int)
     }
 
     var itemClick: ItemClick? = null
@@ -39,6 +40,9 @@ class RecentAdapter : RecyclerView.Adapter<RecentAdapter.Holder>() {
         init {
             cancel.setOnClickListener {
                 itemClick?.onImageViewClick(adapterPosition)
+            }
+            recentText.setOnClickListener {
+                itemClick?.onTextViewClick(adapterPosition)
             }
         }
     }
