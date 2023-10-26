@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.dang.databinding.FragmentDictionaryBinding
+import com.android.dang.dictionary.data.BreedsSpinnerData
 import com.android.dang.dictionary.retrofit.NetWorkClient
 import kotlinx.coroutines.launch
 
@@ -41,6 +42,7 @@ class DictionaryFragment : Fragment() {
 
 
         lifecycleScope.launch {
+            //품종리스트 전체확보를 위해서 200으로 지정
             var breedsDatas = NetWorkClient.dogNetWork.getBreeds(
                 NetWorkClient.API_AUTHKEY, hashMapOf(
                     "limit" to 200,
@@ -48,7 +50,6 @@ class DictionaryFragment : Fragment() {
                 )
             )
 
-//            var breedItem = NetWorkClient.dogNetWork.getBreed(NetWorkClient.API_AUTHKEY, 3)
             requireActivity().runOnUiThread {
                 mBreedList.clear()
                 mBreedList.add(BreedsSpinnerData(0, "전체"))

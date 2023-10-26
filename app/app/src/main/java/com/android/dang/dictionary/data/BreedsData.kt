@@ -1,4 +1,4 @@
-package com.android.dang.dictionary.retrofit.data
+package com.android.dang.dictionary.data
 
 class BreedsData : ArrayList<BreedsData.BreedsDataItem>(){
     data class BreedsDataItem(

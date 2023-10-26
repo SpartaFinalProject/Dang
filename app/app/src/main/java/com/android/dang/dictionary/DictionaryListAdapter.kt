@@ -2,24 +2,14 @@ package com.android.dang.dictionary
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.ItemDictionaryBinding
-import com.android.dang.dictionary.retrofit.data.BreedsData
+import com.android.dang.dictionary.data.BreedsData
 
 class DictionaryListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    interface ItemClick {
-        fun onClick(position: Int)
-    }
-
-    var itemClick: ItemClick? = null
     private val items = ArrayList<BreedsData.BreedsDataItem>()
-    private var spinner: Spinner? = null
-    private var expandedPosition: Int = -1
-    fun setSpinner(spinner: Spinner) {
-        this.spinner = spinner
-    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DictionaryItemViewHolder {
         return DictionaryItemViewHolder(
             ItemDictionaryBinding.inflate(
@@ -35,11 +25,9 @@ class DictionaryListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
-        val videoItemViewHolder = (holder as DictionaryListAdapter.DictionaryItemViewHolder)
-        videoItemViewHolder.bind(item)
-        videoItemViewHolder.itemView.setOnClickListener {
-            itemClick?.onClick(position)
-        }
+        val dictionaryItemViewHolder = (holder as DictionaryListAdapter.DictionaryItemViewHolder)
+        dictionaryItemViewHolder.bind(item)
+
     }
 
     fun addItems(resData: ArrayList<BreedsData.BreedsDataItem>, isClear: Boolean) {

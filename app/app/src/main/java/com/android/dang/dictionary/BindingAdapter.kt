@@ -3,7 +3,7 @@ package com.android.dang.dictionary
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.android.dang.dictionary.retrofit.data.BreedsData
+import com.android.dang.dictionary.data.BreedsData
 import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 

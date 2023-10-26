@@ -1,4 +1,4 @@
-package com.android.dang.dictionary.retrofit.data
+package com.android.dang.dictionary.data
 
 data class BreedItem(
     var bred_for: String?,

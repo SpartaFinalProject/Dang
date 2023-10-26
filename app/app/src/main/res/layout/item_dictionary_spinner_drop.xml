@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/edit">
+    android:background="@drawable/selector_editcolor_to_ripple">
 
     <TextView
         android:id="@+id/tv_dictionary_spinner"
@@ -13,5 +13,10 @@
         android:padding="15dp"
         android:textColor="@color/basic"
         android:textSize="15sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white"/>
 
 </LinearLayout>
