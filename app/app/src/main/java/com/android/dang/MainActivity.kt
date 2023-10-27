@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.ActivityMainBinding
 import com.android.dang.home.HomeFragment
 import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
 import com.android.dang.shelter.view.ShelterFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         val searchFragment = SearchFragment()
         val shelterFragment = ShelterFragment()
-        val likeFragment = BlankFragment2()
+        val likeFragment = LikeFragment()
         val dictionaryFragment = BlankFragment3()
 
         switchFragment(homeFragment)

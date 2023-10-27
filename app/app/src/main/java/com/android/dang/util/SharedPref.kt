@@ -2,6 +2,8 @@ package com.android.dang.util
 
 import android.content.Context
 import com.android.dang.App
+import com.android.dang.home.retrofit.HomeItemModel
+import com.google.gson.GsonBuilder
 
 /**
  * Preference Util class
@@ -49,5 +51,4 @@ object SharedPref {
         val sp = App.instance.applicationContext.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE)
         return sp.getString(key, defaultVal) ?: ""
     }
-
 }

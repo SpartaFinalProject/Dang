@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
@@ -49,10 +50,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-//        intentSearch()
-
-
         recyclerView = binding.homeRc
         recyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -107,16 +104,6 @@ class HomeFragment : Fragment() {
                 }
             })
     }
-
-//    private fun intentSearch() {
-//        header.icSearch.setOnClickListener {
-//            val searchFragment = SearchFragment()
-//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-//            transaction.replace(R.id.fragment_view, searchFragment)
-//            transaction.addToBackStack(null)
-//            transaction.commit()
-//        }
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
