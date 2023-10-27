@@ -9,5 +9,10 @@ data class SearchDogData(
     val sexCd : String,
     val neuterYn : String,
     val weight : String,
-    val specialMark : String
+    val specialMark : String,
+    val noticeNo: String,
+    val happenPlace: String,
+    val colorCd: String,
+    val careNm: String,
+    val careTel: String
 )
