@@ -35,6 +35,8 @@ import com.kakao.vectormap.mapwidget.component.Orientation
 
 // TODO: api 호출 중에 로딩바? 띄워 유저가 상호작용하지 못하게 해야 함.
 // TODO: 검색결과가 없을시에 Toast 를 띄워 안내할것
+// TODO: 세종특별자치시의 경우 시/도 만 선택해도 결과값 나오게 하기
+
 class ShelterFragment : Fragment() {
     private lateinit var binding: FragmentShelterBinding
     private lateinit var viewModel: ShelterViewModel
@@ -89,7 +91,7 @@ class ShelterFragment : Fragment() {
             }
         }
         kakaoMap?.moveCamera(
-            CameraUpdateFactory.newCenterPosition(pos, 13),
+            CameraUpdateFactory.newCenterPosition(pos, 14),
             CameraAnimation.from(duration)
         )
     }

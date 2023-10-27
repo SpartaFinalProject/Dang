@@ -90,7 +90,7 @@ class ShelterViewModel : ViewModel() {
             uprCode = uprCode.value,
             orgCode = orgCode.value,
             upkind = 417000,
-            numOfRows = 10
+            numOfRows = 100
         ).enqueue(object : Callback<AbandonedDogRes?> {
             override fun onResponse(
                 call: Call<AbandonedDogRes?>,
