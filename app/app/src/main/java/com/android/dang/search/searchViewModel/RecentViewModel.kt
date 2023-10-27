@@ -34,6 +34,11 @@ class RecentViewModel: ViewModel() {
         return currentList[position]
     }
 
+    fun recentReset(){
+        recentList.value = null
+
+    }
+
     fun saveListToPreferences(context: Context){
         val list = recentList.value ?: mutableListOf()
         val sharedPreferences = context.getSharedPreferences("recentWord", Context.MODE_PRIVATE)

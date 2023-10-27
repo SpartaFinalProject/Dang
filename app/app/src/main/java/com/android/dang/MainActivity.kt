@@ -9,14 +9,13 @@ import com.android.dang.databinding.ActivityMainBinding
 import com.android.dang.detailFragment.DogDetailFragment
 import com.android.dang.dictionary.DictionaryFragment
 import com.android.dang.home.HomeFragment
-import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
 
 
-class MainActivity : AppCompatActivity(), SearchFragment.DogData{
+class MainActivity : AppCompatActivity(), SearchFragment.DogData {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     val dogDetailFragment = DogDetailFragment()
@@ -44,19 +43,22 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData{
                 R.id.menu_dictionary -> if (activeFragment is DictionaryFragment) return@setOnItemSelectedListener true
             }
 
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.menu_home -> {
                     binding.txtTitle.text = "Dang"
                     switchFragment(homeFragment)
                 }
+
                 R.id.menu_shelter -> {
                     binding.txtTitle.text = "댕지킴이"
                     switchFragment(shelterFragment)
                 }
+
                 R.id.menu_like -> {
                     binding.txtTitle.text = "댕찜"
                     switchFragment(likeFragment)
                 }
+
                 R.id.menu_dictionary -> {
                     binding.txtTitle.text = "댕댕백과"
                     switchFragment(dictionaryFragment)
@@ -65,42 +67,34 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData{
             true
         }
 
-        binding.icSearch.setOnClickListener{
+        binding.icSearch.setOnClickListener {
             binding.txtTitle.text = "댕찾기"
             switchFragment(searchFragment)
         }
 
-        binding.icBack.setOnClickListener{
-        }
+        binding.icBack.setOnClickListener {}
 
         searchFragment.dogData(this)
 
     }
 
     private fun switchFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentView.id, fragment)
+        supportFragmentManager.beginTransaction().replace(binding.fragmentView.id, fragment)
             .addToBackStack(null)
             .commit() //백스택 처리가 백그라운드나 비정상적인 상황에서 발생할 수 있는 경우 commitAllowingStateLoss()
     }
 
     private fun setFragment(frag: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_view, frag)
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_view, frag)
+            .setReorderingAllowed(true).addToBackStack(null).commit()
     }
-
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        finish()
-//    }
 
     override fun pass(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
         Log.d("aaa", "$data aaa")
         setFragment(dogDetailFragment)
+    }
+
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 1) {
             supportFragmentManager.popBackStack()

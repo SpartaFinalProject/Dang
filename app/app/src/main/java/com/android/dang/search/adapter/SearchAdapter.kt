@@ -1,6 +1,5 @@
 package com.android.dang.search.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +57,6 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (typeOne) {
             0 -> {
                 val currentItem = searchesList[position]
-                Log.d("aaaaaa", "$currentItem")
 
                 val searchHolder = holder as SearchHolder
 
@@ -72,7 +70,6 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 val text2 = currentItem.kindCd
                 val result2 = text2.replace("[개] ", "")
-                Log.d("aaaaaa", "$result2")
                 searchHolder.dogKind.text = result2
 
                 var text1 = "#${currentItem.age}"
@@ -91,12 +88,10 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 text1 += "#${currentItem.weight}"
                 text1 += "\n#${currentItem.specialMark}"
                 searchHolder.age.text = text1
-                Log.d("aaaaaa", "$text1")
             }
             1 -> {
                 val recentWordHolder = holder as RecentWordHolder
                 recentWordHolder.recentText.text = recentList[position]
-                Log.d("aaaaaa", "$typeOne $recentList")
             }
         }
     }
@@ -132,14 +127,11 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun searchesData(list: List<SearchDogData>) {
         searchesList.clear()
-        recentList.clear()
         searchesList.addAll(list)
-        Log.d("aaaaaa", "$searchesList aaa")
         notifyDataSetChanged()
     }
 
     fun recentData(list: List<String>) {
-        searchesList.clear()
         recentList.clear()
         recentList.addAll(list)
         notifyDataSetChanged()

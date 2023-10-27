@@ -62,6 +62,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         initView()
         viewModel()
 
+        recentViewModel.recentReset()
         context?.let { recentViewModel.getListFromPreferences(it) }
             ?.let { recentViewModel.saveRecent(it) }
 
@@ -198,7 +199,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         sixYear.setOnClickListener {
             minAge.setText("6")
-            maxAge.text = null
+            maxAge.setText("50")
         }
 
         applyBtn.setOnClickListener {
@@ -359,7 +360,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
         largeSize.setOnClickListener {
             minSize.setText("15")
-            maxSize.text = null
+            maxSize.setText("30")
         }
         applyBtn.setOnClickListener {
 
