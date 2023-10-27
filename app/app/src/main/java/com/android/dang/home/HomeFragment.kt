@@ -18,6 +18,7 @@ import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.home.retrofit.RetrofitClient.apiService
 import com.android.dang.home.retrofit.Util
 import com.android.dang.search.SearchFragment
+import com.android.dang.shelter.view.ShelterFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,7 +53,13 @@ class HomeFragment : Fragment() {
 
 //        intentSearch()
 
-
+        binding.bannerMoreBtn.setOnClickListener {
+            val shelterFragment = ShelterFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_view, shelterFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
         recyclerView = binding.homeRc
         recyclerView.layoutManager = LinearLayoutManager(context)
 
