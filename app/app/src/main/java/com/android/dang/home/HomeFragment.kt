@@ -52,7 +52,14 @@ class HomeFragment : Fragment() {
 
 //        intentSearch()
 
-
+        // shelter 바꿔야뎀!!
+        binding.bannerMoreBtn.setOnClickListener {
+            val shelterFragment = SearchFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_view, shelterFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
         recyclerView = binding.homeRc
         recyclerView.layoutManager = LinearLayoutManager(context)
 
