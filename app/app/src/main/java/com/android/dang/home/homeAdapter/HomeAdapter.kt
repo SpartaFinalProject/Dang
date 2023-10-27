@@ -1,6 +1,7 @@
 package com.android.dang.home.homeAdapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.MainActivity
 import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
+import com.android.dang.home.HomeFragment
 import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.util.PrefManager.addItem
+import com.android.dang.util.PrefManager.deleteItem
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -27,6 +31,27 @@ class HomeAdapter(private val mContext: Context) :
         notifyDataSetChanged()
     }
 
+    private fun ellipsizeText(
+        age: String?,
+        specialMark: String?,
+        orgNm: String?,
+        processState: String?,
+        maxLength: Int
+    ): String {
+        val ellipstext =
+            "#${age ?: ""} #${specialMark ?: ""} #${orgNm ?: ""} #${processState ?: ""}"
+        return ellipstext.ellipsize(maxLength)
+    }
+
+    private fun String.ellipsize(maxLength: Int): String {
+        return if (length > maxLength) {
+            val halfLength = maxLength / 2
+            "${substring(0, halfLength)}...${substring(length - halfLength)}"
+        } else {
+            this
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ItemViewHolder {
         val binding =
             ItemCommonDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,12 +64,18 @@ class HomeAdapter(private val mContext: Context) :
         Glide.with(mContext)
             .load(currentItem.popfile)
             .into(holder.dogImg)
-        holder.dogName.text = currentItem.kindCd
-        var text = "#${currentItem.age}"
-        text += "#${currentItem.specialMark}"
-        text += "#${currentItem.orgNm}"
-        text += "#${currentItem.processState}"
-        holder.dogTag.text = text
+        val modifiedKindCd = currentItem.kindCd?.replace("[개]", "")?.trim() ?: ""
+        holder.dogName.text = modifiedKindCd
+
+        val processText = ellipsizeText(
+            currentItem.age,
+            currentItem.specialMark,
+            currentItem.orgNm,
+            currentItem.processState,
+            70
+        )
+        holder.dogTag.text = processText
+
 
         if (currentItem.isLiked) {
             holder.dogLike.setImageResource(R.drawable.icon_like_on)
@@ -55,8 +86,15 @@ class HomeAdapter(private val mContext: Context) :
             currentItem.isLiked = !currentItem.isLiked
             if (currentItem.isLiked) {
                 holder.dogLike.setImageResource(R.drawable.icon_like_on)
+                addItem(mContext, currentItem)
+                items[position].isLiked = true
+                Log.d("homeadapter", "like: $currentItem")
             } else {
                 holder.dogLike.setImageResource(R.drawable.icon_like_off)
+                val popfile = currentItem.popfile!!
+                deleteItem(mContext, popfile)
+                items[position].isLiked = false
+                Log.e("homeadapter", "del: $currentItem")
             }
         }
     }
@@ -77,11 +115,13 @@ class HomeAdapter(private val mContext: Context) :
 
 
         init {
-            dogImg.setOnClickListener(this)
-            dogBox.setOnClickListener(this)
+//           dogImg.setOnClickListener(this)
+//            dogBox.setOnClickListener(this)
+            dogLike.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
+            Log.d("homeadapter", "like: onClick")
             view?.let {
 
             }
