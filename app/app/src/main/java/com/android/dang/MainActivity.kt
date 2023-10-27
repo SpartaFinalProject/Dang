@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.ActivityMainBinding
+import com.android.dang.dictionary.DictionaryFragment
 import com.android.dang.home.HomeFragment
 import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.like.LikeFragment
@@ -25,13 +26,23 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         val searchFragment = SearchFragment()
         val shelterFragment = ShelterFragment()
-        val likeFragment = LikeFragment()
-        val dictionaryFragment = BlankFragment3()
+        val likeFragment = LikeFragment() 
+        val dictionaryFragment = DictionaryFragment()
+
 
         switchFragment(homeFragment)
         binding.icBack.visibility = View.INVISIBLE
 
         binding.navBar.setOnItemSelectedListener {
+            val activeFragment = supportFragmentManager.findFragmentById(binding.fragmentView.id)
+            //이미 활성화된 경우 중복요청 방지
+            when (it.itemId) {
+                R.id.menu_home -> if (activeFragment is HomeFragment) return@setOnItemSelectedListener true
+                R.id.menu_shelter -> if (activeFragment is ShelterFragment) return@setOnItemSelectedListener true
+                R.id.menu_like -> if (activeFragment is BlankFragment2) return@setOnItemSelectedListener true
+                R.id.menu_dictionary -> if (activeFragment is DictionaryFragment) return@setOnItemSelectedListener true
+            }
+
             when(it.itemId) {
                 R.id.menu_home -> {
                     binding.txtTitle.text = "Dang"
@@ -66,11 +77,24 @@ class MainActivity : AppCompatActivity() {
     private fun switchFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(binding.fragmentView.id, fragment)
-            .commit()
+            .addToBackStack(null)
+            .commit() //백스택 처리가 백그라운드나 비정상적인 상황에서 발생할 수 있는 경우 commitAllowingStateLoss()
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            supportFragmentManager.popBackStack()
+            binding.fragmentView.post {
+                //백스택처리 후 프래그먼트 체크
+                when (supportFragmentManager.fragments.lastOrNull()) {
+                    is HomeFragment -> binding.navBar.selectedItemId = R.id.menu_home
+                    is ShelterFragment -> binding.navBar.selectedItemId = R.id.menu_shelter
+                    is BlankFragment2 -> binding.navBar.selectedItemId = R.id.menu_like
+                    is DictionaryFragment -> binding.navBar.selectedItemId = R.id.menu_dictionary
+                }
+            }
+        } else {
+            finish()
+        }
     }
 }
