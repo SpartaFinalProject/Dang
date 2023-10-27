@@ -19,8 +19,8 @@ import com.android.dang.databinding.FragmentSearchBinding
 import com.android.dang.retrofit.Constants
 import com.android.dang.retrofit.DangClient.api
 import com.android.dang.retrofit.kind.Kind
-import com.android.dang.search.adapter.RecentAdapter
 import com.android.dang.search.adapter.SearchAdapter
+import com.android.dang.search.adapter.SearchAdapter.Companion.typeOne
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.search.searchViewModel.RecentViewModel
 import com.android.dang.search.searchViewModel.SearchViewModel
@@ -46,7 +46,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private var autoWordList = mutableListOf<String>()
 
     private lateinit var searchAdapter: SearchAdapter
-    private lateinit var recentAdapter: RecentAdapter
 
     private val year = LocalDate.now().year
     private var dogKind = ""
@@ -68,15 +67,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
 
         binding.searchEdit.setOnClickListener {
-            binding.rcvSearchList.visibility = View.INVISIBLE
-            binding.rcvRecentList.visibility = View.VISIBLE
+            typeOne = 1
             binding.recent.visibility = View.VISIBLE
             binding.searchTag.visibility = View.INVISIBLE
         }
 
         binding.searchBtn.setOnClickListener {
-            binding.rcvSearchList.visibility = View.VISIBLE
-            binding.rcvRecentList.visibility = View.INVISIBLE
+            typeOne = 0
             binding.recent.visibility = View.INVISIBLE
             binding.searchTag.visibility = View.VISIBLE
             binding.textAge.text = "나이"
@@ -105,8 +102,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.searchSize.setOnClickListener {
             sizeDialog()
         }
-
-        recentAdapter.itemClick = object : RecentAdapter.ItemClick {
+        searchAdapter.itemClick = object : SearchAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                passData.pass(searchItem[position])
+            }
             override fun onImageViewClick(position: Int) {
                 recentViewModel.recentRemove(position)
             }
@@ -115,13 +114,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 val edit = recentViewModel.editText(position)
                 binding.searchEdit.setText(edit)
             }
-
-        }
-        searchAdapter.itemClick = object : SearchAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
-                passData.pass(searchItem[position])
-            }
-
         }
 
         val autoCompleteTextView = binding.searchEdit
@@ -146,11 +138,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             adapter = searchAdapter
         }
 
-        recentAdapter = RecentAdapter()
-        binding.rcvRecentList.apply {
-            adapter = recentAdapter
-        }
-
         kindData()
     }
 
@@ -167,7 +154,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         recentViewModel.recentList.observe(viewLifecycleOwner, Observer { list ->
             if (list != null) {
-                recentAdapter.recentData(list)
+                searchAdapter.recentData(list)
                 context?.let { recentViewModel.saveListToPreferences(it) }
             }
         })

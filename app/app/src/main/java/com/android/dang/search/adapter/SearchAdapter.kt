@@ -6,79 +6,146 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.ItemCommonDetailBinding
+import com.android.dang.databinding.ItemRecyclerViewRecentWordBinding
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.bumptech.glide.Glide
 
 
-class SearchAdapter : RecyclerView.Adapter<SearchAdapter.Holder>() {
+
+class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var searchesList = mutableListOf<SearchDogData>()
+    private var recentList = mutableListOf<String>()
 
     interface ItemClick {
         fun onClick(view: View, position: Int)
+        fun onImageViewClick(position: Int)
+        fun onTextViewClick(position: Int)
     }
 
     var itemClick: ItemClick? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.Holder {
-        val binding = ItemCommonDetailBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return Holder(binding)
+    override fun getItemViewType(position: Int): Int {
+        return typeOne
     }
 
-    override fun onBindViewHolder(holder: SearchAdapter.Holder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            0 -> {
+                val binding = ItemCommonDetailBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                SearchHolder(binding)
+            }
+            1 -> {
+                val binding = ItemRecyclerViewRecentWordBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                RecentWordHolder(binding)
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, position)
         }
-        val currentItem = searchesList[position]
+        when (typeOne) {
+            0 -> {
+                val currentItem = searchesList[position]
+                Log.d("aaaaaa", "$currentItem")
 
-        val address = currentItem.careAddr
-        val parts = address.split(" ")
-        val result = "#${parts[0]} ${parts[1]}"
+                val searchHolder = holder as SearchHolder
 
-        Glide.with(holder.itemView.context)
-            .load(currentItem.popfile)
-            .into(holder.image)
-        val text2 = currentItem.kindCd
-        val result2 = text2.replace("[개] ", "")
-        holder.dogKind.text = result2
-        var text1 = "#${currentItem.age}"
-        text1 += result
-        text1 += "#${currentItem.processState}"
-        text1 += when (currentItem.sexCd) {
-            "M" -> "#수컷"
-            "F" -> "#암컷"
-            else -> "#미상"
+                val address = currentItem.careAddr
+                val parts = address.split(" ")
+                val result = "#${parts[0]} ${parts[1]}"
+
+                Glide.with(searchHolder.itemView.context)
+                    .load(currentItem.popfile)
+                    .into(searchHolder.image)
+
+                val text2 = currentItem.kindCd
+                val result2 = text2.replace("[개] ", "")
+                Log.d("aaaaaa", "$result2")
+                searchHolder.dogKind.text = result2
+
+                var text1 = "#${currentItem.age}"
+                text1 += result
+                text1 += "#${currentItem.processState}"
+                text1 += when (currentItem.sexCd) {
+                    "M" -> "#수컷"
+                    "F" -> "#암컷"
+                    else -> "#미상"
+                }
+                text1 += when (currentItem.neuterYn) {
+                    "Y" -> "#중성화"
+                    "N" -> ""
+                    else -> "#미상"
+                }
+                text1 += "#${currentItem.weight}"
+                text1 += "\n#${currentItem.specialMark}"
+                searchHolder.age.text = text1
+                Log.d("aaaaaa", "$text1")
+            }
+            1 -> {
+                val recentWordHolder = holder as RecentWordHolder
+                recentWordHolder.recentText.text = recentList[position]
+                Log.d("aaaaaa", "$typeOne $recentList")
+            }
         }
-        text1 += when (currentItem.neuterYn){
-            "Y" -> "#중성화"
-            "N" -> ""
-            else -> "#미상"
-        }
-        text1 += "#${currentItem.weight}"
-        text1 += "\n#${currentItem.specialMark}"
-        holder.age.text = text1
-
-        Log.d("recyclerView", searchesList.size.toString())
     }
 
     override fun getItemCount(): Int {
-        return searchesList.size
+        return when (typeOne) {
+            0 -> searchesList.size
+            1 -> recentList.size
+            else -> 0
+        }
     }
 
-    inner class Holder(binding: ItemCommonDetailBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class SearchHolder(binding: ItemCommonDetailBinding) : RecyclerView.ViewHolder(binding.root) {
         val image = binding.dogImg
         val dogKind = binding.dogName
         val age = binding.dogTag
     }
 
+    inner class RecentWordHolder(binding: ItemRecyclerViewRecentWordBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val recentText = binding.recentText
+        val cancel = binding.recentCancel
+
+        init {
+            cancel.setOnClickListener {
+                itemClick?.onImageViewClick(adapterPosition)
+            }
+            recentText.setOnClickListener {
+                itemClick?.onTextViewClick(adapterPosition)
+            }
+        }
+    }
+
     fun searchesData(list: List<SearchDogData>) {
         searchesList.clear()
+        recentList.clear()
         searchesList.addAll(list)
+        Log.d("aaaaaa", "$searchesList aaa")
         notifyDataSetChanged()
+    }
+
+    fun recentData(list: List<String>) {
+        searchesList.clear()
+        recentList.clear()
+        recentList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    companion object{
+        var typeOne = 1
     }
 }
