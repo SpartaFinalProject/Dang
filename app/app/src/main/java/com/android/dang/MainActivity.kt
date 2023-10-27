@@ -9,6 +9,8 @@ import com.android.dang.databinding.ActivityMainBinding
 import com.android.dang.detailFragment.DogDetailFragment
 import com.android.dang.dictionary.DictionaryFragment
 import com.android.dang.home.HomeFragment
+import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
@@ -25,13 +27,12 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData{
         val homeFragment = HomeFragment()
         val searchFragment = SearchFragment()
         val shelterFragment = ShelterFragment()
-
-        val likeFragment = BlankFragment2()
+        val likeFragment = LikeFragment()
         val dictionaryFragment = DictionaryFragment()
+
 
         switchFragment(homeFragment)
         binding.icBack.visibility = View.INVISIBLE
-
 
         binding.navBar.setOnItemSelectedListener {
             val activeFragment = supportFragmentManager.findFragmentById(binding.fragmentView.id)
