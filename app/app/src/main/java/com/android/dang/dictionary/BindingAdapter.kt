@@ -5,13 +5,15 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.android.dang.dictionary.data.BreedsData
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
 
 @BindingAdapter("imgRes")
 fun imgRes(imageView: ImageView, item: BreedsData.BreedsDataItem) {
     //이미지 id만 전달받아서 매번 api조회하면, 비효율. 이미지 경로를 지정하고 id만 부여하는 방식으로 적용
+    var imgUrl =
+        "https://cdn2.thedogapi.com/images/${item.reference_image_id}" + if(item.reference_image_id == "HkC31gcNm") ".png" else ".jpg"
+
     Glide.with(imageView.context)
-        .load("https://cdn2.thedogapi.com/images/${item.reference_image_id}.jpg")
+        .load(imgUrl)
         .into(imageView)
 }
 

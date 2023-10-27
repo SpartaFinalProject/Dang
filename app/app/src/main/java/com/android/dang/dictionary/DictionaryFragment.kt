@@ -50,6 +50,9 @@ class DictionaryFragment : Fragment() {
                 )
             )
 
+            //프로그래스바 시작
+            binding.progressDictionary.visibility = View.VISIBLE
+
             requireActivity().runOnUiThread {
                 mBreedList.clear()
                 mBreedList.add(BreedsSpinnerData(0, "전체"))
@@ -73,6 +76,8 @@ class DictionaryFragment : Fragment() {
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {}
                 }
+                //프로그래스바가 끝
+                binding.progressDictionary.visibility = View.GONE
             }
         }
     }
