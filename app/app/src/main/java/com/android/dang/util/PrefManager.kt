@@ -24,40 +24,17 @@ object PrefManager {
         editor.apply()
     }
 
-    fun getLikeItem(context: Context) : ArrayList<HomeItemModel> {
+    fun getLikeItem(context: Context): ArrayList<HomeItemModel> {
         val pref = context.getSharedPreferences("PREF_NAME", Activity.MODE_PRIVATE)
         val allEntries: Map<String, *> = pref.all
         val like = ArrayList<HomeItemModel>()
         val gson = GsonBuilder().create()
         for ((key, value) in allEntries) {
-            val item = gson.fromJson(value as String,HomeItemModel::class.java)
+            val item = gson.fromJson(value as String, HomeItemModel::class.java)
             like.add(item)
             Log.d("SharedPreferences", "Key: $key, Value: $value")
 
         }
         return like
-    }
-
-    fun offLike(context: Context, item: HomeItemModel){
-        val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putBoolean(item.isLiked.toString(), false)
-        editor.apply()
-    }
-    fun onLike(context: Context, item: HomeItemModel){
-        val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putBoolean(item.isLiked.toString(), true)
-        editor.apply()
-    }
-
-    fun getDeleted(context: Context): Set<String>{
-        val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
-        return pref.all.keys
-    }
-
-    fun isLiked(context: Context, item: HomeItemModel): Boolean {
-        val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
-        return !pref.getBoolean(item.isLiked.toString(), false)
     }
 }
