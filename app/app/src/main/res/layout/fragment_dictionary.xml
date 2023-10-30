@@ -35,7 +35,12 @@
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_dog_kind"
-        tools:listitem="@layout/item_dictionary" />
+        tools:listitem="@layout/item_dictionary"
+        app:fastScrollEnabled="true"
+        app:fastScrollHorizontalThumbDrawable="@drawable/scrollbar_thumb_drawable"
+        app:fastScrollHorizontalTrackDrawable="@drawable/scrollbar_line_drawable"
+        app:fastScrollVerticalThumbDrawable="@drawable/scrollbar_thumb_drawable"
+        app:fastScrollVerticalTrackDrawable="@drawable/scrollbar_line_drawable"/>
 
     <ProgressBar
         android:id="@+id/progress_dictionary"

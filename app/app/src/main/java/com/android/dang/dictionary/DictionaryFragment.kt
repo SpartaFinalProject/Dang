@@ -55,10 +55,11 @@ class DictionaryFragment : Fragment() {
 
             requireActivity().runOnUiThread {
                 mBreedList.clear()
-                mBreedList.add(BreedsSpinnerData(0, "전체"))
+                //여기서 카운트 측정하면 0
                 mBreedList.addAll(breedsDatas.map { breedItem ->
                     BreedsSpinnerData(breedItem.id, breedItem.name)
                 })
+                mBreedList.add(0, BreedsSpinnerData(0, "전체(${mBreedList.size})"))
 
                 binding.dictionarySpinner.adapter = BreedsSpinnerAdapter(requireContext(), mBreedList)
                 binding.dictionarySpinner.onItemSelectedListener = object : OnItemSelectedListener{
