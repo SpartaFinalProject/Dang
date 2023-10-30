@@ -27,7 +27,7 @@ class LikeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = FragmentLikeBinding.inflate(layoutInflater)
-        ItemTouchHelper(Swipe(LikeAdapter(mContext))).attachToRecyclerView(binding.likeRc)
+
 
     }
 
@@ -60,6 +60,7 @@ class LikeFragment : Fragment() {
 
             }
         })
+        ItemTouchHelper(Swipe(adapter)).attachToRecyclerView(binding.likeRc)
         return binding.root
     }
 

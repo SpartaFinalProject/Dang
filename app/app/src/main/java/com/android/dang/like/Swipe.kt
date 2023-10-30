@@ -1,5 +1,6 @@
 package com.android.dang.like
 
+import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +16,9 @@ class Swipe(private val mAdapter: LikeAdapter) : ItemTouchHelper.SimpleCallback(
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        mAdapter.removeData(viewHolder.layoutPosition)
         val position = viewHolder.layoutPosition
-        val data = mAdapter.Data(position)
+        Log.e("swipe","position: $position")
+        val data = mAdapter.data(position)
 
         mAdapter.removeData(viewHolder.layoutPosition)
         Snackbar.make(viewHolder.itemView, "삭제 되었습니다", Snackbar.LENGTH_LONG).setAction("되돌리기") {

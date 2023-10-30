@@ -1,6 +1,7 @@
 package com.android.dang.like
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -94,10 +95,17 @@ class LikeAdapter(private val mContext: Context) :
         notifyItemInserted(position)
     }
 
-    fun Data(position: Int) = items[position]
+    fun data(position: Int) : HomeItemModel{
+        Log.d("item", "items.size: ${items.size}")
+       return items[position]
+    }
 
     fun removeData(position: Int) {
-        items.removeAt(position)
-        notifyItemRemoved(position)
+        try {
+            items.removeAt(position)
+            notifyItemRemoved(position)
+        } catch (e: IndexOutOfBoundsException) {
+            e.printStackTrace()
+        }
     }
 }
