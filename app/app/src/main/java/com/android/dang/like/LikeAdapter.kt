@@ -15,6 +15,9 @@ import com.android.dang.R
 import com.android.dang.databinding.FragmentLikeBinding
 import com.android.dang.databinding.ItemCommonDetailBinding
 import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.util.PrefManager
+import com.android.dang.util.PrefManager.addItem
+import com.android.dang.util.PrefManager.deleteItem
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 
@@ -91,8 +94,9 @@ class LikeAdapter(private val mContext: Context) :
         }
     }
     fun insertData(position: Int, item: HomeItemModel) {
-        items.add(position, item)
+        items.add(position,item)
         notifyItemInserted(position)
+        addItem(mContext,items[position])
     }
 
     fun data(position: Int) : HomeItemModel{
@@ -102,6 +106,7 @@ class LikeAdapter(private val mContext: Context) :
 
     fun removeData(position: Int) {
         try {
+            items[position].popfile?.let { deleteItem(mContext, it) }
             items.removeAt(position)
             notifyItemRemoved(position)
         } catch (e: IndexOutOfBoundsException) {

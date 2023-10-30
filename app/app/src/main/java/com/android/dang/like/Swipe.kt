@@ -21,7 +21,7 @@ class Swipe(private val mAdapter: LikeAdapter) : ItemTouchHelper.SimpleCallback(
         val data = mAdapter.data(position)
 
         mAdapter.removeData(viewHolder.layoutPosition)
-        Snackbar.make(viewHolder.itemView, "삭제 되었습니다", Snackbar.LENGTH_LONG).setAction("되돌리기") {
+        Snackbar.make(viewHolder.itemView, "삭제 되었습니다", Snackbar.LENGTH_SHORT).setAction("되돌리기") {
             mAdapter.insertData(position, data)
         }.show()
     }

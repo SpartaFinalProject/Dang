@@ -3,6 +3,7 @@ package com.android.dang.util
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import androidx.core.content.edit
 import com.android.dang.home.retrofit.HomeItemModel
 import com.google.gson.GsonBuilder
 
@@ -35,5 +36,28 @@ object PrefManager {
 
         }
         return like
+    }
+
+    fun offLike(context: Context, isLike: String){
+        val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putBoolean(isLike, false)
+        editor.apply()
+    }
+    fun onLike(context: Context, isLike: String){
+        val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putBoolean(isLike, true)
+        editor.apply()
+    }
+
+    fun getDeleted(context: Context): Set<String>{
+        val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
+        return pref.all.keys
+    }
+
+    fun isLiked(context: Context, isLike:String): Boolean {
+        val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
+        return !pref.getBoolean(isLike, false)
     }
 }
