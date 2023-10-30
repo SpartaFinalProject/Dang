@@ -20,6 +20,7 @@ import com.android.dang.home.retrofit.RetrofitClient.apiService
 import com.android.dang.home.retrofit.Util
 import com.android.dang.search.SearchFragment
 import com.android.dang.shelter.view.ShelterFragment
+import com.android.dang.util.PrefManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback

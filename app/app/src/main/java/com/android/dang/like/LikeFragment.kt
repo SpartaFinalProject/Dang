@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.FragmentLikeBinding
@@ -26,6 +27,7 @@ class LikeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = FragmentLikeBinding.inflate(layoutInflater)
+        ItemTouchHelper(Swipe(LikeAdapter(mContext))).attachToRecyclerView(binding.likeRc)
 
     }
 
