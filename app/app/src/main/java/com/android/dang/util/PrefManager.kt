@@ -38,16 +38,16 @@ object PrefManager {
         return like
     }
 
-    fun offLike(context: Context, isLike: String){
+    fun offLike(context: Context, item: HomeItemModel){
         val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
         val editor = pref.edit()
-        editor.putBoolean(isLike, false)
+        editor.putBoolean(item.isLiked.toString(), false)
         editor.apply()
     }
-    fun onLike(context: Context, isLike: String){
+    fun onLike(context: Context, item: HomeItemModel){
         val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
         val editor = pref.edit()
-        editor.putBoolean(isLike, true)
+        editor.putBoolean(item.isLiked.toString(), true)
         editor.apply()
     }
 
@@ -56,8 +56,8 @@ object PrefManager {
         return pref.all.keys
     }
 
-    fun isLiked(context: Context, isLike:String): Boolean {
+    fun isLiked(context: Context, item: HomeItemModel): Boolean {
         val pref = context.getSharedPreferences("DeletedItems", Context.MODE_PRIVATE)
-        return !pref.getBoolean(isLike, false)
+        return !pref.getBoolean(item.isLiked.toString(), false)
     }
 }
