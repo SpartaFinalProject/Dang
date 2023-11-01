@@ -11,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.dang.databinding.FragmentDictionaryBinding
 import com.android.dang.dictionary.data.BreedsSpinnerData
+import com.android.dang.dictionary.data.breedTranslations
+import com.android.dang.dictionary.data.temperamentTranslations
 import com.android.dang.dictionary.retrofit.NetWorkClient
 import kotlinx.coroutines.launch
 
@@ -38,8 +40,12 @@ class DictionaryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.dictionaryRecyclerView.adapter = dictionaryListAdapter
-        binding.dictionaryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.dictionaryRecyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+
+        //프로그래스바 시작
+        binding.progressDictionary.visibility = View.VISIBLE
 
         lifecycleScope.launch {
             //품종리스트 전체확보를 위해서 200으로 지정
@@ -49,29 +55,57 @@ class DictionaryFragment : Fragment() {
                     "page" to 0
                 )
             )
+            breedsDatas.apply {
+                forEach {
+                    it.nameKor = breedTranslations[it.name] ?: it.name
+                    // temperament 값을 쉼표를 기준으로 분리하고 3개만 가져옴
+                    val temperamentsList = (it.temperament?.split(", ") ?: listOf()).take(3)
 
-            //프로그래스바 시작
-            binding.progressDictionary.visibility = View.VISIBLE
+                    // 각 키워드를 번역하고 다시 합침
+                    it.temperamentKor = temperamentsList.joinToString(", ") { keyword ->
+                        temperamentTranslations[keyword.trim()] ?: keyword
+                    }
+
+                    //성격이 없어서 직접입력
+                    when (it.name) {
+                        "Russian Toy" -> it.temperamentKor = "활기찬, 호기심많은, 다정한"
+                        "Wirehaired Vizsla" -> it.temperamentKor = "순종적, 우호적, 훈련가능한"
+                        "Poodle (Miniature)", "Poodle (Toy)" -> it.temperamentKor = "똑똑한, 애정이 많은, 활발한"
+                    }
+                }
+                sortBy { it.nameKor }
+            }
+
+            mBreedList.clear()
+            mBreedList.addAll(breedsDatas.map { breedItem ->
+                BreedsSpinnerData(breedItem.id, breedItem.nameKor)
+            })
+            mBreedList.add(0, BreedsSpinnerData(0, "전체(${mBreedList.size})"))
 
             requireActivity().runOnUiThread {
-                mBreedList.clear()
-                //여기서 카운트 측정하면 0
-                mBreedList.addAll(breedsDatas.map { breedItem ->
-                    BreedsSpinnerData(breedItem.id, breedItem.name)
-                })
-                mBreedList.add(0, BreedsSpinnerData(0, "전체(${mBreedList.size})"))
-
-                binding.dictionarySpinner.adapter = BreedsSpinnerAdapter(requireContext(), mBreedList)
-                binding.dictionarySpinner.onItemSelectedListener = object : OnItemSelectedListener{
-                    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                        if(position == 0) {
-                            (binding.dictionaryRecyclerView.adapter as DictionaryListAdapter).addItems(breedsDatas, true)
+                binding.dictionarySpinner.adapter =
+                    BreedsSpinnerAdapter(requireContext(), mBreedList)
+                binding.dictionarySpinner.onItemSelectedListener = object : OnItemSelectedListener {
+                    override fun onItemSelected(
+                        p0: AdapterView<*>?,
+                        p1: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        if (position == 0) {
+                            (binding.dictionaryRecyclerView.adapter as DictionaryListAdapter).addItems(
+                                breedsDatas,
+                                true
+                            )
                             return
                         }
 
                         val id = mBreedList[position].id
-                        breedsDatas.find {it.id == id}?.let {
-                            (binding.dictionaryRecyclerView.adapter as DictionaryListAdapter).addItems(arrayListOf(it), true)
+                        breedsDatas.find { it.id == id }?.let {
+                            (binding.dictionaryRecyclerView.adapter as DictionaryListAdapter).addItems(
+                                arrayListOf(it),
+                                true
+                            )
                         }
                     }
 

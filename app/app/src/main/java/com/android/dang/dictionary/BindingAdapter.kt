@@ -26,7 +26,11 @@ fun dicItemDes(textView: TextView, item: BreedsData.BreedsDataItem) {
             val minWeight = weightParts[0].trim()
             val maxWeight = weightParts[1].trim()
             textView.text =
-                "평균체중 : $minWeight - $maxWeight kg\n평균수명 : ${item.life_span} \n성격 : ${item.temperament}"
+                "평균체중 : $minWeight - $maxWeight kg\n평균수명 : ${item.life_span?:""} \n성격 : ${item.temperamentKor?:""}"
+        } else {
+            val minWeight = weightParts[0].trim()
+            textView.text =
+                "평균체중 : $minWeight kg\n평균수명 : ${item.life_span?:""} \n성격 : ${item.temperamentKor?:""}"
         }
     }
 }
