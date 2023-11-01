@@ -5,11 +5,12 @@ import android.content.Context
 import android.util.Log
 import androidx.core.content.edit
 import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.google.gson.GsonBuilder
 
 object PrefManager {
 
-    fun addItem(context: Context, item: HomeItemModel) {
+    fun addItem(context: Context, item: SearchDogData) {
         val pref = context.getSharedPreferences("PREF_NAME", Context.MODE_PRIVATE)
         val editor = pref.edit()
         val gson = GsonBuilder().create()
@@ -24,13 +25,13 @@ object PrefManager {
         editor.apply()
     }
 
-    fun getLikeItem(context: Context): ArrayList<HomeItemModel> {
+    fun getLikeItem(context: Context): ArrayList<SearchDogData> {
         val pref = context.getSharedPreferences("PREF_NAME", Activity.MODE_PRIVATE)
         val allEntries: Map<String, *> = pref.all
-        val like = ArrayList<HomeItemModel>()
+        val like = ArrayList<SearchDogData>()
         val gson = GsonBuilder().create()
         for ((key, value) in allEntries) {
-            val item = gson.fromJson(value as String, HomeItemModel::class.java)
+            val item = gson.fromJson(value as String, SearchDogData::class.java)
             like.add(item)
             Log.d("SharedPreferences", "Key: $key, Value: $value")
 
