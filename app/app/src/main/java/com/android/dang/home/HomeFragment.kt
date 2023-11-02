@@ -19,7 +19,9 @@ import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.home.retrofit.RetrofitClient.apiService
 import com.android.dang.home.retrofit.Util
 import com.android.dang.search.SearchFragment
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
+import com.android.dang.util.PrefManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +31,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var mContext: Context
-    private var resItems: ArrayList<HomeItemModel> = ArrayList()
+    private var resItems: ArrayList<SearchDogData> = ArrayList()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: HomeAdapter
 
@@ -37,24 +39,27 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = FragmentHomeBinding.inflate(layoutInflater)
+        Log.d("homefragment", "onCreate")
 
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+        Log.d("homefragment", "onAttach")
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("homefragment", "onResume")
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-
-
-
+        Log.d("homefragment", "onCreateView")
 
         binding.bannerMoreBtn.setOnClickListener {
             val shelterFragment = ShelterFragment()
@@ -71,11 +76,13 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = adapter
 
         adapter.clearItem()
+        resItems.clear()
         homeResult()
         return binding.root
     }
 
     private fun homeResult() {
+        Log.d("homeFragment", "homeResult")
         apiService.homeDang(
             Util.KEY, 50, "json", 417000
         )
@@ -83,34 +90,56 @@ class HomeFragment : Fragment() {
                 override fun onResponse(call: Call<HomeData?>, response: Response<HomeData?>) {
                     if (response.isSuccessful) {
                         val homeData = response.body()
+                        val likeItems = PrefManager.getLikeItem(mContext)
+                        Log.d("homefragment","likeItems.size:${likeItems.size}")
                         homeData?.response?.body?.items?.item?.forEach { item ->
                             val popfile = item.popfile
                             val kindCd = item.kindCd
                             val age = item.age
-                            val specialMark = item.specialMark
-                            val happenPlace = item.happenPlace
-                            val orgNm = item.orgNm
+                            val careAddr = item.careAddr
                             val processState = item.processState
+                            val sexCd = item.sexCd
+                            val neuterYn = item.neuterYn
+                            val weight = item.weight
+                            val specialMark = item.specialMark
+                            val noticeNo = item.noticeNo
+                            val happenPlace = item.happenPlace
+                            val colorCd = item.colorCd
+                            val careNm = item.careNm
+                            val careTel = item.careTel
+                            var isLike = false
+
+                            val likedDog = likeItems.find { it.popfile == item.popfile }
+                            if (likedDog != null) {
+                               isLike = true
+                            }
                             resItems.add(
-                                HomeItemModel(
+                                SearchDogData(
                                     popfile,
                                     kindCd,
                                     age,
+                                    careAddr,
+                                    processState,
+                                    sexCd,
+                                    neuterYn,
+                                    weight,
                                     specialMark,
+                                    noticeNo,
                                     happenPlace,
-                                    orgNm,
-                                    processState
+                                    colorCd,
+                                    careNm,
+                                    careTel,
+                                    isLike
                                 )
                             )
-
-                            Log.d("js", "$resItems")
-
+                            Log.d("homefragment", "popfile = $popfile / isLike = $isLike")
                         }
+                        Log.d("js", "$resItems")
                     } else {
                         Log.e("error", "${response.code()}")
                     }
-                    adapter.items = resItems
-                    adapter.notifyDataSetChanged()
+                    adapter.addItem(resItems)
+
                 }
 
                 override fun onFailure(call: Call<HomeData?>, t: Throwable) {

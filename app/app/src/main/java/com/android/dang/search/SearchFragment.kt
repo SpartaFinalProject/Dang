@@ -424,7 +424,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                                 happenPlace,
                                 colorCd,
                                 careNm,
-                                careTel
+                                careTel,
+                                false
                             )
                         )
                     }
