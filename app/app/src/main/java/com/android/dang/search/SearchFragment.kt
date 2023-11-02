@@ -24,14 +24,14 @@ import com.android.dang.search.adapter.SearchAdapter.Companion.typeOne
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.search.searchViewModel.RecentViewModel
 import com.android.dang.search.searchViewModel.SearchViewModel
-import com.android.dangtheland.retrofit.abandonedDog.AbandonedDog
+import com.android.dang.retrofit.abandonedDog.AbandonedDog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 
 
-class SearchFragment : Fragment(R.layout.fragment_search) {
+class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemClick {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
@@ -51,6 +51,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private var dogKind = ""
 
     private lateinit var passData: DogData
+
+    private lateinit var likeDogs : DogData
+
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -103,19 +107,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.searchSize.setOnClickListener {
             sizeDialog()
         }
-        searchAdapter.itemClick = object : SearchAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
-                passData.pass(searchItem[position])
-            }
-            override fun onImageViewClick(position: Int) {
-                recentViewModel.recentRemove(position)
-            }
-
-            override fun onTextViewClick(position: Int) {
-                val edit = recentViewModel.editText(position)
-                binding.searchEdit.setText(edit)
-            }
-        }
 
         val autoCompleteTextView = binding.searchEdit
         val adapter = ArrayAdapter(
@@ -138,17 +129,23 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.rcvSearchList.apply {
             adapter = searchAdapter
         }
+        searchAdapter.itemClick = this
 
         kindData()
     }
 
     private fun viewModel() {
+
         searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
 
         searchViewModel.searchesList.observe(viewLifecycleOwner, Observer { list ->
             if (list != null) {
                 searchAdapter.searchesData(list)
             }
+        })
+
+        searchViewModel.likeList.observe(viewLifecycleOwner, Observer { list ->
+            likeDogs.likeDog(list)
         })
 
         recentViewModel = ViewModelProvider(this)[RecentViewModel::class.java]
@@ -387,7 +384,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             Constants.AUTH_HEADER,
             417000,
             "json",
-            30,
+            10,
             kind
         ).enqueue(object : Callback<AbandonedDog?> {
             override fun onResponse(call: Call<AbandonedDog?>, response: Response<AbandonedDog?>) {
@@ -475,9 +472,33 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     interface DogData {
         fun pass(list: SearchDogData)
+
+        fun likeDog(likeList: List<SearchDogData>?)
     }
 
     fun dogData(data: DogData) {
         passData = data
+    }
+
+    fun likeDogList(data : DogData){
+        likeDogs = data
+    }
+
+    override fun onClick(view: View, position: Int) {
+        passData.pass(searchItem[position])
+    }
+
+    override fun onImageViewClick(position: Int) {
+        recentViewModel.recentRemove(position)
+    }
+
+    override fun onTextViewClick(position: Int) {
+        val edit = recentViewModel.editText(position)
+        binding.searchEdit.setText(edit)
+    }
+
+    override fun onLikeViewClick(position: Int) {
+        searchViewModel.likeList(position)
+        Log.d("eee", "$position")
     }
 }

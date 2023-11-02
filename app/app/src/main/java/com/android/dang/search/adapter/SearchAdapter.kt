@@ -1,14 +1,15 @@
 package com.android.dang.search.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
 import com.android.dang.databinding.ItemRecyclerViewRecentWordBinding
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.bumptech.glide.Glide
-
 
 
 class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -20,6 +21,8 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun onClick(view: View, position: Int)
         fun onImageViewClick(position: Int)
         fun onTextViewClick(position: Int)
+
+        fun onLikeViewClick(position: Int)
     }
 
     var itemClick: ItemClick? = null
@@ -56,6 +59,7 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
         when (typeOne) {
             0 -> {
+
                 val currentItem = searchesList[position]
 
                 val searchHolder = holder as SearchHolder
@@ -88,6 +92,23 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 text1 += "#${currentItem.weight}"
                 text1 += "\n#${currentItem.specialMark}"
                 searchHolder.age.text = text1
+                if (currentItem.isLiked) {
+                    holder.like.setImageResource(R.drawable.icon_like_on)
+                } else {
+                    holder.like.setImageResource(R.drawable.icon_like_off)
+                }
+                holder.like.setOnClickListener {
+                    Log.d("eee", "$itemClick")
+                    itemClick?.onLikeViewClick(position)
+                    currentItem.isLiked = !currentItem.isLiked
+                    if (currentItem.isLiked) {
+                        holder.like.setImageResource(R.drawable.icon_like_on)
+
+                    } else {
+                        holder.like.setImageResource(R.drawable.icon_like_off)
+
+                    }
+                }
             }
             1 -> {
                 val recentWordHolder = holder as RecentWordHolder
@@ -108,12 +129,14 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val image = binding.dogImg
         val dogKind = binding.dogName
         val age = binding.dogTag
+        val like = binding.dogLike
+
     }
 
     inner class RecentWordHolder(binding: ItemRecyclerViewRecentWordBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val recentText = binding.recentText
-        val cancel = binding.recentCancel
+        private val cancel = binding.recentCancel
 
         init {
             cancel.setOnClickListener {

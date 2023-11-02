@@ -1,15 +1,17 @@
 package com.android.dang
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.android.dang.databinding.ActivityMainBinding
 import com.android.dang.detailFragment.DogDetailFragment
 import com.android.dang.dictionary.DictionaryFragment
 import com.android.dang.home.HomeFragment
 import com.android.dang.like.LikeFragment
+import com.android.dang.like.LikeViewModel
 import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
@@ -18,7 +20,10 @@ import com.android.dang.shelter.view.ShelterFragment
 class MainActivity : AppCompatActivity(), SearchFragment.DogData {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    val dogDetailFragment = DogDetailFragment()
+    private val dogDetailFragment = DogDetailFragment()
+    private val likeFragment = LikeFragment()
+
+    private lateinit var likeViewModel: LikeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -26,7 +31,6 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData {
         val homeFragment = HomeFragment()
         val searchFragment = SearchFragment()
         val shelterFragment = ShelterFragment()
-        val likeFragment = LikeFragment()
         val dictionaryFragment = DictionaryFragment()
 
 
@@ -75,6 +79,15 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData {
         binding.icBack.setOnClickListener {}
 
         searchFragment.dogData(this)
+        searchFragment.likeDogList(this)
+
+        likeViewModel = ViewModelProvider(this)[LikeViewModel::class.java]
+
+        likeViewModel.likeList.observe(likeFragment, Observer { list ->
+            if (list != null) {
+                likeFragment.receiveLikeList(list)
+            }
+        })
 
     }
 
@@ -91,8 +104,13 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData {
 
     override fun pass(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
-        Log.d("aaa", "$data aaa")
         setFragment(dogDetailFragment)
+    }
+
+    override fun likeDog(likeList: List<SearchDogData>?) {
+        if (likeList != null) {
+            likeViewModel.addLikeList(likeList)
+        }
     }
 
     override fun onBackPressed() {

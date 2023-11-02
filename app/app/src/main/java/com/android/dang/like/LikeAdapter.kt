@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
 import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.bumptech.glide.Glide
 
 class LikeAdapter(private val mContext: Context) :
     RecyclerView.Adapter<LikeAdapter.ItemViewHolder>() {
-    var items = ArrayList<HomeItemModel>()
+    var items = mutableListOf<SearchDogData>()
 
     interface OnItemClickListener {
-        fun onItemClick(item: HomeItemModel, position: Int)
+        fun onItemClick(item: SearchDogData, position: Int)
     }
 
     private var clickListener: OnItemClickListener? = null
@@ -42,7 +43,7 @@ class LikeAdapter(private val mContext: Context) :
         val modifiedKindCd = currentItem.kindCd?.replace("[개]", "")?.trim() ?: ""
         holder.dogName.text = modifiedKindCd
 
-        val processText = ellipsizeText(currentItem.age, currentItem.specialMark, currentItem.orgNm, currentItem.processState, 70)
+        val processText = ellipsizeText(currentItem.age, currentItem.specialMark, currentItem.careAddr, currentItem.processState, 70)
         holder.dogTag.text = processText
 
 
@@ -84,5 +85,11 @@ class LikeAdapter(private val mContext: Context) :
         } else {
             this
         }
+    }
+
+    fun addAll(newItems: List<SearchDogData>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
     }
 }
