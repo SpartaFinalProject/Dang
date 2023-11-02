@@ -76,6 +76,7 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = adapter
 
         adapter.clearItem()
+        resItems.clear()
         homeResult()
         return binding.root
     }
@@ -91,7 +92,6 @@ class HomeFragment : Fragment() {
                         val homeData = response.body()
                         val likeItems = PrefManager.getLikeItem(mContext)
                         Log.d("homefragment","likeItems.size:${likeItems.size}")
-                        resItems.clear()
                         homeData?.response?.body?.items?.item?.forEach { item ->
                             val popfile = item.popfile
                             val kindCd = item.kindCd
