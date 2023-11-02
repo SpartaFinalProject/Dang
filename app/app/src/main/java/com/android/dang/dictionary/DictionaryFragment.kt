@@ -9,7 +9,9 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.FragmentDictionaryBinding
+import com.android.dang.dictionary.data.BreedsData
 import com.android.dang.dictionary.data.BreedsSpinnerData
 import com.android.dang.dictionary.data.breedTranslations
 import com.android.dang.dictionary.data.temperamentTranslations
@@ -20,6 +22,9 @@ class DictionaryFragment : Fragment() {
 
     private lateinit var binding: FragmentDictionaryBinding
     private var mBreedList = arrayListOf<BreedsSpinnerData>()
+    private var mBreedsViewData = arrayListOf<BreedsData.BreedsDataItem>()
+    private var mPageCount = 0
+    private lateinit var breedsDatas: BreedsData
     private val dictionaryListAdapter by lazy {
         DictionaryListAdapter()
     }
@@ -43,13 +48,29 @@ class DictionaryFragment : Fragment() {
         binding.dictionaryRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        // 스크롤 리스너 추가 시작
+        binding.dictionaryRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val totalItemCount = layoutManager.itemCount
+                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+
+                // 마지막 아이템이 화면에 보이면 다음 데이터 로드
+                if (lastVisibleItem + 1 == totalItemCount && totalItemCount != 1) {
+                    // 데이터 로드하기
+                    loadMoreData()  // 여기서 loadMoreData는 다음 페이지의 데이터를 로드하는 함수입니다.
+                }
+            }
+        })
 
         //프로그래스바 시작
         binding.progressDictionary.visibility = View.VISIBLE
 
         lifecycleScope.launch {
             //품종리스트 전체확보를 위해서 200으로 지정
-            var breedsDatas = NetWorkClient.dogNetWork.getBreeds(
+            breedsDatas = NetWorkClient.dogNetWork.getBreeds(
                 NetWorkClient.API_AUTHKEY, hashMapOf(
                     "limit" to 200,
                     "page" to 0
@@ -76,6 +97,10 @@ class DictionaryFragment : Fragment() {
                 sortBy { it.nameKor }
             }
 
+            mPageCount = 1
+            mBreedsViewData.clear()
+            mBreedsViewData.addAll(breedsDatas.take(30 * mPageCount))  // 첫 30개의 데이터만 추가
+
             mBreedList.clear()
             mBreedList.addAll(breedsDatas.map { breedItem ->
                 BreedsSpinnerData(breedItem.id, breedItem.nameKor)
@@ -94,7 +119,7 @@ class DictionaryFragment : Fragment() {
                     ) {
                         if (position == 0) {
                             (binding.dictionaryRecyclerView.adapter as DictionaryListAdapter).addItems(
-                                breedsDatas,
+                                mBreedsViewData,
                                 true
                             )
                             return
@@ -117,4 +142,10 @@ class DictionaryFragment : Fragment() {
         }
     }
 
+    private fun loadMoreData() {
+        mPageCount++
+        mBreedsViewData.clear()
+        mBreedsViewData.addAll(breedsDatas.take(30 * mPageCount))  // 첫 30개의 데이터만 추가
+        (binding.dictionaryRecyclerView.adapter as DictionaryListAdapter).addItems(mBreedsViewData, true)
+    }
 }
