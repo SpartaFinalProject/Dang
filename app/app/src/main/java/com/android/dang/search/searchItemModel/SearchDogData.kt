@@ -15,5 +15,5 @@ data class SearchDogData(
     val colorCd: String,
     val careNm: String,
     val careTel: String,
-    var isLiked: Boolean = false
+    var isLiked: Boolean
 )

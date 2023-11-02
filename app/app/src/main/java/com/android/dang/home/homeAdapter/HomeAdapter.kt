@@ -12,28 +12,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
 import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.util.PrefManager.addItem
 import com.android.dang.util.PrefManager.deleteItem
 import com.bumptech.glide.Glide
 
 class HomeAdapter(private val mContext: Context) :
     RecyclerView.Adapter<HomeAdapter.ItemViewHolder>() {
-    var items = ArrayList<HomeItemModel>()
+    var items = ArrayList<SearchDogData>()
 
     fun clearItem() {
         items.clear()
+    }
+    fun addItem(items2: ArrayList<SearchDogData>){
+        for (item in items2){
+            Log.d("homeadapter", "addItem popfile = ${item.popfile} / isLike = ${item.isLiked}")
+        }
+        clearItem()
+        items.addAll(items2)
         notifyDataSetChanged()
     }
 
     private fun ellipsizeText(
         age: String?,
         specialMark: String?,
-        orgNm: String?,
+        careAddr: String?,
         processState: String?,
         maxLength: Int
     ): String {
         val ellipstext =
-            "#${age ?: ""} #${specialMark ?: ""} #${orgNm ?: ""} #${processState ?: ""}"
+            "#${age ?: ""} #${specialMark ?: ""} ${careAddr ?: ""} #${processState ?: ""}"
         return ellipstext.ellipsize(maxLength)
     }
 
@@ -54,6 +62,11 @@ class HomeAdapter(private val mContext: Context) :
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = items[position]
+        Log.d("homeadapter", "popfile = ${currentItem.popfile} / isLike = ${currentItem.isLiked}")
+
+        val address = currentItem.careAddr
+        val parts = address.split(" ")
+        val result = "#${parts[0]} ${parts[1]}"
 
         Glide.with(mContext)
             .load(currentItem.popfile)
@@ -64,7 +77,7 @@ class HomeAdapter(private val mContext: Context) :
         val processText = ellipsizeText(
             currentItem.age,
             currentItem.specialMark,
-            currentItem.orgNm,
+            result,
             currentItem.processState,
             70
         )

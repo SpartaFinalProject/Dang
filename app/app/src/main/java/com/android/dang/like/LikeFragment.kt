@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.FragmentLikeBinding
+import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.util.PrefManager
 
@@ -27,6 +30,7 @@ class LikeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = FragmentLikeBinding.inflate(layoutInflater)
+
 
     }
 
@@ -50,18 +54,16 @@ class LikeFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         adapter = LikeAdapter(mContext)
-//        adapter.items = likeItems
+        adapter.items = likeItems
         recyclerView.adapter = adapter
 
-        Log.d("list", "${adapter.items.size}")
-        Log.d("list", "${adapter.toString()}")
 
         adapter.setOnItemClickListener(object : LikeAdapter.OnItemClickListener {
-
             override fun onItemClick(item: SearchDogData, position: Int) {
-                TODO("Not yet implemented")
+
             }
         })
+        ItemTouchHelper(Swipe(adapter)).attachToRecyclerView(binding.likeRc)
         return binding.root
     }
 

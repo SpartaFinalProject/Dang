@@ -421,7 +421,8 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                                 happenPlace,
                                 colorCd,
                                 careNm,
-                                careTel
+                                careTel,
+                                false
                             )
                         )
                     }
