@@ -6,32 +6,18 @@
     android:elevation="8dp"
     android:background="@drawable/background_item"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<!--    android:background="@drawable/background_item_img_radius"-->
-<!--    <ImageView-->
-<!--        android:id="@+id/dog_img"-->
-<!--        android:layout_width="120dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:cardCornerRadius="8dp"-->
-<!--        android:scaleType="centerCrop"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dog_img_card"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="8dp">
     <ImageView
         android:id="@+id/dog_img"
         android:layout_width="120dp"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
-    </androidx.cardview.widget.CardView>
+        android:background="@drawable/background_item_img_radius"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toEndOf="@id/dog_img_card"
+        app:layout_constraintStart_toEndOf="@id/dog_img"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="15dp">
         <TextView

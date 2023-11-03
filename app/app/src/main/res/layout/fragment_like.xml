@@ -20,7 +20,6 @@
         android:text="삭제하시려면 옆으로 살짝 밀어주세요"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/like_rc"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
