@@ -82,6 +82,7 @@
             android:padding="10dp"
             android:src="@drawable/icon_heart_filled"/>
         <TextView
+            android:id="@+id/btn_call"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/btn_like"
