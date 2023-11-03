@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData {
 
         binding.icSearch.setOnClickListener {
             binding.txtTitle.text = "댕찾기"
+            binding.icBack.visibility = View.VISIBLE
             switchFragment(searchFragment)
         }
 
