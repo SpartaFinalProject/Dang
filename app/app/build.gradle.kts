@@ -1,13 +1,11 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-parcelize")
-    id("kotlin-kapt")
 }
 
 android {
     namespace = "com.android.dang"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.android.dang"
@@ -42,7 +40,6 @@ android {
         viewBinding = true
         dataBinding = true
     }
-
 }
 
 dependencies {

@@ -74,5 +74,5 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    app:itemIconTint="@drawable/menu_selector"-->
-<!--    app:itemTextColor="@drawable/menu_selector"-->
+    <!--    app:itemIconTint="@drawable/menu_selector"-->
+    <!--    app:itemTextColor="@drawable/menu_selector"-->
