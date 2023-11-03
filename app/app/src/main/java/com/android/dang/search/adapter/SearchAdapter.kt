@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
 import com.android.dang.databinding.ItemRecyclerViewRecentWordBinding
+import com.android.dang.search.LikeList
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.bumptech.glide.Glide
 
@@ -16,6 +17,8 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var searchesList = mutableListOf<SearchDogData>()
     private var recentList = mutableListOf<String>()
+
+    private var likeList = LikeList.retrieveLikeList()
 
     interface ItemClick {
         fun onClick(view: View, position: Int)
@@ -108,6 +111,20 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         holder.like.setImageResource(R.drawable.icon_like_off)
 
                     }
+                }
+                for (list in likeList){
+                    if (currentItem.popfile == list.popfile){
+                        holder.like.setImageResource(R.drawable.icon_like_on)
+                        currentItem.isLiked = true
+                        break
+                    } else {
+                        holder.like.setImageResource(R.drawable.icon_like_off)
+                        currentItem.isLiked = false
+                    }
+                }
+                if (likeList.isEmpty()){
+                    holder.like.setImageResource(R.drawable.icon_like_off)
+                    currentItem.isLiked = false
                 }
             }
             1 -> {

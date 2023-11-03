@@ -18,13 +18,13 @@ import com.android.dang.R
 import com.android.dang.databinding.FragmentSearchBinding
 import com.android.dang.retrofit.Constants
 import com.android.dang.retrofit.DangClient.api
+import com.android.dang.retrofit.abandonedDog.AbandonedDog
 import com.android.dang.retrofit.kind.Kind
 import com.android.dang.search.adapter.SearchAdapter
 import com.android.dang.search.adapter.SearchAdapter.Companion.typeOne
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.search.searchViewModel.RecentViewModel
 import com.android.dang.search.searchViewModel.SearchViewModel
-import com.android.dang.retrofit.abandonedDog.AbandonedDog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,11 +51,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     private var dogKind = ""
 
     private lateinit var passData: DogData
-
-    private lateinit var likeDogs : DogData
-
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -142,10 +137,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             if (list != null) {
                 searchAdapter.searchesData(list)
             }
-        })
-
-        searchViewModel.likeList.observe(viewLifecycleOwner, Observer { list ->
-            likeDogs.likeDog(list)
         })
 
         recentViewModel = ViewModelProvider(this)[RecentViewModel::class.java]
@@ -240,6 +231,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
         male.setOnClickListener {
             gender = "M"
+            neutra = "N"
             genderView = "수컷"
             male.setImageDrawable(
                 ResourcesCompat.getDrawable(
@@ -292,6 +284,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         }
         female.setOnClickListener {
             gender = "F"
+            neutra = "N"
             genderView = "암컷"
             male.setImageDrawable(
                 ResourcesCompat.getDrawable(
@@ -317,8 +310,10 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         }
 
         applyBtn.setOnClickListener {
-            searchViewModel.genderFilter(gender)
             searchViewModel.neutrality(neutra)
+            if (neutra == "N"){
+                searchViewModel.genderFilter(gender)
+            }
             binding.textGender.text = "$genderView"
             dialog.dismiss()
         }
@@ -473,16 +468,10 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
     interface DogData {
         fun pass(list: SearchDogData)
-
-        fun likeDog(likeList: List<SearchDogData>?)
     }
 
     fun dogData(data: DogData) {
         passData = data
-    }
-
-    fun likeDogList(data : DogData){
-        likeDogs = data
     }
 
     override fun onClick(view: View, position: Int) {
@@ -500,6 +489,5 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
     override fun onLikeViewClick(position: Int) {
         searchViewModel.likeList(position)
-        Log.d("eee", "$position")
     }
 }

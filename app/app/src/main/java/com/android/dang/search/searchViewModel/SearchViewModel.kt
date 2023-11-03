@@ -1,13 +1,13 @@
 package com.android.dang.search.searchViewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.dang.search.LikeList
 import com.android.dang.search.searchItemModel.SearchDogData
 
 class SearchViewModel : ViewModel() {
     val searchesList = MutableLiveData<List<SearchDogData>?>()
-
-    var likeList = MutableLiveData<List<SearchDogData>?>()
     private var resetList = mutableListOf<SearchDogData>()
 
     data class FilterCriteria(
@@ -27,12 +27,12 @@ class SearchViewModel : ViewModel() {
         applyFilters(currentFilter)
     }
 
-    fun applyFilters(criteria: FilterCriteria) {
+    private fun applyFilters(criteria: FilterCriteria) {
         currentFilter = criteria
 
         val filteredList = resetList.filter { item ->
-            val ageInt = item.age.toIntOrNull() ?: 0
-            val sizeInt = item.weight.toIntOrNull() ?: 0
+            val ageInt = """\d+""".toRegex().find(item.age)?.value?.toIntOrNull() ?: 0
+            val sizeInt = """\d+""".toRegex().find(item.weight)?.value?.toIntOrNull() ?: 0
 
             (criteria.minAge == null || ageInt >= criteria.minAge!!) &&
                     (criteria.maxAge == null || ageInt <= criteria.maxAge!!) &&
@@ -42,6 +42,7 @@ class SearchViewModel : ViewModel() {
                     (criteria.maxSize == null || sizeInt <= criteria.maxSize!!)
         }
 
+        Log.d("age", "${filteredList.size}")
         searchesList.value = filteredList
     }
 
@@ -49,6 +50,8 @@ class SearchViewModel : ViewModel() {
         currentFilter.minAge = minAge
         currentFilter.maxAge = maxAge
         applyFilters(currentFilter)
+        Log.d("age", "${currentFilter.minAge}")
+        Log.d("age", "${currentFilter.maxAge}")
     }
 
     fun genderFilter(gender: String) {
@@ -89,24 +92,17 @@ class SearchViewModel : ViewModel() {
         applyFilters(currentFilter)
     }
 
-    fun resetAllFilters() {
-        currentFilter = FilterCriteria()
-        applyFilters(currentFilter)
-    }
-
     fun clearSearches() {
         searchesList.value = null
     }
 
-    fun likeList(position: Int){
+    fun likeList(position: Int) {
         val currentList = searchesList.value?.toMutableList() ?: mutableListOf()
-        val like = likeList.value?.toMutableList() ?: mutableListOf()
 
         if (!currentList[position].isLiked){
-            like.add(currentList[position])
+            LikeList.addLikeList(currentList[position])
         } else {
-            like.removeIf { it.popfile == currentList[position].popfile }
+            LikeList.deleteLikeList(currentList[position])
         }
-        likeList.value = like
     }
 }

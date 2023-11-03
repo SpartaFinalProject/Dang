@@ -7,21 +7,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
-import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
-import com.android.dang.databinding.FragmentLikeBinding
 import com.android.dang.databinding.ItemCommonDetailBinding
-import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.search.LikeList
 import com.android.dang.search.searchItemModel.SearchDogData
-import com.android.dang.search.searchItemModel.SearchDogData
-import com.android.dang.util.PrefManager
 import com.android.dang.util.PrefManager.addItem
 import com.android.dang.util.PrefManager.deleteItem
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 
 class LikeAdapter(private val mContext: Context) :
     RecyclerView.Adapter<LikeAdapter.ItemViewHolder>() {
@@ -113,6 +106,8 @@ class LikeAdapter(private val mContext: Context) :
     }
 
     fun removeData(position: Int) {
+        LikeList.deleteLikeList(items[position])
+        Log.d("list30", "${LikeList.likeList.size}")
         try {
             items[position].popfile?.let { deleteItem(mContext, it) }
             items.removeAt(position)
