@@ -127,7 +127,23 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
             override fun onTextViewClick(position: Int) {
                 val edit = recentViewModel.editText(position)
-                binding.searchEdit.setText(edit)
+//                binding.searchEdit.setText(edit)
+                typeOne = 0
+                binding.recent.visibility = View.INVISIBLE
+                binding.searchTag.visibility = View.VISIBLE
+                binding.textAge.text = "나이"
+                binding.textGender.text = "성별"
+                binding.textSize.text = "크기"
+
+                dogKind = edit
+                if (kindNumber != hashMap[dogKind] && dogKind.isNotEmpty()) {
+                    searchViewModel.clearSearches()
+                    searchItem.clear()
+                    kindNumber = hashMap[dogKind].toString()
+                    searchData(kindNumber)
+                } else {
+                    toast("공백 이거나 검색이 완료된 검색어 입니다.")
+                }
             }
         }
 
