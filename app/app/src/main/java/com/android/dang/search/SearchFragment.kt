@@ -126,6 +126,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             }
 
             override fun onTextViewClick(position: Int) {
+                // 최근검색어 클릭시 자동 검색 코드
                 val edit = recentViewModel.editText(position)
                 binding.searchEdit.setText(edit)
                 typeOne = 0
