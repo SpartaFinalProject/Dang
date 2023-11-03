@@ -127,7 +127,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
             override fun onTextViewClick(position: Int) {
                 val edit = recentViewModel.editText(position)
-//                binding.searchEdit.setText(edit)
+                binding.searchEdit.setText(edit)
                 typeOne = 0
                 binding.recent.visibility = View.INVISIBLE
                 binding.searchTag.visibility = View.VISIBLE
