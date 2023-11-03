@@ -23,7 +23,10 @@ class PretestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (SharedPref.getBoolean(Constants.IS_PRE_CONFIRM, false)) {
+        // 마지막 pretest 완료 시간 가져오기
+        val lastCompletionTime = SharedPref.getLong(Constants.PRETEST_COMPLETION_TIME, 0)
+        if (System.currentTimeMillis() - lastCompletionTime < 30 * 24 * 60 * 60 * 1000) {
+            // 30일이 지나지 않았으므로 pretest 건너뛰기
             gotoMainActivity()
             return
         }
@@ -101,7 +104,7 @@ class PretestActivity : AppCompatActivity() {
             }
             8 -> {
                 showCustomDialog(isYesDialog = true) {
-                    SharedPref.setBoolean(Constants.IS_PRE_CONFIRM, true)
+                    SharedPref.setLong(Constants.PRETEST_COMPLETION_TIME, System.currentTimeMillis())
                     gotoMainActivity()
                 }
                 index = 7
