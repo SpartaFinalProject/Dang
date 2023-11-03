@@ -3,6 +3,7 @@ package com.android.dang
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.android.dang.databinding.ActivityMainBinding
@@ -13,12 +14,14 @@ import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
+import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity(), SearchFragment.DogData {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     val dogDetailFragment = DogDetailFragment()
+    private var backPressedTime:Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -109,6 +112,15 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData {
             }
         } else {
             finish()
+        }
+
+        if(System.currentTimeMillis() - backPressedTime >=2000 ) {
+            // 한번누르면 뒤로가고 스낵바띄워줌
+            backPressedTime = System.currentTimeMillis()
+            Snackbar.make(binding.fragmentView,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_LONG).show()
+        } else {
+            // 2초안에 한번더누르면 앱종료
+            finish() 
         }
     }
 }
