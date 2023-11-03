@@ -37,15 +37,30 @@ class PretestActivity : AppCompatActivity() {
     private fun initEvent() {
         binding.tvIntroQuestion.movementMethod = ScrollingMovementMethod.getInstance()
         binding.btnYes.setOnClickListener {
-            nextQuestion()
-        }
-        binding.btnNo.setOnClickListener {
-            showCustomDialog(isYesDialog = false) {
-                index = -1
-                switchIntro(true)
+            if (index == 3) {
+                showCustomDialog(isYesDialog = false) {
+                    index = -1
+                    switchIntro(true)
+                    nextQuestion()
+                }
+            } else {
                 nextQuestion()
             }
         }
+        binding.btnNo.setOnClickListener {
+            if (index == 3) {
+                nextQuestion()
+            } else {
+                showCustomDialog(isYesDialog = false) {
+                    index = -1
+                    switchIntro(true)
+                    nextQuestion()
+                }
+            }
+        }
+
+
+
         binding.btnStart.setOnClickListener {
             startPretest()
         }
