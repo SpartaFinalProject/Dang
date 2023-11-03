@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.android.dang"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.android.dang"
