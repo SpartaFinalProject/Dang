@@ -27,7 +27,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
         <meta-data
             android:name="com.kakao.vectormap.APP_KEY"
             android:value="46d1d37184ef8307ebe774f7b8c634b1"/>
