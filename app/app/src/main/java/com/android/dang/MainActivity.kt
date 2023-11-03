@@ -114,10 +114,13 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData {
             finish()
         }
 
-        if(System.currentTimeMillis() - backPressedTime >=1000 ) {
+        if(System.currentTimeMillis() - backPressedTime >=2000 ) {
+            // 한번누르면 뒤로가고 스낵바띄워줌
             backPressedTime = System.currentTimeMillis()
+            Snackbar.make(binding.fragmentView,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_LONG).show()
         } else {
-            finish() //액티비티 종료
+            // 2초안에 한번더누르면 앱종료
+            finish() 
         }
     }
 }
