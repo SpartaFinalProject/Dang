@@ -65,6 +65,13 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         context?.let { recentViewModel.getListFromPreferences(it) }
             ?.let { recentViewModel.saveRecent(it) }
 
+        if (typeOne == 1){
+            binding.recent.visibility = View.VISIBLE
+            binding.searchTag.visibility = View.INVISIBLE
+        } else if (typeOne == 0){
+            binding.recent.visibility = View.INVISIBLE
+            binding.searchTag.visibility = View.VISIBLE
+        }
 
         binding.searchEdit.setOnClickListener {
             typeOne = 1
