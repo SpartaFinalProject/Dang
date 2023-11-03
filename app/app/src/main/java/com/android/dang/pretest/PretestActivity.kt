@@ -25,7 +25,7 @@ class PretestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // 마지막 pretest 완료 시간 가져오기
         val lastCompletionTime = SharedPref.getLong(Constants.PRETEST_COMPLETION_TIME, 0)
-        if (System.currentTimeMillis() - lastCompletionTime < 30 * 24 * 60 * 60 * 1000) {
+        if (System.currentTimeMillis() - lastCompletionTime < 30L * 24 * 60 * 60 * 1000) {
             // 30일이 지나지 않았으므로 pretest 건너뛰기
             gotoMainActivity()
             return
