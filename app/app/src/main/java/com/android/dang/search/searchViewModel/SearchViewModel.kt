@@ -3,7 +3,6 @@ package com.android.dang.search.searchViewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.dang.search.LikeList
 import com.android.dang.search.searchItemModel.SearchDogData
 
 class SearchViewModel : ViewModel() {
@@ -96,13 +95,14 @@ class SearchViewModel : ViewModel() {
         searchesList.value = null
     }
 
-    fun likeList(position: Int) {
+    fun likeList(position: Int): SearchDogData {
         val currentList = searchesList.value?.toMutableList() ?: mutableListOf()
 
-        if (!currentList[position].isLiked){
-            LikeList.addLikeList(currentList[position])
-        } else {
-            LikeList.deleteLikeList(currentList[position])
-        }
+//        if (!currentList[position].isLiked){
+//            LikeList.addLikeList(currentList[position])
+//        } else {
+//            LikeList.deleteLikeList(currentList[position])
+//        }
+        return currentList[position]
     }
 }

@@ -10,7 +10,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
-import com.android.dang.search.LikeList
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.util.PrefManager.addItem
 import com.android.dang.util.PrefManager.deleteItem
@@ -130,8 +129,6 @@ class LikeAdapter(private val mContext: Context) :
     }
 
     fun removeData(position: Int) {
-        LikeList.deleteLikeList(items[position])
-        Log.d("list30", "${LikeList.likeList.size}")
         try {
             items[position].popfile?.let { deleteItem(mContext, it) }
             items.removeAt(position)

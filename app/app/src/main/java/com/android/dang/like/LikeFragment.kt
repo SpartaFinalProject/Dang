@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.FragmentLikeBinding
-import com.android.dang.search.LikeList
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.util.PrefManager
 
@@ -22,8 +21,6 @@ class LikeFragment : Fragment() {
     private lateinit var mContext: Context
     private lateinit var adapter: LikeAdapter
     private lateinit var recyclerView: RecyclerView
-
-    private var likeList = LikeList.retrieveLikeList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +51,6 @@ class LikeFragment : Fragment() {
 
         adapter = LikeAdapter(mContext)
         adapter.items.addAll(likeItems)
-        adapter.items.addAll(likeList)
         recyclerView.adapter = adapter
 
 

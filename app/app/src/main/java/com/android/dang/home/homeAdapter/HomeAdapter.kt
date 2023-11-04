@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
-import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.search.adapter.SearchAdapter
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.util.PrefManager.addItem
 import com.android.dang.util.PrefManager.deleteItem
@@ -21,6 +20,12 @@ import com.bumptech.glide.Glide
 class HomeAdapter(private val mContext: Context) :
     RecyclerView.Adapter<HomeAdapter.ItemViewHolder>() {
     var items = ArrayList<SearchDogData>()
+
+    interface ItemClick{
+        fun onClick(view: View, position: Int)
+    }
+
+    var itemClick: ItemClick? = null
 
     fun clearItem() {
         items.clear()
@@ -75,6 +80,9 @@ class HomeAdapter(private val mContext: Context) :
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            itemClick?.onClick(it, position)
+        }
         val currentItem = items[position]
         Log.d("homeadapter", "popfile = ${currentItem.popfile} / isLike = ${currentItem.isLiked}")
 

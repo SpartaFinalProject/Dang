@@ -16,14 +16,13 @@ import com.android.dang.shelter.view.ShelterFragment
 import com.google.android.material.snackbar.Snackbar
 
 
-class MainActivity : AppCompatActivity(), SearchFragment.DogData {
+class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val dogDetailFragment = DogDetailFragment()
     private val likeFragment = LikeFragment()
     private val searchFragment = SearchFragment()
 
-    val dogDetailFragment = DogDetailFragment()
     private var backPressedTime:Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +111,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData {
         }
 
         searchFragment.dogData(this)
-
+        homeFragment.dogData(this)
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -168,5 +167,11 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData {
             // 2초안에 한번더누르면 앱종료
             finish()
         }
+    }
+
+    override fun passHome(data: SearchDogData) {
+        dogDetailFragment.receiveData(data)
+        binding.icBack.visibility = View.VISIBLE
+        setFragment(dogDetailFragment)
     }
 }

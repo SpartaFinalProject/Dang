@@ -13,25 +13,24 @@ import com.android.dang.R
 import com.android.dang.databinding.FragmentHomeBinding
 import com.android.dang.home.homeAdapter.HomeAdapter
 import com.android.dang.home.retrofit.HomeData
-import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.home.retrofit.RetrofitClient.apiService
 import com.android.dang.home.retrofit.Util
-import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
 import com.android.dang.util.PrefManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HomeAdapter.ItemClick {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var mContext: Context
     private var resItems: ArrayList<SearchDogData> = ArrayList()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: HomeAdapter
+
+    private lateinit var passData: DogData
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +50,7 @@ class HomeFragment : Fragment() {
         super.onResume()
         Log.d("homefragment", "onResume")
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,6 +76,7 @@ class HomeFragment : Fragment() {
         adapter.clearItem()
         resItems.clear()
         homeResult()
+        adapter.itemClick = this
         return binding.root
     }
 
@@ -89,7 +90,7 @@ class HomeFragment : Fragment() {
                     if (response.isSuccessful) {
                         val homeData = response.body()
                         val likeItems = PrefManager.getLikeItem(mContext)
-                        Log.d("homefragment","likeItems.size:${likeItems.size}")
+                        Log.d("homefragment", "likeItems.size:${likeItems.size}")
                         homeData?.response?.body?.items?.item?.forEach { item ->
                             val popfile = item.popfile
                             val kindCd = item.kindCd
@@ -109,7 +110,7 @@ class HomeFragment : Fragment() {
 
                             val likedDog = likeItems.find { it.popfile == item.popfile }
                             if (likedDog != null) {
-                               isLike = true
+                                isLike = true
                             }
                             resItems.add(
                                 SearchDogData(
@@ -149,6 +150,18 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(view: View, position: Int) {
+        passData.passHome(resItems[position])
+    }
+
+    interface DogData {
+        fun passHome(list: SearchDogData)
+    }
+
+    fun dogData(data: DogData) {
+        passData = data
     }
 
 }

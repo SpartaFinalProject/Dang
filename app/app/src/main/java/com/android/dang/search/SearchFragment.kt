@@ -2,6 +2,7 @@ package com.android.dang.search
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -28,6 +29,7 @@ import com.android.dang.search.adapter.SearchAdapter.Companion.typeOne
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.search.searchViewModel.RecentViewModel
 import com.android.dang.search.searchViewModel.SearchViewModel
+import com.android.dang.util.PrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,11 +57,23 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
     private lateinit var passData: DogData
 
+    private lateinit var mContext: Context
+
+    private lateinit var likeList : List<SearchDogData>
+
+    private var kindNumber = ""
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSearchBinding.bind(view)
 
-        var kindNumber = ""
+
 
         initView()
         viewModel()
@@ -80,12 +94,15 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             typeOne = 1
             binding.recent.visibility = View.VISIBLE
             binding.searchTag.visibility = View.INVISIBLE
+            Log.d("typeOne", "$typeOne")
+            searchAdapter.notifyDataSetChanged()
         }
 
         // 키보드 완료 버튼 추가
         binding.searchEdit.run {
             imeOptions = EditorInfo.IME_ACTION_DONE
             setRawInputType(InputType.TYPE_CLASS_TEXT)
+            Log.d("typeOne1", "$typeOne")
         }
 
         // 완료 버튼 클릭시 검색 실행
@@ -123,36 +140,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         binding.searchSize.setOnClickListener {
             sizeDialog()
         }
-        searchAdapter.itemClick = object : SearchAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
-                passData.pass(searchItem[position])
-            }
-            override fun onImageViewClick(position: Int) {
-                recentViewModel.recentRemove(position)
-            }
-
-            override fun onTextViewClick(position: Int) {
-                // 최근검색어 클릭시 자동 검색 코드
-                val edit = recentViewModel.editText(position)
-                binding.searchEdit.setText(edit)
-                typeOne = 0
-                binding.recent.visibility = View.INVISIBLE
-                binding.searchTag.visibility = View.VISIBLE
-                binding.textAge.text = "나이"
-                binding.textGender.text = "성별"
-                binding.textSize.text = "크기"
-
-                dogKind = edit
-                if (kindNumber != hashMap[dogKind] && dogKind.isNotEmpty()) {
-                    searchViewModel.clearSearches()
-                    searchItem.clear()
-                    kindNumber = hashMap[dogKind].toString()
-                    searchData(kindNumber)
-                } else {
-                    toast("공백 이거나 검색이 완료된 검색어 입니다.")
-                }
-            }
-        }
 
         val autoCompleteTextView = binding.searchEdit
         val adapter = ArrayAdapter(
@@ -171,7 +158,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     }
 
     private fun initView() {
-        searchAdapter = SearchAdapter()
+        searchAdapter = SearchAdapter(mContext)
         binding.rcvSearchList.apply {
             adapter = searchAdapter
         }
@@ -535,9 +522,42 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     override fun onTextViewClick(position: Int) {
         val edit = recentViewModel.editText(position)
         binding.searchEdit.setText(edit)
+        typeOne = 0
+        binding.recent.visibility = View.INVISIBLE
+        binding.searchTag.visibility = View.VISIBLE
+        binding.textAge.text = "나이"
+        binding.textGender.text = "성별"
+        binding.textSize.text = "크기"
+
+        dogKind = edit
+        if (kindNumber != hashMap[dogKind] && dogKind.isNotEmpty()) {
+            searchViewModel.clearSearches()
+            searchItem.clear()
+            kindNumber = hashMap[dogKind].toString()
+            searchData(kindNumber)
+        } else {
+            toast("공백 이거나 검색이 완료된 검색어 입니다.")
+        }
     }
 
     override fun onLikeViewClick(position: Int) {
-        searchViewModel.likeList(position)
+        likeList = PrefManager.getLikeItem(mContext)
+        val saveDog = searchViewModel.likeList(position)
+
+        var index = 0
+        for (list in likeList){
+            if (saveDog.popfile == list.popfile){
+                saveDog.isLiked = false
+                context?.let { PrefManager.deleteItem(it, saveDog.popfile) }
+                searchAdapter.searchNew()
+                break
+            }
+            index++
+        }
+        if (index == likeList.size){
+            saveDog.isLiked = true
+            context?.let { PrefManager.addItem(it, saveDog) }
+            searchAdapter.searchNew()
+        }
     }
 }

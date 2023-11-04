@@ -1,5 +1,6 @@
 package com.android.dang.search.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,17 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
 import com.android.dang.databinding.ItemRecyclerViewRecentWordBinding
-import com.android.dang.search.LikeList
 import com.android.dang.search.searchItemModel.SearchDogData
+import com.android.dang.util.PrefManager
 import com.bumptech.glide.Glide
 
 
-class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchAdapter(private val mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var searchesList = mutableListOf<SearchDogData>()
     private var recentList = mutableListOf<String>()
 
-    private var likeList = LikeList.retrieveLikeList()
+    private var likeList = PrefManager.getLikeItem(mContext)
 
     interface ItemClick {
         fun onClick(view: View, position: Int)
@@ -53,6 +54,7 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 RecentWordHolder(binding)
             }
             else -> throw IllegalArgumentException("Invalid view type")
+
         }
     }
 
@@ -95,23 +97,7 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 text1 += "#${currentItem.weight}"
                 text1 += "\n#${currentItem.specialMark}"
                 searchHolder.age.text = text1
-                if (currentItem.isLiked) {
-                    holder.like.setImageResource(R.drawable.icon_like_on)
-                } else {
-                    holder.like.setImageResource(R.drawable.icon_like_off)
-                }
-                holder.like.setOnClickListener {
-                    Log.d("eee", "$itemClick")
-                    itemClick?.onLikeViewClick(position)
-                    currentItem.isLiked = !currentItem.isLiked
-                    if (currentItem.isLiked) {
-                        holder.like.setImageResource(R.drawable.icon_like_on)
 
-                    } else {
-                        holder.like.setImageResource(R.drawable.icon_like_off)
-
-                    }
-                }
                 for (list in likeList){
                     if (currentItem.popfile == list.popfile){
                         holder.like.setImageResource(R.drawable.icon_like_on)
@@ -125,6 +111,16 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 if (likeList.isEmpty()){
                     holder.like.setImageResource(R.drawable.icon_like_off)
                     currentItem.isLiked = false
+                }
+                holder.like.setOnClickListener {
+                    itemClick?.onLikeViewClick(position)
+                    if (currentItem.isLiked) {
+                        holder.like.setImageResource(R.drawable.icon_like_on)
+                        Log.d("test1", "${currentItem.isLiked}")
+                    } else {
+                        holder.like.setImageResource(R.drawable.icon_like_off)
+                        Log.d("test2", "${currentItem.isLiked}")
+                    }
                 }
             }
             1 -> {
@@ -174,6 +170,11 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun recentData(list: List<String>) {
         recentList.clear()
         recentList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    fun searchNew(){
+        likeList = PrefManager.getLikeItem(mContext)
         notifyDataSetChanged()
     }
 
