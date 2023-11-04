@@ -40,13 +40,17 @@ class LikeAdapter(private val mContext: Context) :
 
         val currentItem = items[position]
 
+        val address = currentItem.careAddr
+        val parts = address.split(" ")
+        val result = "#${parts[0]} ${parts[1]}"
+
         Glide.with(mContext)
             .load(currentItem.popfile)
             .into(holder.dogImg)
         val modifiedKindCd = currentItem.kindCd?.replace("[개]", "")?.trim() ?: ""
         holder.dogName.text = modifiedKindCd
 
-        val processText = ellipsizeText(currentItem.age, currentItem.specialMark, currentItem.careAddr, currentItem.processState, 70)
+        val processText = ellipsizeText(currentItem.age, result,currentItem.processState,currentItem.sexCd, currentItem.neuterYn, currentItem.weight, currentItem.specialMark, 70)
         holder.dogTag.text = processText
 
 
@@ -75,15 +79,35 @@ class LikeAdapter(private val mContext: Context) :
 
     }
 
-    private fun ellipsizeText(age: String?, specialMark: String?, orgNm: String?, processState: String?, maxLength: Int): String{
-        val ellipstext = "#${age ?: ""} #${specialMark ?: ""} #${orgNm ?: ""} #${processState ?: ""}"
+    private fun ellipsizeText(
+        age: String?,
+        careAddr: String?,
+        processState: String?,
+        sexCd: String?,
+        neuterYn: String?,
+        weight: String?,
+        specialMark: String?,
+        maxLength: Int
+    ): String {
+        val sexText = when (sexCd){
+            "M" -> "수컷"
+            "F" -> "암컷"
+            else -> "미상"
+        }
+
+        val neuter = when (neuterYn){
+            "Y" -> "중성화"
+            "N" -> ""
+            else -> "미상"
+        }
+        val ellipstext =
+            "#${age ?: ""} ${careAddr ?: ""} #${processState ?: ""} #${sexText ?: ""} #${neuter ?: ""}#${weight ?: ""} \n#${specialMark ?: ""} "
         return ellipstext.ellipsize(maxLength)
     }
 
     private fun String.ellipsize(maxLength: Int): String {
         return if (length > maxLength) {
-            val halfLength = maxLength / 2
-            "${substring(0, halfLength)}...${substring(length - halfLength)}"
+            "${substring(0, maxLength - 3)}..."
         } else {
             this
         }

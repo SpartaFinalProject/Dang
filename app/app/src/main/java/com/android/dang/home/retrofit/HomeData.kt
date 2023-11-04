@@ -48,5 +48,5 @@ data class Item(
     val careAddr: String,
     val orgNm: String,
     val chargenm: String,
-    val officetel: String,
+    val officeTel: String,
 )

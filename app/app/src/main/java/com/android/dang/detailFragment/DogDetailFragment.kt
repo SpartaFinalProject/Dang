@@ -1,6 +1,9 @@
 package com.android.dang.detailFragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.android.dang.R
@@ -18,6 +21,19 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDogDetailBinding.bind(view)
+
+        val btnCall = binding.btnCall
+        val callNumber = detailData.officeTel
+
+        btnCall.setOnClickListener {
+            val phoneNumber = callNumber
+            Log.d("num", "callNumber = $phoneNumber")
+            if(callNumber.isNotEmpty()) {
+                val dialIntent = Intent(Intent.ACTION_DIAL)
+                dialIntent.data = Uri.parse("tel: $phoneNumber")
+                startActivity(dialIntent)
+            }
+        }
         initView()
 
     }
@@ -43,7 +59,7 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
         text1 += "# 특징 - ${detailData.specialMark}\n\n"
 
         text1 += "보호 센터명 - ${detailData.careNm}\n"
-        text1 += "보호소 전화 번호 - ${detailData.careTel}\n"
+        text1 += "보호소 전화 번호 - ${detailData.officeTel}\n"
         binding.dogInfo.text = text1
     }
 

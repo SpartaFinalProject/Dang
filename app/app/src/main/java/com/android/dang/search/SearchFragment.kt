@@ -3,12 +3,15 @@ package com.android.dang.search
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -79,23 +82,34 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             binding.searchTag.visibility = View.INVISIBLE
         }
 
-        binding.searchBtn.setOnClickListener {
-            typeOne = 0
-            binding.recent.visibility = View.INVISIBLE
-            binding.searchTag.visibility = View.VISIBLE
-            binding.textAge.text = "나이"
-            binding.textGender.text = "성별"
-            binding.textSize.text = "크기"
+        // 키보드 완료 버튼 추가
+        binding.searchEdit.run {
+            imeOptions = EditorInfo.IME_ACTION_DONE
+            setRawInputType(InputType.TYPE_CLASS_TEXT)
+        }
 
-            dogKind = binding.searchEdit.text.toString()
-            if (kindNumber != hashMap[dogKind] && dogKind.isNotEmpty()) {
-                searchViewModel.clearSearches()
-                searchItem.clear()
-                kindNumber = hashMap[dogKind].toString()
-                searchData(kindNumber)
-            } else {
-                toast("공백 이거나 검색이 완료된 검색어 입니다.")
+        // 완료 버튼 클릭시 검색 실행
+        binding.searchEdit.setOnEditorActionListener{ textView, action, event ->
+            var handled = false
+            if (action == EditorInfo.IME_ACTION_DONE) {
+                typeOne = 0
+                binding.recent.visibility = View.INVISIBLE
+                binding.searchTag.visibility = View.VISIBLE
+                binding.textAge.text = "나이"
+                binding.textGender.text = "성별"
+                binding.textSize.text = "크기"
+
+                dogKind = binding.searchEdit.text.toString()
+                if (kindNumber != hashMap[dogKind] && dogKind.isNotEmpty()) {
+                    searchViewModel.clearSearches()
+                    searchItem.clear()
+                    kindNumber = hashMap[dogKind].toString()
+                    searchData(kindNumber)
+                } else {
+                    toast("공백 이거나 검색이 완료된 검색어 입니다.")
+                }
             }
+            handled
         }
 
         binding.searchAge.setOnClickListener {
@@ -108,6 +122,36 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
         binding.searchSize.setOnClickListener {
             sizeDialog()
+        }
+        searchAdapter.itemClick = object : SearchAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                passData.pass(searchItem[position])
+            }
+            override fun onImageViewClick(position: Int) {
+                recentViewModel.recentRemove(position)
+            }
+
+            override fun onTextViewClick(position: Int) {
+                // 최근검색어 클릭시 자동 검색 코드
+                val edit = recentViewModel.editText(position)
+                binding.searchEdit.setText(edit)
+                typeOne = 0
+                binding.recent.visibility = View.INVISIBLE
+                binding.searchTag.visibility = View.VISIBLE
+                binding.textAge.text = "나이"
+                binding.textGender.text = "성별"
+                binding.textSize.text = "크기"
+
+                dogKind = edit
+                if (kindNumber != hashMap[dogKind] && dogKind.isNotEmpty()) {
+                    searchViewModel.clearSearches()
+                    searchItem.clear()
+                    kindNumber = hashMap[dogKind].toString()
+                    searchData(kindNumber)
+                } else {
+                    toast("공백 이거나 검색이 완료된 검색어 입니다.")
+                }
+            }
         }
 
         val autoCompleteTextView = binding.searchEdit
@@ -137,7 +181,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     }
 
     private fun viewModel() {
-
         searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
 
         searchViewModel.searchesList.observe(viewLifecycleOwner, Observer { list ->
@@ -386,7 +429,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             Constants.AUTH_HEADER,
             417000,
             "json",
-            10,
+            30,
             kind
         ).enqueue(object : Callback<AbandonedDog?> {
             override fun onResponse(call: Call<AbandonedDog?>, response: Response<AbandonedDog?>) {
