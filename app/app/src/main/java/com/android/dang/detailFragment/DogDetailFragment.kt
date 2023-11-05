@@ -59,7 +59,7 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
             }
         }
         initView()
-        Log.d("fragment", "${likeList.size}")
+        Log.d("fragment1", "${likeList.size}")
         binding.btnLike.setOnClickListener {
             var index = 0
             for (list in likeList){
@@ -111,6 +111,11 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
                 detailData.isLiked = false
             }
         }
+        if (likeList.isEmpty()){
+            binding.btnLike.setImageResource(R.drawable.icon_heart_empty)
+            detailData.isLiked = false
+        }
+        Log.d("fragment2", "${detailData.isLiked}")
         if (detailData.isLiked) {
             binding.btnLike.setImageResource(R.drawable.icon_heart_filled)
         } else {
