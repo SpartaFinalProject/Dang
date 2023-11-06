@@ -178,6 +178,8 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, OnDictionaryLi
     }
 
     override fun onDictionaryItemSelected(breedName: String) {
+        binding.txtTitle.text = "댕찾기"
+        binding.icBack.visibility = View.VISIBLE
         searchFragment.arguments?.putString(SELECTED_BREED_NAME, breedName) //Bundle은 위에서 생성했음
         switchFragment(searchFragment)
     }
