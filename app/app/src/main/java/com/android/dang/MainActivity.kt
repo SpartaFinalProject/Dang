@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.android.dang.common.Constants.SELECTED_BREED_NAME
 import com.android.dang.databinding.ActivityMainBinding
 import com.android.dang.detailFragment.DogDetailFragment
@@ -15,6 +16,7 @@ import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
+import com.android.dang.shelter.vm.ShelterViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val dogDetailFragment = DogDetailFragment()
+    private lateinit var viewModel : MainViewModel
     private val likeFragment = LikeFragment()
 //    private val searchFragment = SearchFragment()
 
@@ -36,6 +39,8 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val homeFragment = HomeFragment()
 

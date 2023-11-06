@@ -45,7 +45,11 @@
         android:layout_marginTop="10dp"
         android:background="#747474"
         android:orientation="vertical" />
-
+ <ScrollView
+     android:layout_width="match_parent"
+     android:layout_height="0dp"
+     app:layout_constraintBottom_toTopOf="@id/shelter_call"
+     app:layout_constraintTop_toBottomOf="@id/division">
     <TextView
         android:id="@+id/dog_info"
         android:layout_width="match_parent"
@@ -62,9 +66,8 @@
                     \n# 체중 - 6(kg)
                     \n\n\n특징 - 순한 성격,사람 손을 많이 탐,유실 유기견 추정
                     \n\n\n보호센터명 - 서울유기동물입양센터
-                    \n보호소전화번호 - 02-6958-6224"
-        app:layout_constraintBottom_toTopOf="@id/shelter_call"
-        app:layout_constraintTop_toBottomOf="@id/division" />
+                    \n보호소전화번호 - 02-6958-6224" />
+</ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/shelter_call"

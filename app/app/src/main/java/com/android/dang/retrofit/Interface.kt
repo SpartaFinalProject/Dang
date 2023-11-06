@@ -2,6 +2,7 @@ package com.android.dang.retrofit
 
 import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
 import com.android.dang.retrofit.kind.Kind
+import com.android.dang.retrofit.shelter.ShelterRes
 import com.android.dang.retrofit.sido.SidoRes
 import com.android.dang.retrofit.abandonedDog.AbandonedDog
 import retrofit2.Call
@@ -27,6 +28,7 @@ interface Interface {
         @Query("numOfRows") numOfRows: Int,
         @Query("upr_cd") uprCode: String? = null,
         @Query("org_cd") orgCode: String? = null,
+        @Query("care_reg_no") careRegNo: String? = null,
         ) : Call<AbandonedDogRes?>
 
     @GET("kind")
@@ -47,7 +49,15 @@ interface Interface {
     @GET("sigungu")
     fun getSigunguList(
         @Query("serviceKey") serviceKey: String = Constants.AUTH_HEADER,
-        @Query("upr_cd") code: String,
+        @Query("upr_cd") uprCode: String,
         @Query("_type") type: String = "json"
     ): Call<SidoRes>
+
+    @GET("shelter")
+    fun getShelterList(
+        @Query("serviceKey") serviceKey: String = Constants.AUTH_HEADER,
+        @Query("upr_cd") uprCode: String,
+        @Query("_type") type: String = "json",
+        @Query("org_cd") orgCode: String,
+    ): Call<ShelterRes>
 }
