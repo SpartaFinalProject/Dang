@@ -11,6 +11,8 @@ import com.android.dang.retrofit.DangClient
 import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
 import com.android.dang.retrofit.abandonedDog.AbandonedShelter
 import com.android.dang.retrofit.kind.Items
+import com.android.dang.retrofit.shelter.Shelter
+import com.android.dang.retrofit.shelter.ShelterRes
 import com.android.dang.retrofit.sido.Sido
 import com.android.dang.retrofit.sido.SidoRes
 import com.google.firebase.firestore.GeoPoint
@@ -37,6 +39,10 @@ class ShelterViewModel : ViewModel() {
         get() = _uprCode
     private val _uprCode = MutableLiveData("")
 
+    private val shelterList: LiveData<List<Shelter>>
+        get() = _shelterList
+    private val _shelterList = MutableLiveData<List<Shelter>>()
+
     val abandonedDogsList: LiveData<List<AbandonedShelter>>
         get() = _abandonedDogsList
     private val _abandonedDogsList =
@@ -62,14 +68,14 @@ class ShelterViewModel : ViewModel() {
         })
     }
 
-    fun getSigunguList(code: String) {
-        DangClient.api.getSigunguList(code = code).enqueue(object : Callback<SidoRes> {
+    fun getSigunguList(uprCode: String) {
+        DangClient.api.getSigunguList(uprCode = uprCode).enqueue(object : Callback<SidoRes> {
             override fun onResponse(call: Call<SidoRes>, response: Response<SidoRes>) {
                 Log.d("test", "sigungu onResponse: $response")
-                val sigunguList = response.body()?.response?.body?.items
                 if (!response.isSuccessful) {
                     return
                 }
+                val sigunguList = response.body()?.response?.body?.items
                 if (!sigunguList?.item.isNullOrEmpty()) {
                     _sigungu.value = sigunguList!!
                     return
@@ -79,6 +85,22 @@ class ShelterViewModel : ViewModel() {
 
             override fun onFailure(call: Call<SidoRes>, t: Throwable) {
                 Log.d("test", "sigungunn onFailure: ${t.localizedMessage}")
+            }
+        })
+    }
+
+    fun getShelterList() {
+        DangClient.api.getShelterList(uprCode = uprCode.value!!, orgCode = orgCode.value!!).enqueue(object : Callback<ShelterRes> {
+            override fun onResponse(call: Call<ShelterRes>, response: Response<ShelterRes>) {
+                if (!response.isSuccessful) {
+                    return
+                }
+                val shelterList = response.body()?.response?.body?.items?.item ?: return
+                _shelterList.value = shelterList
+            }
+
+            override fun onFailure(call: Call<ShelterRes>, t: Throwable) {
+                TODO("Not yet implemented")
             }
         })
     }
@@ -100,6 +122,7 @@ class ShelterViewModel : ViewModel() {
                 if (!response.isSuccessful) {
                     return
                 }
+                getShelterList()
                 if (abandonedDogList.isNullOrEmpty()) {
                     _abandonedDogsList.value = listOf()
                     return
@@ -157,5 +180,17 @@ class ShelterViewModel : ViewModel() {
 
     fun setGeoCoder(geocoder: Geocoder) {
         this.geocoder = geocoder
+    }
+
+    fun getDogCount(careNm: String): Int {
+        val dogList = mutableListOf<AbandonedShelter>()
+        abandonedDogsList.value?.let { dogs ->
+            for (dog in dogs) {
+                if (dog.careNm == careNm) {
+                    dogList.add(dog)
+                }
+            }
+        }
+        return dogList.size
     }
 }

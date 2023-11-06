@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.android.dang.MainViewModel
 import com.android.dang.R
 import com.android.dang.databinding.FragmentShelterBinding
 import com.android.dang.retrofit.Constants
 import com.android.dang.retrofit.abandonedDog.AbandonedShelter
 import com.android.dang.retrofit.kind.Items
 import com.android.dang.retrofit.sido.Sido
+import com.android.dang.shelter.shelterresult.ShelterResultFragment
 import com.android.dang.shelter.vm.ShelterViewModel
 import com.google.firebase.firestore.GeoPoint
 import com.kakao.vectormap.KakaoMap
@@ -35,11 +37,11 @@ import com.kakao.vectormap.mapwidget.component.Orientation
 
 // TODO: api 호출 중에 로딩바? 띄워 유저가 상호작용하지 못하게 해야 함.
 // TODO: 검색결과가 없을시에 Toast 를 띄워 안내할것
-// TODO: 세종특별자치시의 경우 시/도 만 선택해도 결과값 나오게 하기
 
 class ShelterFragment : Fragment() {
     private lateinit var binding: FragmentShelterBinding
     private lateinit var viewModel: ShelterViewModel
+    private lateinit var mainViewModel: MainViewModel
     private var kakaoMap: KakaoMap? = null
     private val duration = 500
 
@@ -48,7 +50,9 @@ class ShelterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentShelterBinding.inflate(layoutInflater, container, false)
+
         viewModel = ViewModelProvider(this)[ShelterViewModel::class.java]
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         viewModel.run {
             setGeoCoder(Geocoder(requireContext()))
@@ -68,8 +72,21 @@ class ShelterFragment : Fragment() {
             }
         })
 
+        binding.shelterSelectBtn.setOnClickListener {
+            selectShelterResultFragment()
+        }
+
+
         return binding.root
     }
+
+    private fun selectShelterResultFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_view, ShelterResultFragment())
+            .addToBackStack(null)
+            .commit()
+    }
+
 
     private fun setLabel(geoPoint: GeoPoint, dog: AbandonedShelter) {
         val pos = LatLng.from(geoPoint.latitude, geoPoint.longitude)
@@ -85,9 +102,9 @@ class ShelterFragment : Fragment() {
 
         Log.d(Constants.TestTAG, "setPin: ${label?.labelId}")
         kakaoMap?.setOnLabelClickListener { kakaoMap, layer, label ->
-            viewModel.getShelterInfo(label.tag as String)?.let {
-                setShelterInfo(it)
-                showInfoWindow(it)
+            viewModel.getShelterInfo(label.tag as String)?.let { dog ->
+                setShelterInfo(dog)
+                showInfoWindow(dog)
             }
         }
         kakaoMap?.moveCamera(
@@ -119,15 +136,21 @@ class ShelterFragment : Fragment() {
 
     private val onClickSido = { sido: Sido ->
         Log.d("test", "onClickSido: $sido")
+
         viewModel.run {
             getSigunguList(sido.orgCd)
             setUprCode(sido.orgCd)
         }
+
         binding.selectLocationMain.text = sido.orgdownNm
+        if (sido.orgCd == "5690000") {
+            viewModel.getAbandonedDogs()
+        }
     }
 
     private val onClickSigungu = { sigungu: Sido ->
         sigungu.orgCd.let { viewModel.setOrgCode(it) }
+        sigungu.uprCd?.let { viewModel.setUprCode(it)}
         binding.selectLocationDetail.text = sigungu.orgdownNm
         viewModel.getAbandonedDogs()
     }
@@ -147,6 +170,7 @@ class ShelterFragment : Fragment() {
     }
 
     private val abandonedDogObserver = Observer<List<AbandonedShelter>> {
+        mainViewModel.setAbandonedDogsList(it)
         Log.d("test", "main abandonedDogs: ${it.size}")
         it.forEach { dog ->
             dog.careAddr?.let { it1 ->
@@ -168,8 +192,9 @@ class ShelterFragment : Fragment() {
     private fun showInfoWindow(dog: AbandonedShelter) {
         kakaoMap?.mapWidgetManager?.infoWindowLayer?.removeAll()
 
+
         val pos = LatLng.from(dog.pos!!.latitude, dog.pos.longitude)
-        val body = GuiLayout(Orientation.Horizontal)
+        val body = GuiLayout(Orientation.Vertical)
         body.setPadding(15, 15, 15, 15)
 
         val bgImage = GuiImage(R.drawable.icon_window_body, true)
@@ -177,9 +202,17 @@ class ShelterFragment : Fragment() {
 
         body.setBackground(bgImage)
 
-        val text = GuiText(dog.careNm)
-        text.setTextSize(25)
-        body.addView(text)
+        val shelterName = GuiText(dog.careNm)
+        shelterName.setTextSize(25)
+
+        val upperLayout = GuiLayout(Orientation.Horizontal)
+        upperLayout.addView(shelterName)
+
+        val dogsCount = GuiText("${viewModel.getDogCount(dog.careNm!!)}마리 보호중")
+        dogsCount.paddingTop = 8
+        dogsCount.setTextSize(23)
+        body.addView(upperLayout)
+        body.addView(dogsCount)
 
         val options = InfoWindowOptions.from(pos)
         options.setBody(body)
