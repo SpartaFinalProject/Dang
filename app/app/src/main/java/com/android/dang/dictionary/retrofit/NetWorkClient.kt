@@ -12,7 +12,7 @@ object NetWorkClient {
     private fun createOkHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
         // 디버그 모드에서는 HTTP 요청 및 응답 내용을 로그에 출력
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        //interceptor.level = HttpLoggingInterceptor.Level.BODY
 
         // OkHttpClient를 생성하고 설정을 추가
         return OkHttpClient.Builder()

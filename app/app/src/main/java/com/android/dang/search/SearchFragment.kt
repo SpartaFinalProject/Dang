@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.dang.R
+import com.android.dang.common.Constants.SELECTED_BREED_NAME
 import com.android.dang.databinding.FragmentSearchBinding
 import com.android.dang.retrofit.Constants
 import com.android.dang.retrofit.DangClient.api
@@ -64,6 +65,15 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         initView()
         viewModel()
+
+        //댕댕백과에서 품종이름이 넘어오면 설정
+        arguments?.getString(SELECTED_BREED_NAME)?.let {
+            Log.d("TEST", "댕댕백과에서 전달받은 품종 : $it")
+            binding.searchEdit.post {
+                binding.searchEdit.setText(it)
+                arguments?.remove(SELECTED_BREED_NAME)
+            }
+        }
 
         recentViewModel.recentReset()
         context?.let { recentViewModel.getListFromPreferences(it) }

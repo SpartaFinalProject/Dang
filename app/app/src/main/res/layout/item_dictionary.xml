@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/kcc_ganpan"
-                android:text="@{item.name}"
+                android:text="@{item.nameKor}"
                 android:textColor="@color/basic"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -64,13 +64,15 @@
                 dicItemDes="@{item}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp"
                 android:fontFamily="@font/hakgyoansimwooju"
-                android:layout_marginTop="10dp"
                 android:textColor="@color/basic"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view"
-                android:lines="6"/>
+                />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
