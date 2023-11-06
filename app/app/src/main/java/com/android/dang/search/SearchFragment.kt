@@ -501,6 +501,10 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                                 false
                             )
                         )
+                    } ?: run {
+                        //에러메시지가 있는경우 표시 (댕댕백과에서 들어올 때, kind조회가 안끝나면 오류코드 표시)
+                        val errorMsg = response.body()?.response?.header?.errorMsg ?: "검색 결과가 없습니다."
+                        toast(errorMsg)
                     }
                 } else {
                     Log.e("api", "Error: ${response.errorBody()}")
