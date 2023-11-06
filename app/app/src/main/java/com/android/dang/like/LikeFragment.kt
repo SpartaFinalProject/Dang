@@ -22,6 +22,8 @@ class LikeFragment : Fragment() {
     private lateinit var adapter: LikeAdapter
     private lateinit var recyclerView: RecyclerView
 
+    private lateinit var passData: DogData
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +57,8 @@ class LikeFragment : Fragment() {
 
 
         adapter.setOnItemClickListener(object : LikeAdapter.OnItemClickListener {
-            override fun onItemClick(item: SearchDogData, position: Int) {
-
+            override fun onClick(view: View, position: Int) {
+                passData.passLike(likeItems[position])
             }
         })
         ItemTouchHelper(Swipe(adapter)).attachToRecyclerView(binding.likeRc)
@@ -66,6 +68,14 @@ class LikeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    interface DogData {
+        fun passLike(list: SearchDogData)
+    }
+
+    fun dogData(data: DogData) {
+        passData = data
     }
 
 }

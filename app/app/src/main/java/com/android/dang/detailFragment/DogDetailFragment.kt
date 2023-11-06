@@ -38,7 +38,6 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
         savedInstanceState: Bundle?
     ): View? {
         likeList = PrefManager.getLikeItem(mContext)
-        Log.d("fragment", "${likeList.size}")
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -61,6 +60,7 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
         initView()
         Log.d("fragment1", "${likeList.size}")
         binding.btnLike.setOnClickListener {
+            likeList = PrefManager.getLikeItem(mContext)
             var index = 0
             for (list in likeList){
                 if (detailData.popfile == list.popfile){

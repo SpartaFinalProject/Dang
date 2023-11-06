@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">Dang</string>
     <string name="appname">Dang</string>
     <string name="pretest_title">반려동물 입양 테스트</string>
     <string name="pretest_pass">테스트에 통과하신걸\n축하드립니다!\n버튼을 눌러 시작하세요.</string>

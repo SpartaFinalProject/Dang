@@ -79,7 +79,7 @@
             android:text=""/>
         <TextView
             android:id="@+id/shelter_location"
-            android:layout_width="280dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:ellipsize="end"
