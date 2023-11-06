@@ -3,6 +3,7 @@ package com.android.dang.like
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,7 +21,7 @@ class LikeAdapter(private val mContext: Context) :
     var items = mutableListOf<SearchDogData>()
 
     interface OnItemClickListener {
-        fun onItemClick(item: SearchDogData, position: Int)
+        fun onClick(view: View, position: Int)
     }
 
     private var clickListener: OnItemClickListener? = null
@@ -52,10 +53,10 @@ class LikeAdapter(private val mContext: Context) :
         val processText = ellipsizeText(currentItem.age, result,currentItem.processState,currentItem.sexCd, currentItem.neuterYn, currentItem.weight, currentItem.specialMark, 70)
         holder.dogTag.text = processText
 
-
-        holder.dogLike.setOnClickListener {
-            clickListener?.onItemClick(items[position], position)
+        holder.itemView.setOnClickListener {
+            clickListener?.onClick(it, position)
         }
+
         if (currentItem.isLiked) {
             holder.dogLike.setImageResource(R.drawable.icon_like_on)
         } else {
