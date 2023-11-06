@@ -5,9 +5,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.android.dang.common.Constants.SELECTED_BREED_NAME
 import com.android.dang.databinding.ActivityMainBinding
 import com.android.dang.detailFragment.DogDetailFragment
 import com.android.dang.dictionary.DictionaryFragment
+import com.android.dang.dictionary.OnDictionaryListener
 import com.android.dang.home.HomeFragment
 import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
@@ -17,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData {
+class MainActivity : AppCompatActivity(), SearchFragment.DogData, OnDictionaryListener {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val dogDetailFragment = DogDetailFragment()
@@ -24,6 +27,13 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
     private val searchFragment = SearchFragment()
 
     private var backPressedTime:Long = 0
+    //댕댕백과 인터페이스 호출할 때 사용하려고 멤버변수로 변경
+    private val searchFragment by lazy {
+        SearchFragment().apply {
+            arguments = Bundle()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -173,5 +183,12 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         dogDetailFragment.receiveData(data)
         binding.icBack.visibility = View.VISIBLE
         setFragment(dogDetailFragment)
+    }
+
+    override fun onDictionaryItemSelected(breedName: String) {
+        binding.txtTitle.text = "댕찾기"
+        binding.icBack.visibility = View.VISIBLE
+        searchFragment.arguments?.putString(SELECTED_BREED_NAME, breedName) //Bundle은 위에서 생성했음
+        switchFragment(searchFragment)
     }
 }

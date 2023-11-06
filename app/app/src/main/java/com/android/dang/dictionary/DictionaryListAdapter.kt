@@ -9,6 +9,10 @@ import com.android.dang.dictionary.data.BreedsData
 class DictionaryListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val items = ArrayList<BreedsData.BreedsDataItem>()
+    interface ItemClick {
+        fun onClick(position: Int, item: BreedsData.BreedsDataItem)
+    }
+    var itemClick: ItemClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DictionaryItemViewHolder {
         return DictionaryItemViewHolder(
@@ -28,6 +32,9 @@ class DictionaryListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val dictionaryItemViewHolder = (holder as DictionaryListAdapter.DictionaryItemViewHolder)
         dictionaryItemViewHolder.bind(item)
 
+        holder.itemView.setOnClickListener {
+            itemClick?.onClick(position, item)
+        }
     }
 
     fun addItems(resData: ArrayList<BreedsData.BreedsDataItem>, isClear: Boolean) {
