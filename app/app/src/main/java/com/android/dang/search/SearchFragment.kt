@@ -24,7 +24,7 @@ import com.android.dang.search.adapter.SearchAdapter.Companion.typeOne
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.search.searchViewModel.RecentViewModel
 import com.android.dang.search.searchViewModel.SearchViewModel
-import com.android.dangtheland.retrofit.abandonedDog.AbandonedDog
+import com.android.dang.retrofit.abandonedDog.AbandonedDog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

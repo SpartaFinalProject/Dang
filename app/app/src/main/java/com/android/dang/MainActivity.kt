@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.android.dang.databinding.ActivityMainBinding
 import com.android.dang.detailFragment.DogDetailFragment
 import com.android.dang.dictionary.DictionaryFragment
@@ -13,15 +14,19 @@ import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
+import com.android.dang.shelter.vm.ShelterViewModel
 
 
 class MainActivity : AppCompatActivity(), SearchFragment.DogData {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    val dogDetailFragment = DogDetailFragment()
+    private val dogDetailFragment = DogDetailFragment()
+    private lateinit var viewModel : MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val homeFragment = HomeFragment()
         val searchFragment = SearchFragment()
