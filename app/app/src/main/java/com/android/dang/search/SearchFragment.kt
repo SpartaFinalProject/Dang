@@ -84,9 +84,19 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         //댕댕백과에서 품종이름이 넘어오면 설정
         arguments?.getString(SELECTED_BREED_NAME)?.let {
             Log.d("TEST", "댕댕백과에서 전달받은 품종 : $it")
+            kindNumber = ""
+            searchViewModel.clearSearches() //기존검색결과를 중복호출하여 추가
             binding.searchEdit.post {
-                binding.searchEdit.setText(it)
+                setEditAndSearchData(it)
                 arguments?.remove(SELECTED_BREED_NAME)
+            }
+        } ?: run {
+            //댕댕백과 품종이 없는 경우, 이전 검색결과 남기지 않도록 초기화했어요.(필요없으면 수정하세요)
+            //상세화면 갔다 검색화면으로 돌아오면 검색이 다시 그려지지 않도록 했습니다.
+            typeOne = 1
+            kindNumber = ""
+            binding.searchEdit.post {
+                binding.searchEdit.setText("")
             }
         }
 
@@ -491,6 +501,10 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                                 false
                             )
                         )
+                    } ?: run {
+                        //에러메시지가 있는경우 표시 (댕댕백과에서 들어올 때, kind조회가 안끝나면 오류코드 표시)
+                        val errorMsg = response.body()?.response?.header?.errorMsg ?: "검색 결과가 없습니다."
+                        toast(errorMsg)
                     }
                 } else {
                     Log.e("api", "Error: ${response.errorBody()}")
@@ -555,6 +569,15 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
     override fun onTextViewClick(position: Int) {
         val edit = recentViewModel.editText(position)
+        setEditAndSearchData(edit)
+    }
+
+    /**
+     * 품종을 에딧텍스트에 입력하고  검색하는 코드
+     * (댕댕백과에서 진입했을 때 활용)
+     * @param edit 품종
+     */
+    private fun setEditAndSearchData(edit: String) {
         binding.searchEdit.setText(edit)
         typeOne = 0
         binding.progressDictionary.visibility = View.VISIBLE
