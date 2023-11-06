@@ -141,7 +141,6 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
 
     override fun pass(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
-        Log.d("aaa", "$data aaa")
         setFragment(dogDetailFragment)
     }
 
