@@ -1,7 +1,6 @@
 package com.android.dang
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,10 +18,13 @@ import com.android.dang.shelter.view.ShelterFragment
 import com.google.android.material.snackbar.Snackbar
 
 
-class MainActivity : AppCompatActivity(), SearchFragment.DogData, OnDictionaryListener {
+class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData, OnDictionaryListener {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    val dogDetailFragment = DogDetailFragment()
+    private val dogDetailFragment = DogDetailFragment()
+    private val likeFragment = LikeFragment()
+//    private val searchFragment = SearchFragment()
+
     private var backPressedTime:Long = 0
     //댕댕백과 인터페이스 호출할 때 사용하려고 멤버변수로 변경
     private val searchFragment by lazy {
@@ -36,8 +38,8 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, OnDictionaryLi
         setContentView(binding.root)
 
         val homeFragment = HomeFragment()
+
         val shelterFragment = ShelterFragment()
-        val likeFragment = LikeFragment()
         val dictionaryFragment = DictionaryFragment()
 
 
@@ -118,7 +120,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, OnDictionaryLi
         }
 
         searchFragment.dogData(this)
-
+        homeFragment.dogData(this)
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -134,7 +136,6 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, OnDictionaryLi
 
     override fun pass(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
-        Log.d("aaa", "$data aaa")
         setFragment(dogDetailFragment)
     }
 
@@ -173,8 +174,14 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, OnDictionaryLi
             Snackbar.make(binding.fragmentView,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_LONG).show()
         } else {
             // 2초안에 한번더누르면 앱종료
-            finish() 
+            finish()
         }
+    }
+
+    override fun passHome(data: SearchDogData) {
+        dogDetailFragment.receiveData(data)
+        binding.icBack.visibility = View.VISIBLE
+        setFragment(dogDetailFragment)
     }
 
     override fun onDictionaryItemSelected(breedName: String) {

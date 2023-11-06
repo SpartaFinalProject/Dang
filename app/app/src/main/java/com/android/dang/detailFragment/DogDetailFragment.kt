@@ -1,14 +1,18 @@
 package com.android.dang.detailFragment
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.android.dang.R
 import com.android.dang.databinding.FragmentDogDetailBinding
 import com.android.dang.search.searchItemModel.SearchDogData
+import com.android.dang.util.PrefManager
 import com.bumptech.glide.Glide
 
 class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
@@ -17,6 +21,26 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
     private var _binding: FragmentDogDetailBinding? = null
     private val binding: FragmentDogDetailBinding
         get() = _binding!!
+
+    private lateinit var mContext: Context
+
+    private lateinit var likeList : List<SearchDogData>
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        likeList = PrefManager.getLikeItem(mContext)
+        Log.d("fragment", "${likeList.size}")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,6 +59,24 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
             }
         }
         initView()
+        Log.d("fragment1", "${likeList.size}")
+        binding.btnLike.setOnClickListener {
+            var index = 0
+            for (list in likeList){
+                if (detailData.popfile == list.popfile){
+                    detailData.isLiked = false
+                    context?.let { PrefManager.deleteItem(it, detailData.popfile) }
+                    binding.btnLike.setImageResource(R.drawable.icon_heart_empty)
+                    break
+                }
+                index++
+            }
+            if (index == likeList.size){
+                detailData.isLiked = true
+                context?.let { PrefManager.addItem(it, detailData) }
+                binding.btnLike.setImageResource(R.drawable.icon_heart_filled)
+            }
+        }
 
     }
 
@@ -61,6 +103,24 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
         text1 += "보호 센터명 - ${detailData.careNm}\n"
         text1 += "보호소 전화 번호 - ${detailData.officeTel}\n"
         binding.dogInfo.text = text1
+        for (list in likeList){
+            if (detailData.popfile == list.popfile){
+                detailData.isLiked = true
+                break
+            }  else {
+                detailData.isLiked = false
+            }
+        }
+        if (likeList.isEmpty()){
+            binding.btnLike.setImageResource(R.drawable.icon_heart_empty)
+            detailData.isLiked = false
+        }
+        Log.d("fragment2", "${detailData.isLiked}")
+        if (detailData.isLiked) {
+            binding.btnLike.setImageResource(R.drawable.icon_heart_filled)
+        } else {
+            binding.btnLike.setImageResource(R.drawable.icon_heart_empty)
+        }
     }
 
     fun receiveData(data: SearchDogData){

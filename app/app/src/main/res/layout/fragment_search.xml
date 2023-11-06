@@ -43,11 +43,14 @@
 
         <LinearLayout
             android:id="@+id/search_age"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:background="@drawable/background_search_tag"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
             <TextView
                 android:id="@+id/text_age"
                 android:layout_width="wrap_content"
@@ -64,11 +67,13 @@
 
         <LinearLayout
             android:id="@+id/search_gender"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:background="@drawable/background_search_tag"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
             <TextView
                 android:id="@+id/text_gender"
                 android:layout_width="wrap_content"
@@ -85,10 +90,12 @@
 
         <LinearLayout
             android:id="@+id/search_size"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:background="@drawable/background_search_tag"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
             <TextView
                 android:id="@+id/text_size"
                 android:layout_width="wrap_content"

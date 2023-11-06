@@ -3,7 +3,7 @@ package com.android.dang.retrofit
 import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
 import com.android.dang.retrofit.kind.Kind
 import com.android.dang.retrofit.sido.SidoRes
-import com.android.dangtheland.retrofit.abandonedDog.AbandonedDog
+import com.android.dang.retrofit.abandonedDog.AbandonedDog
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -17,9 +17,10 @@ class RecentViewModel: ViewModel() {
         recentList.value = currentList
     }
     fun recentAdd(text: String){
+        var k = 0
         val currentList = recentList.value?.toMutableList() ?: mutableListOf()
-        currentList.add(text)
-        currentList.reverse()
+        currentList.remove(text)
+        currentList.add(0, text)
         recentList.value = currentList
     }
 
