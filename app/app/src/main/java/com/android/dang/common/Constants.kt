@@ -1,5 +1,6 @@
 package com.android.dang.common
 
 object Constants {
-    const val IS_PRE_CONFIRM = "IS_PRE_CONFIRM"
+    const val PRETEST_COMPLETION_TIME = "PRETEST_COMPLETION_TIME"
+    const val SELECTED_BREED_NAME = "SELECTED_BREED_NAME"
 }

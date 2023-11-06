@@ -1,5 +1,6 @@
 package com.android.dang.search.searchViewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.dang.search.searchItemModel.SearchDogData
@@ -22,10 +23,10 @@ class SearchViewModel : ViewModel() {
     fun searches(list: MutableList<SearchDogData>) {
         resetList.clear()
         resetList.addAll(list)
-        applyFilters(currentFilter) // When new data is searched, apply the existing filters.
+        applyFilters(currentFilter)
     }
 
-    fun applyFilters(criteria: FilterCriteria) {
+    private fun applyFilters(criteria: FilterCriteria) {
         currentFilter = criteria
 
         val filteredList = resetList.filter { item ->
@@ -40,6 +41,7 @@ class SearchViewModel : ViewModel() {
                     (criteria.maxSize == null || sizeInt <= criteria.maxSize!!)
         }
 
+        Log.d("age", "${filteredList.size}")
         searchesList.value = filteredList
     }
 
@@ -47,6 +49,8 @@ class SearchViewModel : ViewModel() {
         currentFilter.minAge = minAge
         currentFilter.maxAge = maxAge
         applyFilters(currentFilter)
+        Log.d("age", "${currentFilter.minAge}")
+        Log.d("age", "${currentFilter.maxAge}")
     }
 
     fun genderFilter(gender: String) {
@@ -87,12 +91,18 @@ class SearchViewModel : ViewModel() {
         applyFilters(currentFilter)
     }
 
-    fun resetAllFilters() {
-        currentFilter = FilterCriteria()
-        applyFilters(currentFilter)
-    }
-
     fun clearSearches() {
         searchesList.value = null
+    }
+
+    fun likeList(position: Int): SearchDogData {
+        val currentList = searchesList.value?.toMutableList() ?: mutableListOf()
+
+//        if (!currentList[position].isLiked){
+//            LikeList.addLikeList(currentList[position])
+//        } else {
+//            LikeList.deleteLikeList(currentList[position])
+//        }
+        return currentList[position]
     }
 }

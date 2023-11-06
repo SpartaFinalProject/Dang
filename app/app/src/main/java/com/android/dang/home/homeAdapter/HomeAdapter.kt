@@ -8,45 +8,66 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet.Layout
 import androidx.recyclerview.widget.RecyclerView
-import com.android.dang.MainActivity
 import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
-import com.android.dang.home.HomeFragment
-import com.android.dang.home.retrofit.HomeItemModel
+import com.android.dang.search.adapter.SearchAdapter
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.util.PrefManager.addItem
 import com.android.dang.util.PrefManager.deleteItem
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 
 class HomeAdapter(private val mContext: Context) :
     RecyclerView.Adapter<HomeAdapter.ItemViewHolder>() {
-    var items = ArrayList<HomeItemModel>()
+    var items = ArrayList<SearchDogData>()
+
+    interface ItemClick{
+        fun onClick(view: View, position: Int)
+    }
+
+    var itemClick: ItemClick? = null
 
     fun clearItem() {
         items.clear()
+    }
+    fun addItem(items2: ArrayList<SearchDogData>){
+        for (item in items2){
+            Log.d("homeadapter", "addItem popfile = ${item.popfile} / isLike = ${item.isLiked}")
+        }
+        clearItem()
+        items.addAll(items2)
         notifyDataSetChanged()
     }
 
     private fun ellipsizeText(
         age: String?,
-        specialMark: String?,
-        orgNm: String?,
+        careAddr: String?,
         processState: String?,
+        sexCd: String?,
+        neuterYn: String?,
+        weight: String?,
+        specialMark: String?,
         maxLength: Int
     ): String {
+        val sexText = when (sexCd){
+            "M" -> "수컷"
+            "F" -> "암컷"
+            else -> "미상"
+        }
+
+        val neuter = when (neuterYn){
+            "Y" -> "중성화"
+            "N" -> ""
+            else -> "미상"
+        }
         val ellipstext =
-            "#${age ?: ""} #${specialMark ?: ""} #${orgNm ?: ""} #${processState ?: ""}"
+            "#${age ?: ""} ${careAddr ?: ""} #${processState ?: ""} #${sexText ?: ""} #${neuter ?: ""}#${weight ?: ""} \n#${specialMark ?: ""} "
         return ellipstext.ellipsize(maxLength)
     }
 
     private fun String.ellipsize(maxLength: Int): String {
         return if (length > maxLength) {
-            val halfLength = maxLength / 2
-            "${substring(0, halfLength)}...${substring(length - halfLength)}"
+            "${substring(0, maxLength - 3)}..."
         } else {
             this
         }
@@ -59,7 +80,15 @@ class HomeAdapter(private val mContext: Context) :
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            itemClick?.onClick(it, position)
+        }
         val currentItem = items[position]
+        Log.d("homeadapter", "popfile = ${currentItem.popfile} / isLike = ${currentItem.isLiked}")
+
+        val address = currentItem.careAddr
+        val parts = address.split(" ")
+        val result = "#${parts[0]} ${parts[1]}"
 
         Glide.with(mContext)
             .load(currentItem.popfile)
@@ -67,11 +96,15 @@ class HomeAdapter(private val mContext: Context) :
         val modifiedKindCd = currentItem.kindCd?.replace("[개]", "")?.trim() ?: ""
         holder.dogName.text = modifiedKindCd
 
+
         val processText = ellipsizeText(
             currentItem.age,
-            currentItem.specialMark,
-            currentItem.orgNm,
+            result,
             currentItem.processState,
+            currentItem.sexCd,
+            currentItem.neuterYn,
+            currentItem.weight,
+            currentItem.specialMark,
             70
         )
         holder.dogTag.text = processText
