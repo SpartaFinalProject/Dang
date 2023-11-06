@@ -141,7 +141,8 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
     }
 
     private fun setFragment(frag: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_view, frag)
+        //디테일은 서치 유지하면서 붙이기 위해서 add로 변경
+        supportFragmentManager.beginTransaction().add(R.id.fragment_view, frag)
             .setReorderingAllowed(true).addToBackStack(null).commit()
     }
 

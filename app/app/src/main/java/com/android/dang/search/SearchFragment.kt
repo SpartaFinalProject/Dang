@@ -84,10 +84,20 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         //댕댕백과에서 품종이름이 넘어오면 설정
         arguments?.getString(SELECTED_BREED_NAME)?.let {
             Log.d("TEST", "댕댕백과에서 전달받은 품종 : $it")
+            typeOne = 0
+            kindNumber = ""
             binding.searchEdit.post {
                 binding.searchEdit.setText(it)
                 binding.searchEdit.onEditorAction(EditorInfo.IME_ACTION_DONE)
                 arguments?.remove(SELECTED_BREED_NAME)
+            }
+        } ?: run {
+            //댕댕백과 품종이 없는 경우, 이전 검색결과 남기지 않도록 초기화했어요.(필요없으면 수정하세요)
+            //상세화면 갔다 검색화면으로 돌아오면 검색이 다시 그려지지 않도록 했습니다.
+            typeOne = 1
+            kindNumber = ""
+            binding.searchEdit.post {
+                binding.searchEdit.setText("")
             }
         }
 
