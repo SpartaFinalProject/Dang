@@ -57,9 +57,13 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
     private lateinit var mContext: Context
 
-    private lateinit var likeList : List<SearchDogData>
+    private lateinit var likeList: List<SearchDogData>
 
     private var kindNumber = ""
+
+    private var ageText = ""
+    private var genderText = ""
+    private var sizeText = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -80,10 +84,10 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         context?.let { recentViewModel.getListFromPreferences(it) }
             ?.let { recentViewModel.saveRecent(it) }
 
-        if (typeOne == 1){
+        if (typeOne == 1) {
             binding.recent.visibility = View.VISIBLE
             binding.searchTag.visibility = View.INVISIBLE
-        } else if (typeOne == 0){
+        } else if (typeOne == 0) {
             binding.recent.visibility = View.INVISIBLE
             binding.searchTag.visibility = View.VISIBLE
         }
@@ -104,7 +108,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         }
 
         // 완료 버튼 클릭시 검색 실행
-        binding.searchEdit.setOnEditorActionListener{ textView, action, event ->
+        binding.searchEdit.setOnEditorActionListener { textView, action, event ->
             var handled = false
             if (action == EditorInfo.IME_ACTION_DONE) {
                 typeOne = 0
@@ -113,6 +117,14 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                 binding.textAge.text = "나이"
                 binding.textGender.text = "성별"
                 binding.textSize.text = "크기"
+                ageText = ""
+                genderText = ""
+                sizeText = ""
+
+                searchViewModel.resetAgeFilter()
+                searchViewModel.resetGenderFilter()
+                searchViewModel.resetNeuterFilter()
+                searchViewModel.resetSizeFilter()
 
                 dogKind = binding.searchEdit.text.toString()
                 if (kindNumber != hashMap[dogKind] && dogKind.isNotEmpty()) {
@@ -162,6 +174,15 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         }
         searchAdapter.itemClick = this
 
+        if (ageText != ""){
+            binding.textAge.text = ageText
+        }
+        if (genderText != ""){
+            binding.textGender.text = genderText
+        }
+        if (sizeText != ""){
+            binding.textSize.text = sizeText
+        }
     }
 
     private fun viewModel() {
@@ -170,6 +191,8 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         searchViewModel.searchesList.observe(viewLifecycleOwner) { list ->
             if (list != null) {
                 searchAdapter.searchesData(list)
+                searchItem.clear()
+                searchItem.addAll(list)
             }
         }
 
@@ -226,7 +249,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
         applyBtn.setOnClickListener {
 
-
             val min = minAge?.text.toString().toInt()
             val max = maxAge?.text.toString().toInt()
 
@@ -234,6 +256,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             val maxYear = year - max
             searchViewModel.ageFilter(maxYear, minYear)
             binding.textAge.text = "$min ~ $max 살"
+            ageText = "$min ~ $max 살"
             dialog.dismiss()
         }
 
@@ -345,10 +368,11 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
         applyBtn.setOnClickListener {
             searchViewModel.neutrality(neutra)
-            if (neutra == "N"){
+            if (neutra == "N") {
                 searchViewModel.genderFilter(gender)
             }
             binding.textGender.text = "$genderView"
+            genderText = "$genderView"
             dialog.dismiss()
         }
 
@@ -396,6 +420,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
             searchViewModel.sizeFilter(min, max)
             binding.textSize.text = "$min ~ $max KG"
+            sizeText = "$min ~ $max KG"
             dialog.dismiss()
         }
 
@@ -526,6 +551,9 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         binding.textAge.text = "나이"
         binding.textGender.text = "성별"
         binding.textSize.text = "크기"
+        ageText = ""
+        genderText = ""
+        sizeText = ""
 
         dogKind = edit
         if (kindNumber != hashMap[dogKind] && dogKind.isNotEmpty()) {
@@ -543,8 +571,8 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         val saveDog = searchViewModel.likeList(position)
 
         var index = 0
-        for (list in likeList){
-            if (saveDog.popfile == list.popfile){
+        for (list in likeList) {
+            if (saveDog.popfile == list.popfile) {
                 saveDog.isLiked = false
                 context?.let { PrefManager.deleteItem(it, saveDog.popfile) }
                 searchAdapter.searchNew()
@@ -552,7 +580,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             }
             index++
         }
-        if (index == likeList.size){
+        if (index == likeList.size) {
             saveDog.isLiked = true
             context?.let { PrefManager.addItem(it, saveDog) }
             searchAdapter.searchNew()
