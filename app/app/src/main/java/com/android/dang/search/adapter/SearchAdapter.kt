@@ -59,11 +59,13 @@ class SearchAdapter(private val mContext: Context) : RecyclerView.Adapter<Recycl
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.setOnClickListener {
-            itemClick?.onClick(it, position)
-        }
+
         when (typeOne) {
             0 -> {
+
+                holder.itemView.setOnClickListener {
+                    itemClick?.onClick(it, position)
+                }
 
                 val currentItem = searchesList[position]
 
