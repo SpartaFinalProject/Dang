@@ -2,7 +2,6 @@ package com.android.dang
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,11 +16,11 @@ import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
-import com.android.dang.shelter.vm.ShelterViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
-class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData, OnDictionaryListener,OnBannerListener {
+class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData,
+    OnDictionaryListener, OnBannerListener, LikeFragment.DogData {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val dogDetailFragment = DogDetailFragment()
@@ -132,6 +131,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
 
         searchFragment.dogData(this)
         homeFragment.dogData(this)
+        likeFragment.dogData(this)
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
             .setReorderingAllowed(true).addToBackStack(null).commit()
     }
 
-    override fun pass(data: SearchDogData) {
+    override fun passLike(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
         setFragment(dogDetailFragment)
     }
@@ -205,5 +205,10 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
 
     override fun onBannerClicked() {
         binding.txtTitle.text = "댕지킴이"
+    }
+
+    override fun pass(data: SearchDogData) {
+        dogDetailFragment.receiveData(data)
+        setFragment(dogDetailFragment)
     }
 }

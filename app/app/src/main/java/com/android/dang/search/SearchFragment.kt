@@ -121,6 +121,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         binding.searchEdit.setOnEditorActionListener { textView, action, event ->
             var handled = false
             if (action == EditorInfo.IME_ACTION_DONE) {
+                binding.progressDictionary.visibility = View.VISIBLE
                 typeOne = 0
                 binding.recent.visibility = View.INVISIBLE
                 binding.searchTag.visibility = View.VISIBLE
@@ -168,7 +169,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             autoWordList
         )
         autoCompleteTextView.setAdapter(adapter)
-
     }
 
 
@@ -193,6 +193,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         if (sizeText != ""){
             binding.textSize.text = sizeText
         }
+        binding.progressDictionary.visibility = View.GONE
     }
 
     private fun viewModel() {
@@ -203,6 +204,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                 searchAdapter.searchesData(list)
                 searchItem.clear()
                 searchItem.addAll(list)
+                binding.progressDictionary.visibility = View.GONE
             }
         }
 
@@ -505,7 +507,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     }
 
     private fun kindData() {
-        Log.d("check", "실행 완료")
         api.kindSearch(
             Constants.AUTH_HEADER
         ).enqueue(object : Callback<Kind?> {
@@ -556,6 +557,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         val edit = recentViewModel.editText(position)
         binding.searchEdit.setText(edit)
         typeOne = 0
+        binding.progressDictionary.visibility = View.VISIBLE
         binding.recent.visibility = View.INVISIBLE
         binding.searchTag.visibility = View.VISIBLE
         binding.textAge.text = "나이"
