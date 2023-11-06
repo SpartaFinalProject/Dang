@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
@@ -51,7 +52,7 @@ class DictionaryFragment : Fragment() {
         // 스크롤 리스너 추가 시작
         binding.dictionaryRecyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+           override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val totalItemCount = layoutManager.itemCount
@@ -63,7 +64,41 @@ class DictionaryFragment : Fragment() {
                     loadMoreData()  // 여기서 loadMoreData는 다음 페이지의 데이터를 로드하는 함수입니다.
                 }
             }
+
+           override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 500 }
+                val fadeOut = AlphaAnimation(1f, 0f).apply { duration = 500 }
+                var isTop = true
+
+                if (!binding.dictionaryRecyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    // 스크롤이 맨 위에 있고 스크롤이 멈춘 경우
+                    binding.floatBtn01.startAnimation(fadeOut)
+                    binding.floatBtn01.visibility = View.GONE
+                    isTop = true
+                } else {
+                    if (isTop) {
+                        // 맨 위에 있지 않고 이전에 맨 위에 있었던 경우
+                        binding.floatBtn01.visibility = View.VISIBLE
+                        binding.floatBtn01.startAnimation(fadeIn)
+                        isTop = false
+                    }
+                }
+            }
         })
+        binding.floatBtn01.setOnClickListener {
+            // 플로팅 액션 버튼 클릭 시 RecyclerView를 맨 위로 부드럽게 스크롤
+            binding.dictionaryRecyclerView.smoothScrollToPosition(0)
+        }
+
+
+        dictionaryListAdapter.itemClick = object : DictionaryListAdapter.ItemClick {
+            override fun onClick(position: Int, item: BreedsData.BreedsDataItem) {
+                item.nameKor?.let {
+                    (activity as? OnDictionaryListener)?.onDictionaryItemSelected(it)
+                }
+            }
+        }
 
         //프로그래스바 시작
         binding.progressDictionary.visibility = View.VISIBLE

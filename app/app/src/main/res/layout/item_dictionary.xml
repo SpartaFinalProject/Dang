@@ -64,13 +64,15 @@
                 dicItemDes="@{item}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp"
                 android:fontFamily="@font/hakgyoansimwooju"
-                android:layout_marginTop="10dp"
                 android:textColor="@color/basic"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view"
-                android:lines="6"/>
+                />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

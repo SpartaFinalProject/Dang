@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatBtn01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/white"
+        android:visibility="visible"
+        app:fabCustomSize="20dp"
+        app:tint="@color/major"
+        android:src="@drawable/icon_arrowup_circle"
+        />
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="15dp"
@@ -36,11 +51,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_dog_kind"
         tools:listitem="@layout/item_dictionary"
-        app:fastScrollEnabled="true"
-        app:fastScrollHorizontalThumbDrawable="@drawable/scrollbar_thumb_drawable"
-        app:fastScrollHorizontalTrackDrawable="@drawable/scrollbar_line_drawable"
-        app:fastScrollVerticalThumbDrawable="@drawable/scrollbar_thumb_drawable"
-        app:fastScrollVerticalTrackDrawable="@drawable/scrollbar_line_drawable"/>
+        android:scrollbars="vertical"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbarThumbVertical="@drawable/scrollbar_thumb_drawable"
+        android:scrollbarTrackVertical="@drawable/scrollbar_line_drawable"
+        />
 
     <ProgressBar
         android:id="@+id/progress_dictionary"
@@ -69,3 +84,4 @@
     <!--        app:lottie_rawRes="@raw/animation_lnylvk56" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
