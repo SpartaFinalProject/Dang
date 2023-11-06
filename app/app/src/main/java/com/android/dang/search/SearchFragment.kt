@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -66,7 +65,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
-
+        kindData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -164,26 +163,25 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         }
         searchAdapter.itemClick = this
 
-        kindData()
     }
 
     private fun viewModel() {
         searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
 
-        searchViewModel.searchesList.observe(viewLifecycleOwner, Observer { list ->
+        searchViewModel.searchesList.observe(viewLifecycleOwner) { list ->
             if (list != null) {
                 searchAdapter.searchesData(list)
             }
-        })
+        }
 
         recentViewModel = ViewModelProvider(this)[RecentViewModel::class.java]
 
-        recentViewModel.recentList.observe(viewLifecycleOwner, Observer { list ->
+        recentViewModel.recentList.observe(viewLifecycleOwner) { list ->
             if (list != null) {
                 searchAdapter.recentData(list)
                 context?.let { recentViewModel.saveListToPreferences(it) }
             }
-        })
+        }
     }
 
     private fun recentAdd(text: String) {
@@ -473,6 +471,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     }
 
     private fun kindData() {
+        Log.d("check", "실행 완료")
         api.kindSearch(
             Constants.AUTH_HEADER
         ).enqueue(object : Callback<Kind?> {
