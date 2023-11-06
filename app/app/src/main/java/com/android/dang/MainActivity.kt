@@ -18,13 +18,12 @@ import com.android.dang.shelter.view.ShelterFragment
 import com.google.android.material.snackbar.Snackbar
 
 
-class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData {
-class MainActivity : AppCompatActivity(), SearchFragment.DogData, OnDictionaryListener {
+class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData, OnDictionaryListener {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val dogDetailFragment = DogDetailFragment()
     private val likeFragment = LikeFragment()
-    private val searchFragment = SearchFragment()
+//    private val searchFragment = SearchFragment()
 
     private var backPressedTime:Long = 0
     //댕댕백과 인터페이스 호출할 때 사용하려고 멤버변수로 변경
