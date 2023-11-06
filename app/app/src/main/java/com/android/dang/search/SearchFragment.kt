@@ -86,6 +86,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             Log.d("TEST", "댕댕백과에서 전달받은 품종 : $it")
             binding.searchEdit.post {
                 binding.searchEdit.setText(it)
+                binding.searchEdit.onEditorAction(EditorInfo.IME_ACTION_DONE)
                 arguments?.remove(SELECTED_BREED_NAME)
             }
         }
