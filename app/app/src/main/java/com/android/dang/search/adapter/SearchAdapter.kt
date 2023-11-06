@@ -62,7 +62,6 @@ class SearchAdapter(private val mContext: Context) : RecyclerView.Adapter<Recycl
 
         when (typeOne) {
             0 -> {
-
                 holder.itemView.setOnClickListener {
                     itemClick?.onClick(it, position)
                 }
