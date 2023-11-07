@@ -48,29 +48,39 @@
         android:layout_marginTop="10dp"
         android:background="#747474"
         android:orientation="vertical" />
- <ScrollView
-     android:layout_width="match_parent"
-     android:layout_height="0dp"
-     app:layout_constraintBottom_toTopOf="@id/shelter_call"
-     app:layout_constraintTop_toBottomOf="@id/division">
-    <TextView
-        android:id="@+id/dog_info"
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="@font/hakgyoansimwooju"
-        android:textSize="17sp"
-        android:textColor="@color/basic"
-        android:text="# 접수일시 - 2023년 10월 12일
+        app:layout_constraintBottom_toTopOf="@id/shelter_call"
+        app:layout_constraintTop_toBottomOf="@id/division"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/dog_info"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/hakgyoansimwooju"
+            android:text="# 접수일시 - 2023년 10월 12일
                     \n# 발견장소 - 강북구 대학가 인근\n# 성별 - 수컷
                     \n\n# 나이 - 2017(년생)
                     \n# 색상 - 갈색 + 검정색
                     \n# 체중 - 6(kg)
                     \n\n\n특징 - 순한 성격,사람 손을 많이 탐,유실 유기견 추정
                     \n\n\n보호센터명 - 서울유기동물입양센터
-                    \n보호소전화번호 - 02-6958-6224" />
-</ScrollView>
+                    \n보호소전화번호 - 02-6958-6224"
+            android:textColor="@color/basic"
+            android:textSize="17sp" />
+    </ScrollView>
+
+    <View
+        android:id="@+id/blank_view"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/shelter_call"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/shelter_call"

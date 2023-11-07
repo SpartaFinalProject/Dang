@@ -116,7 +116,7 @@ class HomeAdapter(private val mContext: Context) :
             holder.dogLike.setImageResource(R.drawable.icon_like_off)
         }
         holder.dogLike.setOnClickListener {
-            currentItem.isLiked = currentItem.isLiked
+            currentItem.isLiked = !currentItem.isLiked!!
             if (currentItem.isLiked == true) {
                 holder.dogLike.setImageResource(R.drawable.icon_like_on)
                 addItem(mContext, currentItem)

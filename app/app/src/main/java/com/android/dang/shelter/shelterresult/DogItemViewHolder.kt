@@ -76,10 +76,12 @@ class DogItemViewHolder(
         )
         binding.dogTag.text = processText
 
-        if (dog.isLiked!!) {
-            binding.dogLike.setImageResource(R.drawable.icon_like_on)
-        } else {
-            binding.dogLike.setImageResource(R.drawable.icon_like_off)
+        binding.dogLike.setOnClickListener{
+            if (dog.isLiked!!) {
+                binding.dogLike.setImageResource(R.drawable.icon_like_on)
+            } else {
+                binding.dogLike.setImageResource(R.drawable.icon_like_off)
+            }
         }
     }
 }
