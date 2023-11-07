@@ -39,10 +39,15 @@ class ShelterResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.abandonedDogsList.value?.let {
             adapter?.addAll(it)
+            if (it.isNotEmpty()) {
+                val firstDog = it[0]
+                val shelterName = "${firstDog.careNm} 에서"
+                binding.shelterName.text = shelterName
+            }
+        }
         }
     }
 
     private val onClickDog: (AbandonedShelter) -> Unit = { dog ->
         Log.d(Constants.TestTAG, "onClickDog: $dog")
     }
-}

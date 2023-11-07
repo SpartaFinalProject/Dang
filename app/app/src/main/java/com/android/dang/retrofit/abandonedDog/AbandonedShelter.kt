@@ -49,5 +49,7 @@ data class AbandonedShelter(
     @SerializedName("weight")
     val weight: String ? = "",
 
+    var isLiked: Boolean ? = true,
+
     val pos: GeoPoint? = null
 )
