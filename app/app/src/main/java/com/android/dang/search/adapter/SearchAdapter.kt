@@ -71,15 +71,15 @@ class SearchAdapter(private val mContext: Context) : RecyclerView.Adapter<Recycl
                 val searchHolder = holder as SearchHolder
 
                 val address = currentItem.careAddr
-                val parts = address.split(" ")
-                val result = "#${parts[0]} ${parts[1]}"
+                val parts = address?.split(" ")
+                val result = "#${parts?.get(0)} ${parts?.get(1)}"
 
                 Glide.with(searchHolder.itemView.context)
                     .load(currentItem.popfile)
                     .into(searchHolder.image)
 
                 val text2 = currentItem.kindCd
-                val result2 = text2.replace("[개] ", "")
+                val result2 = text2?.replace("[개] ", "")
                 searchHolder.dogKind.text = result2
 
                 var text1 = "#${currentItem.age}"
@@ -115,7 +115,7 @@ class SearchAdapter(private val mContext: Context) : RecyclerView.Adapter<Recycl
                 }
                 holder.like.setOnClickListener {
                     itemClick?.onLikeViewClick(position)
-                    if (currentItem.isLiked) {
+                    if (currentItem.isLiked == true) {
                         holder.like.setImageResource(R.drawable.icon_like_on)
                         Log.d("test1", "${currentItem.isLiked}")
                     } else {

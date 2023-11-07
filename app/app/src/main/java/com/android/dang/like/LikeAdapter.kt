@@ -41,8 +41,8 @@ class LikeAdapter(private val mContext: Context) :
         val currentItem = items[position]
 
         val address = currentItem.careAddr
-        val parts = address.split(" ")
-        val result = "#${parts[0]} ${parts[1]}"
+        val parts = address?.split(" ")
+        val result = "#${parts?.get(0)} ${parts?.get(1)}"
 
         Glide.with(mContext)
             .load(currentItem.popfile)
@@ -57,7 +57,7 @@ class LikeAdapter(private val mContext: Context) :
             clickListener?.onClick(it, position)
         }
 
-        if (currentItem.isLiked) {
+        if (currentItem.isLiked == true) {
             holder.dogLike.setImageResource(R.drawable.icon_like_on)
         } else {
             holder.dogLike.setImageResource(R.drawable.icon_like_off)

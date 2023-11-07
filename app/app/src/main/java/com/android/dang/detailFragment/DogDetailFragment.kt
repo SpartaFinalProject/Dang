@@ -46,15 +46,17 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
         _binding = FragmentDogDetailBinding.bind(view)
 
         val btnCall = binding.btnCall
-        val callNumber = detailData.officeTel
+        val callNumber = detailData.careTel
 
         btnCall.setOnClickListener {
             val phoneNumber = callNumber
             Log.d("num", "callNumber = $phoneNumber")
-            if(callNumber.isNotEmpty()) {
-                val dialIntent = Intent(Intent.ACTION_DIAL)
-                dialIntent.data = Uri.parse("tel: $phoneNumber")
-                startActivity(dialIntent)
+            if (callNumber != null) {
+                if(callNumber.isNotEmpty()) {
+                    val dialIntent = Intent(Intent.ACTION_DIAL)
+                    dialIntent.data = Uri.parse("tel: $phoneNumber")
+                    startActivity(dialIntent)
+                }
             }
         }
         initView()
@@ -65,7 +67,11 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
             for (list in likeList){
                 if (detailData.popfile == list.popfile){
                     detailData.isLiked = false
-                    context?.let { PrefManager.deleteItem(it, detailData.popfile) }
+                    context?.let { detailData.popfile?.let { it1 ->
+                        PrefManager.deleteItem(it,
+                            it1
+                        )
+                    } }
                     binding.btnLike.setImageResource(R.drawable.icon_heart_empty)
                     break
                 }
@@ -85,7 +91,7 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
             .load(detailData.popfile)
             .into(binding.dogImg)
         val text2 = detailData.kindCd
-        val result2 = text2.replace("[개] ", "")
+        val result2 = text2?.replace("[개] ", "")
         binding.dogName.text = result2
         binding.dogId.text = detailData.noticeNo
         var text1 = "# 접수 일시 - ${detailData.age}\n"
@@ -101,7 +107,7 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
         text1 += "# 특징 - ${detailData.specialMark}\n\n"
 
         text1 += "보호 센터명 - ${detailData.careNm}\n"
-        text1 += "보호소 전화 번호 - ${detailData.officeTel}\n"
+        text1 += "보호소 전화 번호 - ${detailData.careTel}\n"
         binding.dogInfo.text = text1
         for (list in likeList){
             if (detailData.popfile == list.popfile){
@@ -116,7 +122,7 @@ class DogDetailFragment : Fragment(R.layout.fragment_dog_detail) {
             detailData.isLiked = false
         }
         Log.d("fragment2", "${detailData.isLiked}")
-        if (detailData.isLiked) {
+        if (detailData.isLiked!!) {
             binding.btnLike.setImageResource(R.drawable.icon_heart_filled)
         } else {
             binding.btnLike.setImageResource(R.drawable.icon_heart_empty)

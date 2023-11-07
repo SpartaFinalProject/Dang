@@ -87,8 +87,8 @@ class HomeAdapter(private val mContext: Context) :
         Log.d("homeadapter", "popfile = ${currentItem.popfile} / isLike = ${currentItem.isLiked}")
 
         val address = currentItem.careAddr
-        val parts = address.split(" ")
-        val result = "#${parts[0]} ${parts[1]}"
+        val parts = address?.split(" ")
+        val result = "#${parts?.get(0)} ${parts?.get(1)}"
 
         Glide.with(mContext)
             .load(currentItem.popfile)
@@ -110,14 +110,14 @@ class HomeAdapter(private val mContext: Context) :
         holder.dogTag.text = processText
 
 
-        if (currentItem.isLiked) {
+        if (currentItem.isLiked == true) {
             holder.dogLike.setImageResource(R.drawable.icon_like_on)
         } else {
             holder.dogLike.setImageResource(R.drawable.icon_like_off)
         }
         holder.dogLike.setOnClickListener {
-            currentItem.isLiked = !currentItem.isLiked
-            if (currentItem.isLiked) {
+            currentItem.isLiked = currentItem.isLiked
+            if (currentItem.isLiked == true) {
                 holder.dogLike.setImageResource(R.drawable.icon_like_on)
                 addItem(mContext, currentItem)
                 items[position].isLiked = true

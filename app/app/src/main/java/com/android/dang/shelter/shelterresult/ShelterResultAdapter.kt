@@ -5,13 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.databinding.ItemCommonDetailBinding
-import com.android.dang.like.LikeAdapter
-import com.android.dang.retrofit.abandonedDog.AbandonedShelter
+import com.android.dang.search.searchItemModel.SearchDogData
 
 class ShelterResultAdapter(
-    private val onClickDog: (AbandonedShelter) -> Unit
+    private val onClickDog: (SearchDogData) -> Unit
 ): RecyclerView.Adapter<DogItemViewHolder>() {
-    private var shelterList = mutableListOf<AbandonedShelter>()
+    private var shelterList = mutableListOf<SearchDogData>()
 
     interface OnItemClickListener {
         fun onClick(view: View, position: Int)
@@ -43,7 +42,7 @@ class ShelterResultAdapter(
         }
     }
 
-    fun addAll(list: List<AbandonedShelter>) {
+    fun addAll(list: List<SearchDogData>) {
         shelterList = list.toMutableList()
         notifyDataSetChanged()
     }

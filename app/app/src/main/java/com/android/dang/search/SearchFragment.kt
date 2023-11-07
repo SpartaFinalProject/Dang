@@ -609,7 +609,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         for (list in likeList) {
             if (saveDog.popfile == list.popfile) {
                 saveDog.isLiked = false
-                context?.let { PrefManager.deleteItem(it, saveDog.popfile) }
+                context?.let { saveDog.popfile?.let { it1 -> PrefManager.deleteItem(it, it1) } }
                 searchAdapter.searchNew()
                 break
             }

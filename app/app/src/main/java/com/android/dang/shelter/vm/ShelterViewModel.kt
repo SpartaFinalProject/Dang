@@ -9,12 +9,12 @@ import androidx.lifecycle.ViewModel
 import com.android.dang.retrofit.Constants
 import com.android.dang.retrofit.DangClient
 import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
-import com.android.dang.retrofit.abandonedDog.AbandonedShelter
 import com.android.dang.retrofit.kind.Items
 import com.android.dang.retrofit.shelter.Shelter
 import com.android.dang.retrofit.shelter.ShelterRes
 import com.android.dang.retrofit.sido.Sido
 import com.android.dang.retrofit.sido.SidoRes
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.google.firebase.firestore.GeoPoint
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,10 +43,10 @@ class ShelterViewModel : ViewModel() {
         get() = _shelterList
     private val _shelterList = MutableLiveData<List<Shelter>>()
 
-    val abandonedDogsList: LiveData<List<AbandonedShelter>>
+    val abandonedDogsList: LiveData<List<SearchDogData>>
         get() = _abandonedDogsList
     private val _abandonedDogsList =
-        MutableLiveData((listOf(AbandonedShelter())))
+        MutableLiveData((listOf(SearchDogData())))
 
     fun getSidoList() {
         DangClient.api.getSidoList().enqueue(object : Callback<SidoRes> {
@@ -153,9 +153,9 @@ class ShelterViewModel : ViewModel() {
         _uprCode.value = uprCode
     }
 
-    fun getShelterInfo(desertionNo: String): AbandonedShelter? {
+    fun getShelterInfo(popfile: String): SearchDogData? {
         return abandonedDogsList.value?.find {
-            it.desertionNo == desertionNo
+            it.popfile == popfile
         }
     }
 
@@ -183,7 +183,7 @@ class ShelterViewModel : ViewModel() {
     }
 
     fun getDogCount(careNm: String): Int {
-        val dogList = mutableListOf<AbandonedShelter>()
+        val dogList = mutableListOf<SearchDogData>()
         abandonedDogsList.value?.let { dogs ->
             for (dog in dogs) {
                 if (dog.careNm == careNm) {

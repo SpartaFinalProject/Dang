@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
 import com.android.dang.databinding.ItemCommonDetailBinding
 import com.android.dang.retrofit.Constants
-import com.android.dang.retrofit.abandonedDog.AbandonedShelter
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.bumptech.glide.Glide
 
 class DogItemViewHolder(
@@ -46,7 +46,7 @@ class DogItemViewHolder(
         }
     }
 
-    fun setItem(dog: AbandonedShelter) {
+    fun setItem(dog: SearchDogData) {
         Log.d(Constants.TestTAG, "setItem: $dog")
 
 

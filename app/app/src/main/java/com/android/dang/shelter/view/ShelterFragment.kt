@@ -13,9 +13,9 @@ import com.android.dang.MainViewModel
 import com.android.dang.R
 import com.android.dang.databinding.FragmentShelterBinding
 import com.android.dang.retrofit.Constants
-import com.android.dang.retrofit.abandonedDog.AbandonedShelter
 import com.android.dang.retrofit.kind.Items
 import com.android.dang.retrofit.sido.Sido
+import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.shelterresult.ShelterResultFragment
 import com.android.dang.shelter.vm.ShelterViewModel
 import com.google.firebase.firestore.GeoPoint
@@ -88,7 +88,7 @@ class ShelterFragment : Fragment() {
     }
 
 
-    private fun setLabel(geoPoint: GeoPoint, dog: AbandonedShelter) {
+    private fun setLabel(geoPoint: GeoPoint, dog: SearchDogData) {
         val pos = LatLng.from(geoPoint.latitude, geoPoint.longitude)
         val styles = kakaoMap?.labelManager
             ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker)))
@@ -98,11 +98,11 @@ class ShelterFragment : Fragment() {
 
         val layer = kakaoMap?.labelManager?.layer
         val label: Label? = layer?.addLabel(options)
-        label?.tag = dog.desertionNo
+        label?.tag = dog.popfile
 
         Log.d(Constants.TestTAG, "setPin: ${label?.labelId}")
         kakaoMap?.setOnLabelClickListener { kakaoMap, layer, label ->
-            viewModel.getShelterInfo(label.tag as String)?.let { dog ->
+            viewModel.getShelterInfo(label.tag as String)?.let {  dog ->
                 setShelterInfo(dog)
                 showInfoWindow(dog)
             }
@@ -169,13 +169,13 @@ class ShelterFragment : Fragment() {
         binding.selectLocationDetail.text = ""
     }
 
-    private val abandonedDogObserver = Observer<List<AbandonedShelter>> {
+    private val abandonedDogObserver = Observer<List<SearchDogData>> {
         mainViewModel.setAbandonedDogsList(it)
         Log.d("test", "main abandonedDogs: ${it.size}")
         it.forEach { dog ->
             dog.careAddr?.let { it1 ->
                 val addr = viewModel.findGeoPoint(it1)
-                if (addr != null && dog.desertionNo != null) {
+                if (addr != null && dog.popfile != null) {
                     setLabel(addr, dog)
                 }
             }
@@ -183,13 +183,13 @@ class ShelterFragment : Fragment() {
         Log.d(Constants.TestTAG, "dogsss: $it")
     }
 
-    private fun setShelterInfo(dog: AbandonedShelter) = with(binding) {
+    private fun setShelterInfo(dog: SearchDogData) = with(binding) {
         shelterName.text = dog.careNm
         shelterLocation.text = dog.careAddr
         shelterPhone.text = dog.careTel
     }
 
-    private fun showInfoWindow(dog: AbandonedShelter) {
+    private fun showInfoWindow(dog: SearchDogData) {
         kakaoMap?.mapWidgetManager?.infoWindowLayer?.removeAll()
 
 

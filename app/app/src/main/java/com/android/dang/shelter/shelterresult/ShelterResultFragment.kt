@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.dang.MainViewModel
 import com.android.dang.databinding.FragmentShelterResultBinding
 import com.android.dang.retrofit.Constants
-import com.android.dang.retrofit.abandonedDog.AbandonedDog
-import com.android.dang.retrofit.abandonedDog.AbandonedShelter
+import com.android.dang.search.searchItemModel.SearchDogData
 
 class ShelterResultFragment : Fragment() {
 
@@ -48,6 +47,6 @@ class ShelterResultFragment : Fragment() {
         }
     }
 
-    private val onClickDog: (AbandonedShelter) -> Unit = { dog ->
+    private val onClickDog: (SearchDogData) -> Unit = { dog ->
         Log.d(Constants.TestTAG, "onClickDog: $dog")
     }
