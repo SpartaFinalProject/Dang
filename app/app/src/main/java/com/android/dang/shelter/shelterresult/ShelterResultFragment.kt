@@ -44,6 +44,5 @@ class ShelterResultFragment : Fragment() {
 
     private val onClickDog: (AbandonedShelter) -> Unit = { dog ->
         Log.d(Constants.TestTAG, "onClickDog: $dog")
-        // TODO: dog 데이터를 담아 개 상세 페이지 열기
     }
 }
