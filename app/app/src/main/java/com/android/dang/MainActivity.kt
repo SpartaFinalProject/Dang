@@ -2,7 +2,6 @@ package com.android.dang
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,23 +11,25 @@ import com.android.dang.detailFragment.DogDetailFragment
 import com.android.dang.dictionary.DictionaryFragment
 import com.android.dang.dictionary.OnDictionaryListener
 import com.android.dang.home.HomeFragment
+import com.android.dang.home.OnBannerListener
 import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
-import com.android.dang.shelter.vm.ShelterViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
-class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData, OnDictionaryListener {
+class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData,
+    OnDictionaryListener, OnBannerListener, LikeFragment.DogData {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val dogDetailFragment = DogDetailFragment()
-    private lateinit var viewModel : MainViewModel
+    private lateinit var viewModel: MainViewModel
     private val likeFragment = LikeFragment()
 //    private val searchFragment = SearchFragment()
 
-    private var backPressedTime:Long = 0
+    private var backPressedTime: Long = 0
+
     //댕댕백과 인터페이스 호출할 때 사용하려고 멤버변수로 변경
     private val searchFragment by lazy {
         SearchFragment().apply {
@@ -105,18 +106,22 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
                         binding.txtTitle.text = "Dang"
                         binding.icBack.visibility = View.INVISIBLE
                     }
+
                     is ShelterFragment -> {
                         binding.navBar.selectedItemId = R.id.menu_shelter
                         binding.txtTitle.text = "댕지킴이"
                     }
+
                     is LikeFragment -> {
                         binding.navBar.selectedItemId = R.id.menu_like
                         binding.txtTitle.text = "댕찜"
                     }
+
                     is DictionaryFragment -> {
                         binding.navBar.selectedItemId = R.id.menu_dictionary
                         binding.txtTitle.text = "댕댕백과"
                     }
+
                     is SearchFragment -> {
                         binding.txtTitle.text = "댕찾기"
                     }
@@ -126,6 +131,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
 
         searchFragment.dogData(this)
         homeFragment.dogData(this)
+        likeFragment.dogData(this)
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -135,11 +141,12 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
     }
 
     private fun setFragment(frag: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_view, frag)
+        //디테일은 서치 유지하면서 붙이기 위해서 add로 변경
+        supportFragmentManager.beginTransaction().add(R.id.fragment_view, frag)
             .setReorderingAllowed(true).addToBackStack(null).commit()
     }
 
-    override fun pass(data: SearchDogData) {
+    override fun passLike(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
         setFragment(dogDetailFragment)
     }
@@ -173,10 +180,11 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
 //            finish()
 //        }
 
-        if(System.currentTimeMillis() - backPressedTime >=2000 ) {
+        if (System.currentTimeMillis() - backPressedTime >= 2000) {
             // 한번누르면 뒤로가고 스낵바띄워줌
             backPressedTime = System.currentTimeMillis()
-            Snackbar.make(binding.fragmentView,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.fragmentView, "뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Snackbar.LENGTH_LONG)
+                .show()
         } else {
             // 2초안에 한번더누르면 앱종료
             finish()
@@ -194,5 +202,14 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         binding.icBack.visibility = View.VISIBLE
         searchFragment.arguments?.putString(SELECTED_BREED_NAME, breedName) //Bundle은 위에서 생성했음
         switchFragment(searchFragment)
+    }
+
+    override fun onBannerClicked() {
+        binding.txtTitle.text = "댕지킴이"
+    }
+
+    override fun pass(data: SearchDogData) {
+        dogDetailFragment.receiveData(data)
+        setFragment(dogDetailFragment)
     }
 }

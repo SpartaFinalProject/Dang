@@ -9,5 +9,7 @@ data class Header(
     @SerializedName("resultCode")
     val resultCode: String,
     @SerializedName("resultMsg")
-    val resultMsg: String
+    val resultMsg: String,
+    @SerializedName("errorMsg")
+    val errorMsg: String
 )

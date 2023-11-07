@@ -9,15 +9,15 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/dang_launcher"
+        android:label="@string/appname"
+        android:roundIcon="@mipmap/dang_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
-            android:name=".pretest.PretestActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +26,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".pretest.PretestActivity"
+            android:exported="true"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
+
         <meta-data
             android:name="com.kakao.vectormap.APP_KEY"
-            android:value="46d1d37184ef8307ebe774f7b8c634b1"/>
+            android:value="46d1d37184ef8307ebe774f7b8c634b1" />
     </application>
 
 </manifest>
