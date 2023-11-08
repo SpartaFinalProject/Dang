@@ -15,12 +15,13 @@ import com.android.dang.home.OnBannerListener
 import com.android.dang.like.LikeFragment
 import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
+import com.android.dang.shelter.shelterresult.ShelterResultFragment
 import com.android.dang.shelter.view.ShelterFragment
 import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData,
-    OnDictionaryListener, OnBannerListener, LikeFragment.DogData {
+    OnDictionaryListener, OnBannerListener, LikeFragment.DogData, ShelterResultFragment.DogData{
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val dogDetailFragment = DogDetailFragment()
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -44,9 +46,9 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val homeFragment = HomeFragment()
-
         val shelterFragment = ShelterFragment()
         val dictionaryFragment = DictionaryFragment()
+        val shelterResultFragment = ShelterResultFragment()
 
 
         switchFragment(homeFragment)
@@ -132,6 +134,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         searchFragment.dogData(this)
         homeFragment.dogData(this)
         likeFragment.dogData(this)
+        shelterResultFragment.dogData(this)
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -191,7 +194,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         }
     }
 
-    override fun passHome(data: SearchDogData) {
+    override fun passShelter(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
         binding.icBack.visibility = View.VISIBLE
         setFragment(dogDetailFragment)
@@ -209,6 +212,11 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
     }
 
     override fun pass(data: SearchDogData) {
+        dogDetailFragment.receiveData(data)
+        setFragment(dogDetailFragment)
+    }
+
+    override fun passHome(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
         setFragment(dogDetailFragment)
     }

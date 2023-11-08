@@ -70,6 +70,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         super.onAttach(context)
         mContext = context
         kindData()
+        Log.d("autoWordList1", "${autoWordList.size}")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -179,6 +180,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             autoWordList
         )
         autoCompleteTextView.setAdapter(adapter)
+        Log.d("autoWordList", "${autoWordList.size}")
     }
 
 
@@ -550,7 +552,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-
     interface DogData {
         fun pass(list: SearchDogData)
     }
@@ -604,12 +605,12 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     override fun onLikeViewClick(position: Int) {
         likeList = PrefManager.getLikeItem(mContext)
         val saveDog = searchViewModel.likeList(position)
-
         var index = 0
+
         for (list in likeList) {
             if (saveDog.popfile == list.popfile) {
                 saveDog.isLiked = false
-                context?.let { PrefManager.deleteItem(it, saveDog.popfile) }
+                context?.let { saveDog.popfile?.let { it1 -> PrefManager.deleteItem(it, it1) } }
                 searchAdapter.searchNew()
                 break
             }
