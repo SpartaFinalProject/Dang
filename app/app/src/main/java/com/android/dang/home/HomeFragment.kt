@@ -2,6 +2,7 @@ package com.android.dang.home
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -77,6 +78,7 @@ class HomeFragment : Fragment(), HomeAdapter.ItemClick {
 
         adapter.clearItem()
         resItems.clear()
+        binding.progressHome.visibility = View.VISIBLE
         homeResult()
         adapter.itemClick = this
         return binding.root
@@ -140,11 +142,26 @@ class HomeFragment : Fragment(), HomeAdapter.ItemClick {
                         Log.e("error", "${response.code()}")
                     }
                     adapter.addItem(resItems)
+                    binding.progressHome.visibility = View.GONE
 
                 }
 
                 override fun onFailure(call: Call<HomeData?>, t: Throwable) {
                     Log.e("API Error", "Error: ${t.message}")
+                     val MAX_RETRIES = 3
+                     val RETRY_DELAY: Long = 1000
+                     var retryCount = 0
+                    if(retryCount < MAX_RETRIES) {
+                        retryCount++
+                        Log.d("retry", "retrying...$retryCount")
+                        Handler().postDelayed({
+                            apiService.homeDang(
+                                Util.KEY , 50 , "json", 417000
+                            ).enqueue(this)
+                        }, RETRY_DELAY)
+                    } else {
+                        binding.progressHome.visibility = View.GONE
+                    }
                 }
             })
     }
