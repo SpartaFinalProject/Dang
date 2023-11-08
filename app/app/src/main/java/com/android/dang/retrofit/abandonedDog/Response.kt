@@ -1,6 +1,7 @@
 package com.android.dangtheland.retrofit.abandonedDog
 
 
+import com.android.dang.retrofit.abandonedDog.Header
 import com.google.gson.annotations.SerializedName
 
 data class Response(
