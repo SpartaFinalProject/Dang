@@ -61,6 +61,8 @@ class ShelterFragment : Fragment() {
             abandonedDogsList.observe(viewLifecycleOwner, abandonedDogObserver)
         }
 
+
+
         binding.mapView.start(object : KakaoMapReadyCallback() {
 
             override fun getPosition(): LatLng {
@@ -69,8 +71,11 @@ class ShelterFragment : Fragment() {
 
             override fun onMapReady(kakaoMap: KakaoMap) {
                 this@ShelterFragment.kakaoMap = kakaoMap
+
             }
         })
+
+        binding.progressDictionary2.visibility = View.GONE
 
         binding.shelterSelectBtn.setOnClickListener {
             selectShelterResultFragment()
@@ -102,7 +107,7 @@ class ShelterFragment : Fragment() {
 
         Log.d(Constants.TestTAG, "setPin: ${label?.labelId}")
         kakaoMap?.setOnLabelClickListener { kakaoMap, layer, label ->
-            viewModel.getShelterInfo(label.tag as String)?.let {  dog ->
+            viewModel.getShelterInfo(label.tag as String)?.let { dog ->
                 setShelterInfo(dog)
                 showInfoWindow(dog)
             }
@@ -122,6 +127,7 @@ class ShelterFragment : Fragment() {
                 builder.show(childFragmentManager, "")
             }
         }
+
 
         binding.selectLocationDetail.setOnClickListener {
             viewModel.sigungu.value?.let { list ->
@@ -150,7 +156,7 @@ class ShelterFragment : Fragment() {
 
     private val onClickSigungu = { sigungu: Sido ->
         sigungu.orgCd.let { viewModel.setOrgCode(it) }
-        sigungu.uprCd?.let { viewModel.setUprCode(it)}
+        sigungu.uprCd?.let { viewModel.setUprCode(it) }
         binding.selectLocationDetail.text = sigungu.orgdownNm
         viewModel.getAbandonedDogs()
     }
