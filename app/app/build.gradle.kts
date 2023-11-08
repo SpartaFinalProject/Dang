@@ -10,7 +10,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.android.dang"
+        applicationId = "com.sparta.dang"
         minSdk = 31
         targetSdk = 33
         versionCode = 1
