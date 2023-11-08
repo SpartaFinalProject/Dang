@@ -70,6 +70,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         super.onAttach(context)
         mContext = context
         kindData()
+        Log.d("autoWordList1", "${autoWordList.size}")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -179,6 +180,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             autoWordList
         )
         autoCompleteTextView.setAdapter(adapter)
+        Log.d("autoWordList", "${autoWordList.size}")
     }
 
 

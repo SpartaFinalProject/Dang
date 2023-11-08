@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         }
     }
 
-    override fun passHome(data: SearchDogData) {
+    override fun passShelter(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
         binding.icBack.visibility = View.VISIBLE
         setFragment(dogDetailFragment)
@@ -211,6 +211,11 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
     }
 
     override fun pass(data: SearchDogData) {
+        dogDetailFragment.receiveData(data)
+        setFragment(dogDetailFragment)
+    }
+
+    override fun passHome(data: SearchDogData) {
         dogDetailFragment.receiveData(data)
         setFragment(dogDetailFragment)
     }

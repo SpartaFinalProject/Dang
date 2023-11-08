@@ -28,9 +28,7 @@ class ShelterResultAdapter(private val mContext: Context
 
     var itemClick: ItemClick? = null
 
-    fun setOnItemClickListener(listener: ItemClick) {
-        this.clickListener = listener
-    }
+
 
 
     private var clickListener: ItemClick? = null

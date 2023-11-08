@@ -12,11 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.MainViewModel
 import com.android.dang.databinding.FragmentShelterResultBinding
-import com.android.dang.home.HomeFragment
-import com.android.dang.retrofit.Constants
-import com.android.dang.search.adapter.SearchAdapter
 import com.android.dang.search.searchItemModel.SearchDogData
-import com.android.dang.search.searchViewModel.SearchViewModel
 import com.android.dang.util.PrefManager
 
 class ShelterResultFragment : Fragment(),ShelterResultAdapter.ItemClick {
@@ -67,17 +63,19 @@ class ShelterResultFragment : Fragment(),ShelterResultAdapter.ItemClick {
                 binding.shelterName.text = shelterName
             }
         }
+        adapter?.itemClick = this
     }
 
     interface DogData {
-        fun passHome(list: SearchDogData)
+        fun passShelter(list: SearchDogData)
     }
 
     fun dogData(data: DogData) {
         passData = data
     }
     override fun onClick(view: View, position: Int) {
-        passData.passHome(resItems[position])
+        passData.passShelter(resItems[position])
+        Log.d("shelter1", "${resItems[position].isLiked}")
     }
 
     override fun onLikeViewClick(position: Int) {

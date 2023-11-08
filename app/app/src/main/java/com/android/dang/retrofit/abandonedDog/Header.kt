@@ -1,4 +1,4 @@
-package com.android.dangtheland.retrofit.abandonedDog
+package com.android.dang.retrofit.abandonedDog
 
 
 import com.google.gson.annotations.SerializedName
