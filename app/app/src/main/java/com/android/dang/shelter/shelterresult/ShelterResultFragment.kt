@@ -72,10 +72,11 @@ class ShelterResultFragment : Fragment(),ShelterResultAdapter.ItemClick {
 
     fun dogData(data: DogData) {
         passData = data
+        Log.d("kkkk","${data}")
     }
     override fun onClick(view: View, position: Int) {
-        passData.passShelter(resItems[position])
-        Log.d("shelter1", "${resItems[position].isLiked}")
+//        passData.passShelter(resItems[position])
+//        Log.d("shelter1", "${resItems[position].isLiked}")
     }
 
     override fun onLikeViewClick(position: Int) {

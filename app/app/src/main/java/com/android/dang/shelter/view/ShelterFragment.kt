@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -77,7 +78,12 @@ class ShelterFragment : Fragment() {
 
         binding.progressDictionary2.visibility = View.GONE
 
+
         binding.shelterSelectBtn.setOnClickListener {
+
+            if(viewModel.abandonedDogsList.value.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show()
+            } else
             selectShelterResultFragment()
         }
 
@@ -86,6 +92,7 @@ class ShelterFragment : Fragment() {
     }
 
     private fun selectShelterResultFragment() {
+
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_view, ShelterResultFragment())
             .addToBackStack(null)

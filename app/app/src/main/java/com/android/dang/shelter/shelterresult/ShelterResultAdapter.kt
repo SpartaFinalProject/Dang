@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
@@ -89,7 +90,11 @@ class ShelterResultAdapter(private val mContext: Context
 
         val address = item.careAddr
         val parts = address?.split(" ")
-        val result = "#${parts?.get(0)} ${parts?.get(1)}"
+        val result = if (parts != null && parts.size >= 2) {
+            "#${parts[0]} ${parts[1]}"
+        } else {
+            "주소 정보 부족"
+        }
         Glide.with(mContext)
             .load(
                 item.popfile

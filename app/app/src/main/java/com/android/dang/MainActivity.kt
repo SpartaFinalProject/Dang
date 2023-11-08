@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
