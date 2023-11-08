@@ -14,7 +14,9 @@ class BreedsData : ArrayList<BreedsData.BreedsDataItem>(){
         var origin: String?,
         var reference_image_id: String?,
         var temperament: String?,
-        var weight: Weight?
+        var weight: Weight?,
+        var nameKor: String?,
+        var temperamentKor: String?
     ) {
         data class Height(
             var imperial: String?,

@@ -23,7 +23,10 @@ class PretestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (SharedPref.getBoolean(Constants.IS_PRE_CONFIRM, false)) {
+        // 마지막 pretest 완료 시간 가져오기
+        val lastCompletionTime = SharedPref.getLong(Constants.PRETEST_COMPLETION_TIME, 0)
+        if (System.currentTimeMillis() - lastCompletionTime < 30L * 24 * 60 * 60 * 1000) {
+            // 30일이 지나지 않았으므로 pretest 건너뛰기
             gotoMainActivity()
             return
         }
@@ -37,15 +40,30 @@ class PretestActivity : AppCompatActivity() {
     private fun initEvent() {
         binding.tvIntroQuestion.movementMethod = ScrollingMovementMethod.getInstance()
         binding.btnYes.setOnClickListener {
-            nextQuestion()
-        }
-        binding.btnNo.setOnClickListener {
-            showCustomDialog(isYesDialog = false) {
-                index = -1
-                switchIntro(true)
+            if (index == 3) {
+                showCustomDialog(isYesDialog = false) {
+                    index = -1
+                    switchIntro(true)
+                    nextQuestion()
+                }
+            } else {
                 nextQuestion()
             }
         }
+        binding.btnNo.setOnClickListener {
+            if (index == 3) {
+                nextQuestion()
+            } else {
+                showCustomDialog(isYesDialog = false) {
+                    index = -1
+                    switchIntro(true)
+                    nextQuestion()
+                }
+            }
+        }
+
+
+
         binding.btnStart.setOnClickListener {
             startPretest()
         }
@@ -86,7 +104,7 @@ class PretestActivity : AppCompatActivity() {
             }
             8 -> {
                 showCustomDialog(isYesDialog = true) {
-                    SharedPref.setBoolean(Constants.IS_PRE_CONFIRM, true)
+                    SharedPref.setLong(Constants.PRETEST_COMPLETION_TIME, System.currentTimeMillis())
                     gotoMainActivity()
                 }
                 index = 7

@@ -2,38 +2,38 @@ package com.android.dang.home
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.dang.MainActivity
 import com.android.dang.R
-import com.android.dang.databinding.BottomNavigationBinding
 import com.android.dang.databinding.FragmentHomeBinding
+import com.android.dang.dictionary.OnDictionaryListener
 import com.android.dang.home.homeAdapter.HomeAdapter
 import com.android.dang.home.retrofit.HomeData
-import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.home.retrofit.RetrofitClient.apiService
 import com.android.dang.home.retrofit.Util
-import com.android.dang.search.SearchFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.view.ShelterFragment
 import com.android.dang.util.PrefManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HomeAdapter.ItemClick {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var mContext: Context
     private var resItems: ArrayList<SearchDogData> = ArrayList()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: HomeAdapter
+
+    private lateinit var passData: DogData
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +53,7 @@ class HomeFragment : Fragment() {
         super.onResume()
         Log.d("homefragment", "onResume")
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,8 +68,8 @@ class HomeFragment : Fragment() {
             transaction.replace(R.id.fragment_view, shelterFragment)
             transaction.addToBackStack(null)
             transaction.commit()
+            (activity as? OnBannerListener)?.onBannerClicked()
         }
-
         recyclerView = binding.homeRc
         recyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -77,7 +78,9 @@ class HomeFragment : Fragment() {
 
         adapter.clearItem()
         resItems.clear()
+        binding.progressHome.visibility = View.VISIBLE
         homeResult()
+        adapter.itemClick = this
         return binding.root
     }
 
@@ -91,7 +94,7 @@ class HomeFragment : Fragment() {
                     if (response.isSuccessful) {
                         val homeData = response.body()
                         val likeItems = PrefManager.getLikeItem(mContext)
-                        Log.d("homefragment","likeItems.size:${likeItems.size}")
+                        Log.d("homefragment", "likeItems.size:${likeItems.size}")
                         homeData?.response?.body?.items?.item?.forEach { item ->
                             val popfile = item.popfile
                             val kindCd = item.kindCd
@@ -111,7 +114,7 @@ class HomeFragment : Fragment() {
 
                             val likedDog = likeItems.find { it.popfile == item.popfile }
                             if (likedDog != null) {
-                               isLike = true
+                                isLike = true
                             }
                             resItems.add(
                                 SearchDogData(
@@ -139,11 +142,26 @@ class HomeFragment : Fragment() {
                         Log.e("error", "${response.code()}")
                     }
                     adapter.addItem(resItems)
+                    binding.progressHome.visibility = View.GONE
 
                 }
 
                 override fun onFailure(call: Call<HomeData?>, t: Throwable) {
                     Log.e("API Error", "Error: ${t.message}")
+                     val MAX_RETRIES = 3
+                     val RETRY_DELAY: Long = 1000
+                     var retryCount = 0
+                    if(retryCount < MAX_RETRIES) {
+                        retryCount++
+                        Log.d("retry", "retrying...$retryCount")
+                        Handler().postDelayed({
+                            apiService.homeDang(
+                                Util.KEY , 50 , "json", 417000
+                            ).enqueue(this)
+                        }, RETRY_DELAY)
+                    } else {
+                        binding.progressHome.visibility = View.GONE
+                    }
                 }
             })
     }
@@ -151,6 +169,18 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(view: View, position: Int) {
+        passData.passHome(resItems[position])
+    }
+
+    interface DogData {
+        fun passHome(list: SearchDogData)
+    }
+
+    fun dogData(data: DogData) {
+        passData = data
     }
 
 }

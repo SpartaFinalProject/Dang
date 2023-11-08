@@ -57,7 +57,9 @@
         <com.kakao.vectormap.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+        </com.kakao.vectormap.MapView>
 
     </LinearLayout>
 
@@ -79,7 +81,7 @@
             android:text=""/>
         <TextView
             android:id="@+id/shelter_location"
-            android:layout_width="280dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:ellipsize="end"
@@ -113,6 +115,21 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:text="선택하기"/>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/progress_dictionary2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/map"
+        app:layout_constraintTop_toTopOf="@+id/map"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animation_loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,31 +3,25 @@ package com.android.dang.like
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
-import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.R
-import com.android.dang.databinding.FragmentLikeBinding
 import com.android.dang.databinding.ItemCommonDetailBinding
-import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.search.searchItemModel.SearchDogData
-import com.android.dang.util.PrefManager
 import com.android.dang.util.PrefManager.addItem
 import com.android.dang.util.PrefManager.deleteItem
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 
 class LikeAdapter(private val mContext: Context) :
     RecyclerView.Adapter<LikeAdapter.ItemViewHolder>() {
-    var items = ArrayList<SearchDogData>()
+    var items = mutableListOf<SearchDogData>()
 
     interface OnItemClickListener {
-        fun onItemClick(item: SearchDogData, position: Int)
+        fun onClick(view: View, position: Int)
     }
 
     private var clickListener: OnItemClickListener? = null
@@ -46,20 +40,24 @@ class LikeAdapter(private val mContext: Context) :
 
         val currentItem = items[position]
 
+        val address = currentItem.careAddr
+        val parts = address?.split(" ")
+        val result = "#${parts?.get(0)} ${parts?.get(1)}"
+
         Glide.with(mContext)
             .load(currentItem.popfile)
             .into(holder.dogImg)
         val modifiedKindCd = currentItem.kindCd?.replace("[개]", "")?.trim() ?: ""
         holder.dogName.text = modifiedKindCd
 
-        val processText = ellipsizeText(currentItem.age, currentItem.specialMark, currentItem.careAddr, currentItem.processState, 70)
+        val processText = ellipsizeText(currentItem.age, result,currentItem.processState,currentItem.sexCd, currentItem.neuterYn, currentItem.weight, currentItem.specialMark, 70)
         holder.dogTag.text = processText
 
-
-        holder.dogLike.setOnClickListener {
-            clickListener?.onItemClick(items[position], position)
+        holder.itemView.setOnClickListener {
+            clickListener?.onClick(it, position)
         }
-        if (currentItem.isLiked) {
+
+        if (currentItem.isLiked == true) {
             holder.dogLike.setImageResource(R.drawable.icon_like_on)
         } else {
             holder.dogLike.setImageResource(R.drawable.icon_like_off)
@@ -81,18 +79,44 @@ class LikeAdapter(private val mContext: Context) :
 
     }
 
-    private fun ellipsizeText(age: String?, specialMark: String?, orgNm: String?, processState: String?, maxLength: Int): String{
-        val ellipstext = "#${age ?: ""} #${specialMark ?: ""} #${orgNm ?: ""} #${processState ?: ""}"
+    private fun ellipsizeText(
+        age: String?,
+        careAddr: String?,
+        processState: String?,
+        sexCd: String?,
+        neuterYn: String?,
+        weight: String?,
+        specialMark: String?,
+        maxLength: Int
+    ): String {
+        val sexText = when (sexCd){
+            "M" -> "수컷"
+            "F" -> "암컷"
+            else -> "미상"
+        }
+
+        val neuter = when (neuterYn){
+            "Y" -> "중성화"
+            "N" -> ""
+            else -> "미상"
+        }
+        val ellipstext =
+            "#${age ?: ""} ${careAddr ?: ""} #${processState ?: ""} #${sexText ?: ""} #${neuter ?: ""}#${weight ?: ""} \n#${specialMark ?: ""} "
         return ellipstext.ellipsize(maxLength)
     }
 
     private fun String.ellipsize(maxLength: Int): String {
         return if (length > maxLength) {
-            val halfLength = maxLength / 2
-            "${substring(0, halfLength)}...${substring(length - halfLength)}"
+            "${substring(0, maxLength - 3)}..."
         } else {
             this
         }
+    }
+
+    fun addAll(newItems: List<SearchDogData>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
     }
     fun insertData(position: Int, item: SearchDogData) {
         items.add(position,item)

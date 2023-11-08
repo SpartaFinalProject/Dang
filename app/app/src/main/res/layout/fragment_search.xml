@@ -7,34 +7,20 @@
     android:layout_marginEnd="15dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/search_dog_kind"
+    <AutoCompleteTextView
+        android:id="@+id/search_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/background_search"
-        app:layout_constraintTop_toTopOf="parent">
-        <AutoCompleteTextView
-            android:id="@+id/search_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/hakgyoansimwooju"
-            tools:ignore="RtlCompat"
-            android:hint="강아지의 품종을 입력하세요" />
-        <ImageView
-            android:id="@+id/search_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:padding="10dp"
-            android:src="@drawable/icon_search" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:fontFamily="@font/hakgyoansimwooju"
+        android:layout_marginTop="10dp"
+        android:imeOptions="actionSearch"
+        android:imeActionLabel="Done"
+        android:inputType="text"
+        tools:ignore="RtlCompat"
+        android:hint="강아지의 품종을 입력하세요" />
 
     <TextView
         android:id="@+id/recent"
@@ -45,23 +31,26 @@
         android:fontFamily="@font/hakgyoansimwooju"
         android:textColor="@color/basic"
         app:layout_constraintBottom_toTopOf="@+id/rcv_search_list"
-        app:layout_constraintTop_toBottomOf="@+id/search_dog_kind" />
+        app:layout_constraintTop_toBottomOf="@+id/search_edit" />
     <LinearLayout
         android:id="@+id/search_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@id/search_dog_kind"
+        app:layout_constraintTop_toBottomOf="@id/search_edit"
         app:layout_constraintBottom_toTopOf="@id/rcv_search_list" >
 
         <LinearLayout
             android:id="@+id/search_age"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:background="@drawable/background_search_tag"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
             <TextView
                 android:id="@+id/text_age"
                 android:layout_width="wrap_content"
@@ -78,11 +67,13 @@
 
         <LinearLayout
             android:id="@+id/search_gender"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:background="@drawable/background_search_tag"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
             <TextView
                 android:id="@+id/text_gender"
                 android:layout_width="wrap_content"
@@ -99,10 +90,12 @@
 
         <LinearLayout
             android:id="@+id/search_size"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:background="@drawable/background_search_tag"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
             <TextView
                 android:id="@+id/text_size"
                 android:layout_width="wrap_content"
@@ -123,9 +116,22 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/search_tag"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_common_detail"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_tag"
+        tools:layout_editor_absoluteX="0dp"
+        tools:listitem="@layout/item_common_detail" />
+
+    <ProgressBar
+        android:id="@+id/progress_dictionary"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateDuration="1000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rcv_search_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import androidx.core.content.edit
-import com.android.dang.home.retrofit.HomeItemModel
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.google.gson.GsonBuilder
 
