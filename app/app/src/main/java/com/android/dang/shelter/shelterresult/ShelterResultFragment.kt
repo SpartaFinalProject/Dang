@@ -14,9 +14,12 @@ import com.android.dang.MainViewModel
 import com.android.dang.databinding.FragmentShelterResultBinding
 import com.android.dang.home.HomeFragment
 import com.android.dang.retrofit.Constants
+import com.android.dang.search.adapter.SearchAdapter
 import com.android.dang.search.searchItemModel.SearchDogData
+import com.android.dang.search.searchViewModel.SearchViewModel
+import com.android.dang.util.PrefManager
 
-class ShelterResultFragment : Fragment() {
+class ShelterResultFragment : Fragment(),ShelterResultAdapter.ItemClick {
 
     private lateinit var binding: FragmentShelterResultBinding
     private lateinit var mainViewModel: MainViewModel
@@ -25,6 +28,7 @@ class ShelterResultFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private var adapter: ShelterResultAdapter? = null
     private lateinit var passData: DogData
+    private lateinit var likeList: List<SearchDogData>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,13 +42,20 @@ class ShelterResultFragment : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         val lm = LinearLayoutManager(requireContext())
-        adapter = ShelterResultAdapter(onClickDog)
+        adapter = ShelterResultAdapter(mContext)
         with(binding.rcvShelterDogs) {
             layoutManager = lm
             adapter = this@ShelterResultFragment.adapter
         }
+        recyclerView = binding.rcvShelterDogs
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+
+
+        resItems.clear()
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,10 +67,6 @@ class ShelterResultFragment : Fragment() {
                 binding.shelterName.text = shelterName
             }
         }
-        }
-
-    fun onClick(view: View, position: Int) {
-        passData.passHome(resItems[position])
     }
 
     interface DogData {
@@ -69,9 +76,29 @@ class ShelterResultFragment : Fragment() {
     fun dogData(data: DogData) {
         passData = data
     }
+    override fun onClick(view: View, position: Int) {
+        passData.passHome(resItems[position])
     }
 
+    override fun onLikeViewClick(position: Int) {
+        likeList = PrefManager.getLikeItem(mContext)
+        val saveDog = mainViewModel.shelterlikeList(position)
+        var index = 0
 
-    private val onClickDog: (SearchDogData) -> Unit = { dog ->
-        Log.d(Constants.TestTAG, "onClickDog: $dog")
+        for (list in likeList) {
+            if (saveDog.popfile == list.popfile) {
+                saveDog.isLiked = false
+                context?.let { saveDog.popfile?.let { it1 -> PrefManager.deleteItem(it, it1) } }
+                adapter?.searchNew()
+                break
+            }
+            index++
+        }
+        if (index == likeList.size) {
+            saveDog.isLiked = true
+            context?.let { PrefManager.addItem(it, saveDog) }
+            adapter?.searchNew()
+        }
+    }
+
     }

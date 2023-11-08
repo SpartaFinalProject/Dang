@@ -229,4 +229,5 @@ class ShelterFragment : Fragment() {
             shelterLocation.text = ""
         }
     }
-    }
+
+}

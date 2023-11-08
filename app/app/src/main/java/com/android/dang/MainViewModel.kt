@@ -14,4 +14,9 @@ class MainViewModel: ViewModel() {
     fun setAbandonedDogsList(list: List<SearchDogData>) {
         _abandonedDogsList.value = list
     }
+
+    fun shelterlikeList(position: Int): SearchDogData {
+        val shelterList = abandonedDogsList.value?.toMutableList() ?: mutableListOf()
+        return shelterList[position]
+    }
 }

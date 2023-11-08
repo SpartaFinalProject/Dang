@@ -550,7 +550,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-
     interface DogData {
         fun pass(list: SearchDogData)
     }
@@ -604,8 +603,8 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     override fun onLikeViewClick(position: Int) {
         likeList = PrefManager.getLikeItem(mContext)
         val saveDog = searchViewModel.likeList(position)
-
         var index = 0
+
         for (list in likeList) {
             if (saveDog.popfile == list.popfile) {
                 saveDog.isLiked = false

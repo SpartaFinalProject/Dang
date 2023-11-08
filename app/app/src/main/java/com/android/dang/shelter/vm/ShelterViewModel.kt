@@ -100,7 +100,6 @@ class ShelterViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<ShelterRes>, t: Throwable) {
-                TODO("Not yet implemented")
             }
         })
     }
