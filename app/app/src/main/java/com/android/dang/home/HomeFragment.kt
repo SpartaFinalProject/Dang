@@ -91,6 +91,7 @@ class HomeFragment : Fragment(), HomeAdapter.ItemClick {
         )
             .enqueue(object : Callback<HomeData?> {
                 override fun onResponse(call: Call<HomeData?>, response: Response<HomeData?>) {
+                    if(!isAdded) return
                     if (response.isSuccessful) {
                         val homeData = response.body()
                         val likeItems = PrefManager.getLikeItem(mContext)
@@ -147,6 +148,7 @@ class HomeFragment : Fragment(), HomeAdapter.ItemClick {
                 }
 
                 override fun onFailure(call: Call<HomeData?>, t: Throwable) {
+                    if(!isAdded) return
                     Log.e("API Error", "Error: ${t.message}")
                      val MAX_RETRIES = 3
                      val RETRY_DELAY: Long = 1000
