@@ -458,6 +458,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             kind
         ).enqueue(object : Callback<AbandonedDog?> {
             override fun onResponse(call: Call<AbandonedDog?>, response: Response<AbandonedDog?>) {
+                if(!isAdded) return
                 if (response.isSuccessful) {
                     val abandonedDog = response.body()
                     abandonedDog?.response?.body?.items?.item?.forEach { item ->
@@ -508,6 +509,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             }
 
             override fun onFailure(call: Call<AbandonedDog?>, t: Throwable) {
+                if(!isAdded) return
                 Log.e("#api1", "실패: ${t.message}")
             }
 
@@ -525,6 +527,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             Constants.AUTH_HEADER
         ).enqueue(object : Callback<Kind?> {
             override fun onResponse(call: Call<Kind?>, response: Response<Kind?>) {
+                if(!isAdded) return
                 if (response.isSuccessful) {
                     val kind = response.body()
                     kind?.response?.body?.items?.item?.forEach { item ->
@@ -542,6 +545,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             }
 
             override fun onFailure(call: Call<Kind?>, t: Throwable) {
+                if(!isAdded) return
                 Log.e("#api1", "실패: ${t.message}")
                 binding.progressDictionary.visibility = View.GONE
             }
