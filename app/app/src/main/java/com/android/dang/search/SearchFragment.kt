@@ -85,11 +85,12 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         if(!isActionBreedName()) {
             //댕댕백과 품종이 없는 경우, 이전 검색결과 남기지 않도록 초기화했어요.(필요없으면 수정하세요)
             //상세화면 갔다 검색화면으로 돌아오면 검색이 다시 그려지지 않도록 했습니다.
-            typeOne = 1
-            kindNumber = ""
-            binding.searchEdit.post {
-                binding.searchEdit.setText("")
-            }
+            //롤백 상세 좋아요 선택 후 돌아가면 화면 갱신이 뷰리스토어를 기반으로 두고 있어서 롤백
+//            typeOne = 1
+//            kindNumber = ""
+//            binding.searchEdit.post {
+//                binding.searchEdit.setText("")
+//            }
         }
 
         recentViewModel.recentReset()
