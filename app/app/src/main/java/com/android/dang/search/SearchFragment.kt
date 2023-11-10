@@ -69,7 +69,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
-        kindData()
+//        kindData()
         Log.d("autoWordList1", "${autoWordList.size}")
     }
 
@@ -77,28 +77,20 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSearchBinding.bind(view)
 
-
-
+        kindData() //attach하는 시점보다는 UI그리는 시점에서 로딩바로 막아주는게 좋은 듯
         initView()
         viewModel()
 
         //댕댕백과에서 품종이름이 넘어오면 설정
-        arguments?.getString(SELECTED_BREED_NAME)?.let {
-            Log.d("TEST", "댕댕백과에서 전달받은 품종 : $it")
-            kindNumber = ""
-            searchViewModel.clearSearches() //기존검색결과를 중복호출하여 추가
-            binding.searchEdit.post {
-                setEditAndSearchData(it)
-                arguments?.remove(SELECTED_BREED_NAME)
-            }
-        } ?: run {
+        if(!isActionBreedName()) {
             //댕댕백과 품종이 없는 경우, 이전 검색결과 남기지 않도록 초기화했어요.(필요없으면 수정하세요)
             //상세화면 갔다 검색화면으로 돌아오면 검색이 다시 그려지지 않도록 했습니다.
-            typeOne = 1
-            kindNumber = ""
-            binding.searchEdit.post {
-                binding.searchEdit.setText("")
-            }
+            //롤백 상세 좋아요 선택 후 돌아가면 화면 갱신이 뷰리스토어를 기반으로 두고 있어서 롤백
+//            typeOne = 1
+//            kindNumber = ""
+//            binding.searchEdit.post {
+//                binding.searchEdit.setText("")
+//            }
         }
 
         recentViewModel.recentReset()
@@ -523,6 +515,12 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
     }
 
     private fun kindData() {
+        //해쉬맵에 카인드정보가 있으면 API호출하지 않음
+        if (hashMap.isNotEmpty()) return
+        //카인드 API호출할 때 로딩바 추가해서 다른 작업이 되지 않도록 표시
+        binding.progressDictionary.post {
+            binding.progressDictionary.visibility = View.VISIBLE
+        }
         api.kindSearch(
             Constants.AUTH_HEADER
         ).enqueue(object : Callback<Kind?> {
@@ -536,13 +534,16 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                         hashMap[kind] = kindNumber
                         autoWordList.add(kind)
                     }
+                    isActionBreedName() //카인드가 없는데 댕댕백과에서 요청이 오면 카인드 목록 받은 후에 검색
                 } else {
                     Log.e("api", "Error: ${response.errorBody()}")
                 }
+                binding.progressDictionary.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<Kind?>, t: Throwable) {
                 Log.e("#api1", "실패: ${t.message}")
+                binding.progressDictionary.visibility = View.GONE
             }
 
         })
@@ -622,4 +623,22 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             searchAdapter.searchNew()
         }
     }
+
+    /**
+     * 댕댕백과에서 넘어온 품종 세팅 및 검색 수행 함수
+     *
+     * @return 품종이름이 있으면 true / 없으면 false
+     */
+    private fun isActionBreedName(): Boolean = arguments?.getString(SELECTED_BREED_NAME)?.let {
+        Log.d("TEST", "댕댕백과에서 전달받은 품종 : $it")
+        kindNumber = ""
+        searchViewModel.clearSearches() //기존검색결과가 보여서 클리어
+        if (hashMap.isNotEmpty()) {
+            binding.searchEdit.post {
+                setEditAndSearchData(it)
+                arguments?.remove(SELECTED_BREED_NAME)
+            }
+        }
+        true
+    } ?: false
 }
