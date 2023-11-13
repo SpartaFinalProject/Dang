@@ -31,11 +31,11 @@ class ShelterViewModel : ViewModel() {
         get() = _sigungu
     private val _sigungu: MutableLiveData<Items<Sido>> = MutableLiveData()
 
-    private val orgCode: LiveData<String>
+    val orgCode: LiveData<String>
         get() = _orgCode
     private val _orgCode = MutableLiveData("")
 
-    private val uprCode: LiveData<String>
+    val uprCode: LiveData<String>
         get() = _uprCode
     private val _uprCode = MutableLiveData("")
 

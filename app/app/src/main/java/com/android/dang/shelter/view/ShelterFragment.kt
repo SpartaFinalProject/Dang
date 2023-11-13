@@ -37,8 +37,6 @@ import com.kakao.vectormap.mapwidget.component.Orientation
 
 
 // TODO: api 호출 중에 로딩바? 띄워 유저가 상호작용하지 못하게 해야 함.
-// TODO: 검색결과가 없을시에 Toast 를 띄워 안내할것
-
 class ShelterFragment : Fragment() {
     private lateinit var binding: FragmentShelterBinding
     private lateinit var viewModel: ShelterViewModel
@@ -62,37 +60,33 @@ class ShelterFragment : Fragment() {
             abandonedDogsList.observe(viewLifecycleOwner, abandonedDogObserver)
         }
 
-
-
         binding.mapView.start(object : KakaoMapReadyCallback() {
+
 
             override fun getPosition(): LatLng {
                 return LatLng.from(37.393865, 127.115795)
             }
 
             override fun onMapReady(kakaoMap: KakaoMap) {
+                binding.progressDictionary2.visibility = View.VISIBLE
                 this@ShelterFragment.kakaoMap = kakaoMap
-
+                binding.progressDictionary2.visibility = View.GONE
             }
         })
 
-        binding.progressDictionary2.visibility = View.GONE
-
 
         binding.shelterSelectBtn.setOnClickListener {
-
-            if(viewModel.abandonedDogsList.value.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show()
-            } else
-            selectShelterResultFragment()
+            if (!viewModel.orgCode.value.isNullOrBlank() && !viewModel.uprCode.value.isNullOrBlank()) {
+                selectShelterResultFragment()
+                return@setOnClickListener
+            }
+            Toast.makeText(requireContext(), "보호소 핀 터치 후 선택해 주세요 ", Toast.LENGTH_SHORT).show()
         }
-
 
         return binding.root
     }
 
     private fun selectShelterResultFragment() {
-
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_view, ShelterResultFragment())
             .addToBackStack(null)
@@ -103,7 +97,7 @@ class ShelterFragment : Fragment() {
     private fun setLabel(geoPoint: GeoPoint, dog: SearchDogData) {
         val pos = LatLng.from(geoPoint.latitude, geoPoint.longitude)
         val styles = kakaoMap?.labelManager
-            ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker)))
+            ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker2)))
         val options = LabelOptions.from(pos)
             .setStyles(styles)
             .setClickable(true)

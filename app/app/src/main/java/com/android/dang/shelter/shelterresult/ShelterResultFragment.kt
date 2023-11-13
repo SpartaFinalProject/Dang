@@ -11,11 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.dang.MainViewModel
+import com.android.dang.R
 import com.android.dang.databinding.FragmentShelterResultBinding
+import com.android.dang.detailFragment.DogDetailFragment
 import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.util.PrefManager
 
-class ShelterResultFragment : Fragment(),ShelterResultAdapter.ItemClick {
+class ShelterResultFragment : Fragment(), ShelterResultAdapter.ItemClick {
 
     private lateinit var binding: FragmentShelterResultBinding
     private lateinit var mainViewModel: MainViewModel
@@ -30,6 +32,7 @@ class ShelterResultFragment : Fragment(),ShelterResultAdapter.ItemClick {
         super.onAttach(context)
         mContext = context
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,8 +48,6 @@ class ShelterResultFragment : Fragment(),ShelterResultAdapter.ItemClick {
         }
         recyclerView = binding.rcvShelterDogs
         recyclerView.layoutManager = LinearLayoutManager(context)
-
-
 
         resItems.clear()
         return binding.root
@@ -72,16 +73,27 @@ class ShelterResultFragment : Fragment(),ShelterResultAdapter.ItemClick {
 
     fun dogData(data: DogData) {
         passData = data
-        Log.d("kkkk","${data}")
+        Log.d("kkkk", "${data}")
     }
+
+
     override fun onClick(view: View, position: Int) {
-//        passData.passShelter(resItems[position])
-//        Log.d("shelter1", "${resItems[position].isLiked}")
+        // DogDetailFramgent 생성
+        // receiveData()
+        // Framgnet 교체
+        val dog = mainViewModel.getLikedDog(position)
+        val fragmemt = DogDetailFragment()
+        fragmemt.receiveData(dog)
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_view, fragmemt)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onLikeViewClick(position: Int) {
         likeList = PrefManager.getLikeItem(mContext)
-        val saveDog = mainViewModel.shelterlikeList(position)
+        val saveDog = mainViewModel.getLikedDog(position)
         var index = 0
 
         for (list in likeList) {
@@ -99,5 +111,4 @@ class ShelterResultFragment : Fragment(),ShelterResultAdapter.ItemClick {
             adapter?.searchNew()
         }
     }
-
-    }
+}
