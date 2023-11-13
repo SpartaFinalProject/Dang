@@ -145,7 +145,8 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
 
     private fun setFragment(frag: Fragment) {
         //디테일은 서치 유지하면서 붙이기 위해서 add로 변경
-        supportFragmentManager.beginTransaction().add(R.id.fragment_view, frag)
+        //롤백 상세 좋아요 선택 후 돌아가면 화면 갱신이 뷰리스토어를 기반으로 두고 있어서 롤백
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_view, frag)
             .setReorderingAllowed(true).addToBackStack(null).commit()
     }
 
