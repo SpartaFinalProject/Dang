@@ -29,9 +29,6 @@ class ShelterResultAdapter(private val mContext: Context
 
     var itemClick: ItemClick? = null
 
-
-
-
     private var clickListener: ItemClick? = null
 
     private fun ellipsizeText(

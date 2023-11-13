@@ -36,12 +36,12 @@ class HomeFragment : Fragment(), HomeAdapter.ItemClick {
     private lateinit var passData: DogData
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = FragmentHomeBinding.inflate(layoutInflater)
-        Log.d("homefragment", "onCreate")
-
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        ???????????????????????????????????
+//        _binding = FragmentHomeBinding.inflate(layoutInflater)
+//        Log.d("homefragment", "onCreate")
+//    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -62,7 +62,7 @@ class HomeFragment : Fragment(), HomeAdapter.ItemClick {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         Log.d("homefragment", "onCreateView")
 
-        binding.bannerMoreBtn.setOnClickListener {
+        binding?.bannerMoreBtn?.setOnClickListener {
             val shelterFragment = ShelterFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_view, shelterFragment)
