@@ -35,8 +35,6 @@ import com.kakao.vectormap.mapwidget.component.GuiLayout
 import com.kakao.vectormap.mapwidget.component.GuiText
 import com.kakao.vectormap.mapwidget.component.Orientation
 
-
-// TODO: api 호출 중에 로딩바? 띄워 유저가 상호작용하지 못하게 해야 함.
 class ShelterFragment : Fragment() {
     private lateinit var binding: FragmentShelterBinding
     private lateinit var viewModel: ShelterViewModel

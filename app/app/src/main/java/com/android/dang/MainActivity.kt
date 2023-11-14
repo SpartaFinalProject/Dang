@@ -1,6 +1,9 @@
 package com.android.dang
 
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,6 +21,7 @@ import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.shelterresult.ShelterResultFragment
 import com.android.dang.shelter.view.ShelterFragment
 import com.google.android.material.snackbar.Snackbar
+import java.security.MessageDigest
 
 
 class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData,
@@ -45,11 +49,12 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
+
+
         val homeFragment = HomeFragment()
         val shelterFragment = ShelterFragment()
         val dictionaryFragment = DictionaryFragment()
         val shelterResultFragment = ShelterResultFragment()
-
 
         switchFragment(homeFragment)
         binding.icBack.visibility = View.INVISIBLE
