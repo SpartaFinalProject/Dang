@@ -1,6 +1,9 @@
 package com.android.dang
 
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,6 +21,7 @@ import com.android.dang.search.searchItemModel.SearchDogData
 import com.android.dang.shelter.shelterresult.ShelterResultFragment
 import com.android.dang.shelter.view.ShelterFragment
 import com.google.android.material.snackbar.Snackbar
+import java.security.MessageDigest
 
 
 class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData,
@@ -50,9 +54,11 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         val dictionaryFragment = DictionaryFragment()
         val shelterResultFragment = ShelterResultFragment()
 
+        getAppKeyHash()
 
         switchFragment(homeFragment)
         binding.icBack.visibility = View.INVISIBLE
+
 
         binding.navBar.setOnItemSelectedListener {
             val activeFragment = supportFragmentManager.findFragmentById(binding.fragmentView.id)
@@ -221,5 +227,21 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         dogDetailFragment.receiveData(data)
         binding.icBack.visibility = View.VISIBLE
         setFragment(dogDetailFragment)
+    }
+
+    private fun getAppKeyHash() {
+        try {
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                var md: MessageDigest
+                md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                val something = String(Base64.encode(md.digest(), 0))
+                Log.d("Hash key", something)
+            }
+        } catch (e: Exception) {
+// TODO Auto-generated catch block
+            Log.e("name not found", e.toString())
+        }
     }
 }
