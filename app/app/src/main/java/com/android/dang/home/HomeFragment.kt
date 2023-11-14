@@ -10,10 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.dang.MainActivity
 import com.android.dang.R
 import com.android.dang.databinding.FragmentHomeBinding
-import com.android.dang.dictionary.OnDictionaryListener
 import com.android.dang.home.homeAdapter.HomeAdapter
 import com.android.dang.home.retrofit.HomeData
 import com.android.dang.home.retrofit.RetrofitClient.apiService

@@ -49,15 +49,16 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
-
-
         val homeFragment = HomeFragment()
         val shelterFragment = ShelterFragment()
         val dictionaryFragment = DictionaryFragment()
         val shelterResultFragment = ShelterResultFragment()
 
+        getAppKeyHash()
+
         switchFragment(homeFragment)
         binding.icBack.visibility = View.INVISIBLE
+
 
         binding.navBar.setOnItemSelectedListener {
             val activeFragment = supportFragmentManager.findFragmentById(binding.fragmentView.id)
@@ -226,5 +227,21 @@ class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.D
         dogDetailFragment.receiveData(data)
         binding.icBack.visibility = View.VISIBLE
         setFragment(dogDetailFragment)
+    }
+
+    private fun getAppKeyHash() {
+        try {
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                var md: MessageDigest
+                md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                val something = String(Base64.encode(md.digest(), 0))
+                Log.d("Hash key", something)
+            }
+        } catch (e: Exception) {
+// TODO Auto-generated catch block
+            Log.e("name not found", e.toString())
+        }
     }
 }

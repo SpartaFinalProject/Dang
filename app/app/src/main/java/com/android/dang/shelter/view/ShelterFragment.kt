@@ -95,7 +95,7 @@ class ShelterFragment : Fragment() {
     private fun setLabel(geoPoint: GeoPoint, dog: SearchDogData) {
         val pos = LatLng.from(geoPoint.latitude, geoPoint.longitude)
         val styles = kakaoMap?.labelManager
-            ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker2)))
+            ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker)))
         val options = LabelOptions.from(pos)
             .setStyles(styles)
             .setClickable(true)
