@@ -51,6 +51,8 @@ class ShelterFragment : Fragment() {
         viewModel = ViewModelProvider(this)[ShelterViewModel::class.java]
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
+        binding.progressDictionary.visibility = View.VISIBLE
+
         viewModel.run {
             setGeoCoder(Geocoder(requireContext()))
             sido.observe(viewLifecycleOwner, sidoObserver)
@@ -66,7 +68,6 @@ class ShelterFragment : Fragment() {
             }
 
             override fun onMapReady(kakaoMap: KakaoMap) {
-                binding.progressDictionary.visibility = View.VISIBLE
                 this@ShelterFragment.kakaoMap = kakaoMap
                 binding.progressDictionary.visibility = View.GONE
             }
@@ -187,7 +188,7 @@ class ShelterFragment : Fragment() {
             binding.progressDictionary2.visibility = View.GONE
             removeAllMarkers()
         }
-        it.forEach { dog ->
+        it.parallelStream().forEach { dog ->
             dog.careAddr?.let { it1 ->
                 val addr = viewModel.findGeoPoint(it1)
                 if (addr != null && dog.popfile != null) {
@@ -208,7 +209,7 @@ class ShelterFragment : Fragment() {
         kakaoMap?.mapWidgetManager?.infoWindowLayer?.removeAll()
 
 
-        val pos = LatLng.from(dog.pos!!.latitude, dog.pos.longitude)
+        val pos = dog.pos?.let { LatLng.from(it.latitude, it.longitude) }
         val body = GuiLayout(Orientation.Vertical)
         body.setPadding(15, 15, 15, 15)
 
