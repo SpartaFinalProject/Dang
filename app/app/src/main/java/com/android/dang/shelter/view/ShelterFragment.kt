@@ -66,10 +66,11 @@ class ShelterFragment : Fragment() {
             }
 
             override fun onMapReady(kakaoMap: KakaoMap) {
-                binding.progressDictionary2.visibility = View.VISIBLE
+                binding.progressDictionary.visibility = View.VISIBLE
                 this@ShelterFragment.kakaoMap = kakaoMap
-                binding.progressDictionary2.visibility = View.GONE
+                binding.progressDictionary.visibility = View.GONE
             }
+
         })
 
 
@@ -93,6 +94,7 @@ class ShelterFragment : Fragment() {
 
 
     private fun setLabel(geoPoint: GeoPoint, dog: SearchDogData) {
+
         val pos = LatLng.from(geoPoint.latitude, geoPoint.longitude)
         val styles = kakaoMap?.labelManager
             ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker)))
@@ -115,6 +117,7 @@ class ShelterFragment : Fragment() {
             CameraUpdateFactory.newCenterPosition(pos, 14),
             CameraAnimation.from(duration)
         )
+        binding.progressDictionary2.visibility = View.GONE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -158,6 +161,7 @@ class ShelterFragment : Fragment() {
         sigungu.uprCd?.let { viewModel.setUprCode(it) }
         binding.selectLocationDetail.text = sigungu.orgdownNm
         viewModel.getAbandonedDogs()
+        binding.progressDictionary2.visibility = View.VISIBLE
     }
 
     private val sidoObserver = Observer<Items<Sido>> { sidoList ->
@@ -177,6 +181,12 @@ class ShelterFragment : Fragment() {
     private val abandonedDogObserver = Observer<List<SearchDogData>> {
         mainViewModel.setAbandonedDogsList(it)
         Log.d("test", "main abandonedDogs: ${it.size}")
+
+        if (it.isEmpty()) {
+            Toast.makeText(requireContext(), "선택한 지역에서는 보호소가 없습니다. 다른 지역을 선택해주세요.", Toast.LENGTH_LONG).show()
+            binding.progressDictionary2.visibility = View.GONE
+            removeAllMarkers()
+        }
         it.forEach { dog ->
             dog.careAddr?.let { it1 ->
                 val addr = viewModel.findGeoPoint(it1)
