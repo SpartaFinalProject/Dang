@@ -41,7 +41,7 @@ interface Interface {
     @GET("sido")
     fun getSidoList(
         @Query("serviceKey") serviceKey: String = Constants.AUTH_HEADER,
-        @Query("numOfRows") numOfRows: Int? = null,
+        @Query("numOfRows") numOfRows: Int = 17,
         @Query("pageNum") pageNum: Int? = null,
         @Query("_type") type: String = "json"
     ): Call<SidoRes>
