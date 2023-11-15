@@ -497,8 +497,12 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                             )
                         )
                     } ?: run {
-                        //에러메시지가 있는경우 표시 (댕댕백과에서 들어올 때, kind조회가 안끝나면 오류코드 표시)
-                        val errorMsg = response.body()?.response?.header?.errorMsg ?: "검색 결과가 없습니다."
+                        val errorMsg = response.body()?.response?.header?.errorMsg?.let { existErrorMsg ->
+                            when (existErrorMsg) {
+                                "kind=null → 품종코드 요청변수 오류 - 품종 조회 OPEN API 참조" -> "해당 품종은 조회되지 않습니다."
+                                else -> existErrorMsg
+                            }
+                        } ?: "검색 결과가 없습니다."
                         toast(errorMsg)
                     }
                 } else {
