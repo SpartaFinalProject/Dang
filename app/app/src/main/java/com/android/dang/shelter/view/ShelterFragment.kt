@@ -2,6 +2,8 @@ package com.android.dang.shelter.view
 
 import android.location.Geocoder
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -64,7 +66,7 @@ class ShelterFragment : Fragment() {
 
 
             override fun getPosition(): LatLng {
-                return LatLng.from(37.393865, 127.115795)
+                return LatLng.from(37.5023270151927, 127.044444694599)
             }
 
             override fun onMapReady(kakaoMap: KakaoMap) {
@@ -99,26 +101,35 @@ class ShelterFragment : Fragment() {
         val pos = LatLng.from(geoPoint.latitude, geoPoint.longitude)
         val styles = kakaoMap?.labelManager
             ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker)))
-        val options = LabelOptions.from(pos)
-            .setStyles(styles)
-            .setClickable(true)
+        if (kakaoMap != null) {
+            // Use a Handler to ensure UI updates are on the main thread
+            activity?.runOnUiThread {
+                val options = LabelOptions.from(pos)
+                    .setStyles(styles)
+                    .setClickable(true)
 
-        val layer = kakaoMap?.labelManager?.layer
-        val label: Label? = layer?.addLabel(options)
-        label?.tag = dog.popfile
+                val layer = kakaoMap?.labelManager?.layer
+                val label: Label? = layer?.addLabel(options)
+                label?.tag = dog.popfile
 
-        Log.d(Constants.TestTAG, "setPin: ${label?.labelId}")
-        kakaoMap?.setOnLabelClickListener { kakaoMap, layer, label ->
-            viewModel.getShelterInfo(label.tag as String)?.let { dog ->
-                setShelterInfo(dog)
-                showInfoWindow(dog)
+                Log.d(Constants.TestTAG, "setPin: ${label?.labelId}")
+
+                label?.let {
+                    kakaoMap?.setOnLabelClickListener { _, _, clickedLabel ->
+                        viewModel.getShelterInfo(clickedLabel.tag as String)?.let { clickedDog ->
+                            setShelterInfo(clickedDog)
+                            showInfoWindow(clickedDog)
+                        }
+                    }
+                }
+
+                kakaoMap?.moveCamera(
+                    CameraUpdateFactory.newCenterPosition(pos, 14),
+                    CameraAnimation.from(duration)
+                )
+                binding.progressDictionary2.visibility = View.GONE
             }
         }
-        kakaoMap?.moveCamera(
-            CameraUpdateFactory.newCenterPosition(pos, 14),
-            CameraAnimation.from(duration)
-        )
-        binding.progressDictionary2.visibility = View.GONE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -173,30 +184,38 @@ class ShelterFragment : Fragment() {
     private val sigunguObserver = Observer<Items<Sido>> { sigunguList ->
         removeAllMarkers()
         if (sigunguList.item.isNotEmpty()) {
-            binding.selectLocationDetail.text = sigunguList.item[0].orgdownNm
-            return@Observer
+            binding.selectLocationDetail.text = sigunguList.item[1].orgdownNm
+        } else {
+            Log.e(Constants.TestTAG, "Empty sigungu list")
         }
-        binding.selectLocationDetail.text = ""
     }
 
-    private val abandonedDogObserver = Observer<List<SearchDogData>> {
-        mainViewModel.setAbandonedDogsList(it)
-        Log.d("test", "main abandonedDogs: ${it.size}")
+    private val abandonedDogObserver = Observer<List<SearchDogData>?> { dogs ->
+        dogs?.let {
+            mainViewModel.setAbandonedDogsList(it)
+            Log.d("test", "main abandonedDogs: ${it.size}")
 
-        if (it.isEmpty()) {
-            Toast.makeText(requireContext(), "선택한 지역에서는 보호소가 없습니다. 다른 지역을 선택해주세요.", Toast.LENGTH_LONG).show()
-            binding.progressDictionary2.visibility = View.GONE
-            removeAllMarkers()
-        }
-        it.parallelStream().forEach { dog ->
-            dog.careAddr?.let { it1 ->
-                val addr = viewModel.findGeoPoint(it1)
-                if (addr != null && dog.popfile != null) {
-                    setLabel(addr, dog)
+            if (it.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "선택한 지역에서는 보호소가 없습니다. 다른 지역을 선택해주세요.",
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.progressDictionary2.visibility = View.GONE
+                removeAllMarkers()
+            }
+
+            it.parallelStream().forEach { dog ->
+                dog?.careAddr?.let { addr ->
+                    val geoPoint = viewModel.findGeoPoint(addr)
+                    if (geoPoint != null && dog.popfile != null) {
+                        setLabel(geoPoint, dog)
+                    }
                 }
             }
+
+            Log.d(Constants.TestTAG, "dogsss: $it")
         }
-        Log.d(Constants.TestTAG, "dogsss: $it")
     }
 
     private fun setShelterInfo(dog: SearchDogData) = with(binding) {

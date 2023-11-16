@@ -2,10 +2,14 @@ package com.android.dang.shelter.vm
 
 import android.location.Address
 import android.location.Geocoder
+import android.os.Handler
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.dang.home.retrofit.RetrofitClient
+import com.android.dang.home.retrofit.Util
 import com.android.dang.retrofit.Constants
 import com.android.dang.retrofit.DangClient
 import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
@@ -58,7 +62,7 @@ class ShelterViewModel : ViewModel() {
 
                 response.body()?.response?.body?.items.let {
                     Log.d("test", "onResponse: $this")
-                    _sido.value = it
+                    _sido.postValue(it)
                 }
             }
 
@@ -126,18 +130,37 @@ class ShelterViewModel : ViewModel() {
                     _abandonedDogsList.value = listOf()
                     return
                 }
-                abandonedDogList.forEachIndexed { index, dog -> //자동으로 index에는 index값이 i는 value값이 들어감
+                abandonedDogList.forEachIndexed { index, dog ->
                     abandonedDogList[index] = dog?.copy(
                         pos = findGeoPoint(dog.careAddr ?: "")
                     )
                }
 
-                _abandonedDogsList.value = abandonedDogList?.filterNotNull()
+                _abandonedDogsList.postValue(abandonedDogList?.filterNotNull())
                 Log.d(Constants.TestTAG, "abandoned onResponse: ${response.body()?.response?.body}")
             }
 
             override fun onFailure(call: Call<AbandonedDogRes?>, t: Throwable) {
+                Log.e("API Error", "Error: ${t.message}")
+                val MAX_RETRIES = 3
+                val RETRY_DELAY: Long = 1000
+                var retryCount = 0
 
+                fun retry() {
+                    retryCount++
+                    Log.d("retry", "retrying...$retryCount")
+                    Handler().postDelayed({
+                        DangClient.api.abandonedDogShelter(
+                            Util.KEY, 50, "json", 417000
+                        ).enqueue(this)
+                    }, RETRY_DELAY)
+                }
+
+                if (retryCount < MAX_RETRIES) {
+                    retry()
+                } else {
+                    Log.e("API Error", "Maximum retries reached")
+                }
             }
         })
     }
@@ -157,28 +180,31 @@ class ShelterViewModel : ViewModel() {
             it.popfile == popfile
         }
     }
+    fun setGeoCoder(geocoder: Geocoder) {
+        this.geocoder = geocoder
+    }
 
     fun findGeoPoint(address: String): GeoPoint? {
-        val addr: Address
-        var location: GeoPoint? = null
         try {
-            val listAddress: List<Address>? = geocoder.getFromLocationName(address, 1)
-            if (listAddress!!.isNotEmpty()) { // 주소값이 존재 하면
-                addr = listAddress[0] // Address형태로
-                val lat = (addr.latitude)
-                val lng = (addr.longitude)
+            if (::geocoder.isInitialized) {
+                val listAddress: List<Address>? = geocoder.getFromLocationName(address, 1)
+                if (listAddress.isNullOrEmpty()) {
+                    Log.e(Constants.TestTAG, "No address found for: $address")
+                    return null
+                }
+                val addr = listAddress[0]
+                val lat = addr.latitude
+                val lng = addr.longitude
                 Log.d(Constants.TestTAG, "findGeoPoint: $lat / $lng")
-                location = GeoPoint(lat, lng)
-                Log.d(Constants.TestTAG, "주소로부터 취득한 위도 : $lat, 경도 : $lng")
+                return GeoPoint(lat, lng)
+            } else {
+                Log.e(Constants.TestTAG, "Geocoder not initialized")
             }
         } catch (e: IOException) {
             e.printStackTrace()
+            Log.e(Constants.TestTAG, "Error finding GeoPoint: $e")
         }
-        return location
-    }
-
-    fun setGeoCoder(geocoder: Geocoder) {
-        this.geocoder = geocoder
+        return null
     }
 
     fun getDogCount(careNm: String): Int {
