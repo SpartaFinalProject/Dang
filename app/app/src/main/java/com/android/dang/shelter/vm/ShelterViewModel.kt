@@ -2,10 +2,14 @@ package com.android.dang.shelter.vm
 
 import android.location.Address
 import android.location.Geocoder
+import android.os.Handler
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.dang.home.retrofit.RetrofitClient
+import com.android.dang.home.retrofit.Util
 import com.android.dang.retrofit.Constants
 import com.android.dang.retrofit.DangClient
 import com.android.dang.retrofit.abandonedDog.AbandonedDogRes
@@ -126,7 +130,7 @@ class ShelterViewModel : ViewModel() {
                     _abandonedDogsList.value = listOf()
                     return
                 }
-                abandonedDogList.forEachIndexed { index, dog -> //자동으로 index에는 index값이 i는 value값이 들어감
+                abandonedDogList.forEachIndexed { index, dog ->
                     abandonedDogList[index] = dog?.copy(
                         pos = findGeoPoint(dog.careAddr ?: "")
                     )
@@ -137,7 +141,26 @@ class ShelterViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<AbandonedDogRes?>, t: Throwable) {
+                Log.e("API Error", "Error: ${t.message}")
+                val MAX_RETRIES = 3
+                val RETRY_DELAY: Long = 1000
+                var retryCount = 0
 
+                fun retry() {
+                    retryCount++
+                    Log.d("retry", "retrying...$retryCount")
+                    Handler().postDelayed({
+                        DangClient.api.abandonedDogShelter(
+                            Util.KEY, 50, "json", 417000
+                        ).enqueue(this)
+                    }, RETRY_DELAY)
+                }
+
+                if (retryCount < MAX_RETRIES) {
+                    retry()
+                } else {
+                    Log.e("API Error", "Maximum retries reached")
+                }
             }
         })
     }

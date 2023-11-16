@@ -99,26 +99,32 @@ class ShelterFragment : Fragment() {
         val pos = LatLng.from(geoPoint.latitude, geoPoint.longitude)
         val styles = kakaoMap?.labelManager
             ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker)))
-        val options = LabelOptions.from(pos)
-            .setStyles(styles)
-            .setClickable(true)
+        if (kakaoMap != null) {
+            val options = LabelOptions.from(pos)
+                .setStyles(styles)
+                .setClickable(true)
 
-        val layer = kakaoMap?.labelManager?.layer
-        val label: Label? = layer?.addLabel(options)
-        label?.tag = dog.popfile
+            val layer = kakaoMap?.labelManager?.layer
+            val label: Label? = layer?.addLabel(options)
+            label?.tag = dog.popfile
 
-        Log.d(Constants.TestTAG, "setPin: ${label?.labelId}")
-        kakaoMap?.setOnLabelClickListener { kakaoMap, layer, label ->
-            viewModel.getShelterInfo(label.tag as String)?.let { dog ->
-                setShelterInfo(dog)
-                showInfoWindow(dog)
+            Log.d(Constants.TestTAG, "setPin: ${label?.labelId}")
+
+            label?.let {
+                kakaoMap?.setOnLabelClickListener { _, _, clickedLabel ->
+                    viewModel.getShelterInfo(clickedLabel.tag as String)?.let { clickedDog ->
+                        setShelterInfo(clickedDog)
+                        showInfoWindow(clickedDog)
+                    }
+                }
             }
+
+            kakaoMap?.moveCamera(
+                CameraUpdateFactory.newCenterPosition(pos, 14),
+                CameraAnimation.from(duration)
+            )
+            binding.progressDictionary2.visibility = View.GONE
         }
-        kakaoMap?.moveCamera(
-            CameraUpdateFactory.newCenterPosition(pos, 14),
-            CameraAnimation.from(duration)
-        )
-        binding.progressDictionary2.visibility = View.GONE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -173,7 +179,7 @@ class ShelterFragment : Fragment() {
     private val sigunguObserver = Observer<Items<Sido>> { sigunguList ->
         removeAllMarkers()
         if (sigunguList.item.isNotEmpty()) {
-            binding.selectLocationDetail.text = sigunguList.item[0].orgdownNm
+            binding.selectLocationDetail.text = sigunguList.item[1].orgdownNm
             return@Observer
         }
         binding.selectLocationDetail.text = ""
