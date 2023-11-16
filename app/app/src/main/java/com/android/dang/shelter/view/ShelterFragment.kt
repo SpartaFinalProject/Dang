@@ -2,6 +2,8 @@ package com.android.dang.shelter.view
 
 import android.location.Geocoder
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -64,7 +66,7 @@ class ShelterFragment : Fragment() {
 
 
             override fun getPosition(): LatLng {
-                return LatLng.from(37.393865, 127.115795)
+                return LatLng.from(37.5023270151927, 127.044444694599)
             }
 
             override fun onMapReady(kakaoMap: KakaoMap) {
@@ -100,30 +102,33 @@ class ShelterFragment : Fragment() {
         val styles = kakaoMap?.labelManager
             ?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.icon_pink_marker)))
         if (kakaoMap != null) {
-            val options = LabelOptions.from(pos)
-                .setStyles(styles)
-                .setClickable(true)
+            // Use a Handler to ensure UI updates are on the main thread
+            activity?.runOnUiThread {
+                val options = LabelOptions.from(pos)
+                    .setStyles(styles)
+                    .setClickable(true)
 
-            val layer = kakaoMap?.labelManager?.layer
-            val label: Label? = layer?.addLabel(options)
-            label?.tag = dog.popfile
+                val layer = kakaoMap?.labelManager?.layer
+                val label: Label? = layer?.addLabel(options)
+                label?.tag = dog.popfile
 
-            Log.d(Constants.TestTAG, "setPin: ${label?.labelId}")
+                Log.d(Constants.TestTAG, "setPin: ${label?.labelId}")
 
-            label?.let {
-                kakaoMap?.setOnLabelClickListener { _, _, clickedLabel ->
-                    viewModel.getShelterInfo(clickedLabel.tag as String)?.let { clickedDog ->
-                        setShelterInfo(clickedDog)
-                        showInfoWindow(clickedDog)
+                label?.let {
+                    kakaoMap?.setOnLabelClickListener { _, _, clickedLabel ->
+                        viewModel.getShelterInfo(clickedLabel.tag as String)?.let { clickedDog ->
+                            setShelterInfo(clickedDog)
+                            showInfoWindow(clickedDog)
+                        }
                     }
                 }
-            }
 
-            kakaoMap?.moveCamera(
-                CameraUpdateFactory.newCenterPosition(pos, 14),
-                CameraAnimation.from(duration)
-            )
-            binding.progressDictionary2.visibility = View.GONE
+                kakaoMap?.moveCamera(
+                    CameraUpdateFactory.newCenterPosition(pos, 14),
+                    CameraAnimation.from(duration)
+                )
+                binding.progressDictionary2.visibility = View.GONE
+            }
         }
     }
 
@@ -180,9 +185,9 @@ class ShelterFragment : Fragment() {
         removeAllMarkers()
         if (sigunguList.item.isNotEmpty()) {
             binding.selectLocationDetail.text = sigunguList.item[1].orgdownNm
-            return@Observer
+        } else {
+            Log.e(Constants.TestTAG, "Empty sigungu list")
         }
-        binding.selectLocationDetail.text = ""
     }
 
     private val abandonedDogObserver = Observer<List<SearchDogData>?> { dogs ->

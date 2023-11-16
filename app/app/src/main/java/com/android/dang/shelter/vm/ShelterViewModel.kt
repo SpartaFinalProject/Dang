@@ -62,7 +62,7 @@ class ShelterViewModel : ViewModel() {
 
                 response.body()?.response?.body?.items.let {
                     Log.d("test", "onResponse: $this")
-                    _sido.value = it
+                    _sido.postValue(it)
                 }
             }
 
@@ -136,7 +136,7 @@ class ShelterViewModel : ViewModel() {
                     )
                }
 
-                _abandonedDogsList.value = abandonedDogList?.filterNotNull()
+                _abandonedDogsList.postValue(abandonedDogList?.filterNotNull())
                 Log.d(Constants.TestTAG, "abandoned onResponse: ${response.body()?.response?.body}")
             }
 
@@ -180,29 +180,31 @@ class ShelterViewModel : ViewModel() {
             it.popfile == popfile
         }
     }
+    fun setGeoCoder(geocoder: Geocoder) {
+        this.geocoder = geocoder
+    }
 
     fun findGeoPoint(address: String): GeoPoint? {
-        val addr: Address
-        var location: GeoPoint? = null
-
         try {
-            val listAddress: List<Address>? = geocoder.getFromLocationName(address, 1)
-            if (listAddress!!.isNotEmpty()) { // 주소값이 존재 하면
-                addr = listAddress[0] // Address형태로
-                val lat = (addr.latitude)
-                val lng = (addr.longitude)
+            if (::geocoder.isInitialized) {
+                val listAddress: List<Address>? = geocoder.getFromLocationName(address, 1)
+                if (listAddress.isNullOrEmpty()) {
+                    Log.e(Constants.TestTAG, "No address found for: $address")
+                    return null
+                }
+                val addr = listAddress[0]
+                val lat = addr.latitude
+                val lng = addr.longitude
                 Log.d(Constants.TestTAG, "findGeoPoint: $lat / $lng")
-                location = GeoPoint(lat, lng)
-                Log.d(Constants.TestTAG, "주소로부터 취득한 위도 : $lat, 경도 : $lng")
+                return GeoPoint(lat, lng)
+            } else {
+                Log.e(Constants.TestTAG, "Geocoder not initialized")
             }
         } catch (e: IOException) {
             e.printStackTrace()
+            Log.e(Constants.TestTAG, "Error finding GeoPoint: $e")
         }
-        return location
-    }
-
-    fun setGeoCoder(geocoder: Geocoder) {
-        this.geocoder = geocoder
+        return null
     }
 
     fun getDogCount(careNm: String): Int {
