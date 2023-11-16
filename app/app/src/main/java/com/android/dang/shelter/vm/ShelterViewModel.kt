@@ -184,6 +184,7 @@ class ShelterViewModel : ViewModel() {
     fun findGeoPoint(address: String): GeoPoint? {
         val addr: Address
         var location: GeoPoint? = null
+
         try {
             val listAddress: List<Address>? = geocoder.getFromLocationName(address, 1)
             if (listAddress!!.isNotEmpty()) { // 주소값이 존재 하면

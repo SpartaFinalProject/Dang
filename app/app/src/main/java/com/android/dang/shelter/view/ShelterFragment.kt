@@ -185,24 +185,32 @@ class ShelterFragment : Fragment() {
         binding.selectLocationDetail.text = ""
     }
 
-    private val abandonedDogObserver = Observer<List<SearchDogData>> {
-        mainViewModel.setAbandonedDogsList(it)
-        Log.d("test", "main abandonedDogs: ${it.size}")
+    private val abandonedDogObserver = Observer<List<SearchDogData>?> { dogs ->
+        dogs?.let {
+            mainViewModel.setAbandonedDogsList(it)
+            Log.d("test", "main abandonedDogs: ${it.size}")
 
-        if (it.isEmpty()) {
-            Toast.makeText(requireContext(), "선택한 지역에서는 보호소가 없습니다. 다른 지역을 선택해주세요.", Toast.LENGTH_LONG).show()
-            binding.progressDictionary2.visibility = View.GONE
-            removeAllMarkers()
-        }
-        it.parallelStream().forEach { dog ->
-            dog.careAddr?.let { it1 ->
-                val addr = viewModel.findGeoPoint(it1)
-                if (addr != null && dog.popfile != null) {
-                    setLabel(addr, dog)
+            if (it.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "선택한 지역에서는 보호소가 없습니다. 다른 지역을 선택해주세요.",
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.progressDictionary2.visibility = View.GONE
+                removeAllMarkers()
+            }
+
+            it.parallelStream().forEach { dog ->
+                dog?.careAddr?.let { addr ->
+                    val geoPoint = viewModel.findGeoPoint(addr)
+                    if (geoPoint != null && dog.popfile != null) {
+                        setLabel(geoPoint, dog)
+                    }
                 }
             }
+
+            Log.d(Constants.TestTAG, "dogsss: $it")
         }
-        Log.d(Constants.TestTAG, "dogsss: $it")
     }
 
     private fun setShelterInfo(dog: SearchDogData) = with(binding) {
