@@ -3,10 +3,10 @@
 
 
 <div align="center">
-   <h2>Netflix 인터페이스르 오마주한 앱</h2>
-   <p>Youtube Media 8 
+   <h2>유기견 정보 검색 앱</h2>
+   <p>Dang - 유기견 정보 검색 앱 
    </br>
-      Youtube를 이용한 YMD버젼 -  8_8 (그만울조) </p>
+      공공데이터 포털을 이용한 유기견 앱 -  7조 </p>
    <br>
 </div>
 
@@ -14,7 +14,7 @@
 ## 🔳 팀 소개 및 개요
 ◼ 팀 소개 - 무난무난한 5명이 모인 팀
 
-◼ 개요 - Youtube Api를 가져와 우리 조 마음대로 꾸민 앱
+◼ 개요 - 유기동물 정보 조회 Api를 가져와 다양한 유기견을 소개해주는 앱
 
 <table>
    <tr>
@@ -25,25 +25,25 @@
       <td align="center"><img src="https://github.com/kwonkyungun.png" width="100"/></td>
    </tr>   
    <tr>
-      <td align="center"><a href="https://github.com/nsojin">남소진</a> </td>
-      <td align="center"><a href="https://github.com/werds7890">김현걸</a></td>
+      <td align="center"><a href="https://github.com/nsojin">소준선</a> </td>
+      <td align="center"><a href="https://github.com/werds7890">권용일</a></td>
       <td align="center"><a href="https://github.com/wonjun3026">조원준</a></td>
-      <td align="center"><a href="https://github.com/sunho512">정선호</a></td>
-      <td align="center"><a href="https://github.com/kwonkyungun">권경운</a></td>
+      <td align="center"><a href="https://github.com/sunho512">김현정</a></td>
+      <td align="center"><a href="https://github.com/kwonkyungun">이예원</a></td>
    </tr>
       <tr>
-      <td align="center">searchFragment/UI</td>
-      <td align="center">detailFragment/UI</td>
-      <td align="center">home & hotTopic Fragment/UI</td>
-      <td align="center">myVideoFragment/UI</td>
-      <td align="center">Main/UI 및 프래그먼트 연결</td>
+      <td align="center">homeFragment</td>
+      <td align="center">shelterFragment/UI</td>
+      <td align="center">searchFragment</td>
+      <td align="center">pretest/UI</td>
+      <td align="center">Main/UI</td>
    </tr>
       <tr>
-      <td align="center">myVideo retrofit 연결</td>
-      <td align="center">search retrofit 연결</td>
-      <td align="center">home retrofit 연결</td>
-      <td align="center">hotTopic retrofit 연결</td>
-      <td align="center">detail retrofit 연결</td>
+      <td align="center">댕찜 페이지 구현</td>
+      <td align="center">카카오 맵 구현</td>
+      <td align="center">디테일 페이지 구현</td>
+      <td align="center">댕댕백과 페이지 구현</td>
+      <td align="center">프래그먼트 연결</td>
    </tr>
 </table>
 
@@ -54,50 +54,48 @@
 <details>
     <summary>home</summary>
     <div markdown="1"> 
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 각 비디오 아이템 선택시 Detail로 이동<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ videoAPI를 사용하여  인기 영상 표시<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ categoryAPI를 사용하여 카테고리 리스트 스피너에 표시<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ videoAPI를 사용하여 category 클릭 시 관련 영상 표시<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ channelAPI를 사용하여 category 클릭 시 관련 채널을 표시<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ webview를 사용하여 동영상 재생기능 추가
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 상단 앱 바 검색 아이콘 버튼 클릭시 “댕찾기”로 이동<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 상단 배너  “See more” 버튼 클릭시 “댕지킴이 “or”댕찾기”로 이동<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ Recycle View를 이용하여 현재 공고중인 유기견에 대한 정보 아이템으로 표시<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 아이템 클릭시 디테일 페이지로 이동합니다.<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ navigationbar 아이콘 클릭시 각 액티비티로 이동
     </div>
 </details>
 <details>
-    <summary>hotTopic</summary>
+    <summary>Shelter</summary>
     <div markdown="1"> 
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ Youtube api 중 VideoData를 사용<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ data값중 descriptor(설명), title(제목), thumbnail(사진), id(url) 로 사용<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ webview를 사용하여 동영상 재생기능 추가<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 받아온 thumbnail 값 대신 webview에 id값을 넣어 적용<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 버튼 클릭시 디테일 페이지 이동 및 데이터 전달
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 시,도 or 시,군,구 선택 완료시 하단맵에 지정한 위치 기반으로 주변 보호소 위치를 마커로 표시<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 맵에 표시된 마커 터치시 뱃지로 간략한 정보 표시후 하단 정보 창에 해당 보호소의 정보 제공<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 하단 정보창 “선택하기” 클릭시 해당 보호소에서 보호중인 견종들에 대한 정보를 제공<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 아이템 클릭시 디테일 페이지로 이동합니다. <br/>
     </div>
 </details>
 <details>
-    <summary>myVideo</summary>
+    <summary>Search</summary>
     <div markdown="1"> 
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 사용자의 개인정보<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 프로필 사진, 이름 등 개인정보 상단에 표시<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ detail에서 좋아요 버튼 클릭 시 보관함으로 저장<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 검색 기록을 베이스로 최근 검색 리스트를나타냅니다.<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 품 종 검색어 입력시 추천 자동 완성 텍스트를 보여줍니다.<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 검색후 해당하는 유기견 아이템들이  Recycle View로 나타내어지고 검색 창 하단에 나이,성별,크기로 지정할수있는 필터 버튼이 보이고 클릭시 하단에 Dialog창이 나옵니다.<br/>
+       &nbsp;&nbsp;&nbsp;&nbsp; ▪️ Dialog에 값을 직접 입력할 수 있는 창이 있으며 아래에 완성되있는 버튼 입력시 지정된 입력값이 자동으로 입력창에 입력이 됩니다. <br/>
+       &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 적용하기 버튼 클릭시 상단 필터 버튼에 적용한 값에 대한 정보가 띄워지고 Recycle View에 해당 필터에 해당하는 아이템들로 다시 정렬됩니다.<br/>
+       &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 아이템 클릭시 디테일 페이지로 이동합니다.<br/>
     </div>
 </details>
 <details>
-    <summary>search</summary>
+    <summary>댕댕백과&댕</summary>
         <div markdown="1"> 
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ Search Api를 사용.<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 검색 창에 검색하여 사용자가 원하는 데이터를 보여줌<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 화면 이동시 fade in, fade out 애니메이션<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 비디오 클릭 시 디테일 프레그먼트로 리사이클러뷰 아이템 데이터들 전송<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 모든 카테고리 별 검색 기능 추가<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 상단 검색창에 강아지의 품종을 검색 시 검색창 하단에 해당하는 품종에 대한 간략한 정보를 제공하는 아이템을 나타냅니다. <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 디테일 페이지에서 “하트 아이콘” 클릭시 해당 아이템은 보관함 페이지에도 따로 저장 됩니다.(SharedPreferences 사용)<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 해당 아이템을 누른 상태로 옆으로 슬라이딩시 아이템이 삭제됩니다.<br/>
         </div>
 </details>
 <details>
     <summary>detail</summary>
         <div markdown="1"> 
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 각 비디오 아이템 선택시 Detail로 이동하여 선택된 비디오의 상세 정보를 제공<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 좋아요" 버튼 추가: 비디오 상세 정보 아래에 즐겨찾기 추가. 사용자가 버튼을 클릭하면 해당 비디오 정보가 Mypage에 저장<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ My Video 저장: “즐겨찾기"를 누른 비디오 정보는 My Page에서 조회 가능하며 내부에서 "즐겨찾기"를 누른 비디오 목록을 가져와 출력<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ Detail Activity에서 공유 기능 추가 / 해당 버튼 클릭시, Android의 공유 인텐트를 사용하여 다른 앱으로 비디오의 링크를 전송<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ Recycleview를 이용해 연관 동영상 보여주기<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ Dang,댕지킴이,댕찾기,댕찜 페이지에서 아이템 클릭시 디테일 페이지로 이동합니다.<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 해당 유기견의 품종,등록번호,발견장소,특징 등 디테일한 정보를 제공합니다.<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 해당 유기견을 보호하고 있는 보호센터의 정보를 제공합니다.<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 하단 “보호소 연락하기” 버튼 클릭시 해당 유기견을 보호하고 있는 보호센터의 전화번호가 자동으로 입력이 된 상태로 기본 전화앱을 활성화 합니다. <br/>
         </div>
 </details>
 
