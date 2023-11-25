@@ -21,28 +21,28 @@
     <td align="center"><img src="https://github.com/nsojin.png" width="100"></td>
       <td align="center"><img src="https://github.com/werds7890.png" width="100"></td>
     <td align="center"><img src="https://github.com/wonjun3026.png" width="100"/></td>
-      <td align="center"><img src="https://github.com/sunho512.png" width="100"/></td>
+      <td align="center"><img src="https://github.com/khjgggg.png" width="100"/></td>
       <td align="center"><img src="https://github.com/kwonkyungun.png" width="100"/></td>
    </tr>   
    <tr>
       <td align="center"><a href="https://github.com/nsojin">소준선</a> </td>
       <td align="center"><a href="https://github.com/werds7890">권용일</a></td>
       <td align="center"><a href="https://github.com/wonjun3026">조원준</a></td>
-      <td align="center"><a href="https://github.com/sunho512">김현정</a></td>
+      <td align="center"><a href="https://github.com/khjgggg">김현정</a></td>
       <td align="center"><a href="https://github.com/kwonkyungun">이예원</a></td>
    </tr>
       <tr>
       <td align="center">homeFragment</td>
       <td align="center">shelterFragment/UI</td>
       <td align="center">searchFragment</td>
-      <td align="center">pretest/UI</td>
+      <td align="center">pretest/dictionary/UI</td>
       <td align="center">Main/UI</td>
    </tr>
       <tr>
       <td align="center">댕찜 페이지 구현</td>
       <td align="center">카카오 맵 구현</td>
       <td align="center">디테일 페이지 구현</td>
-      <td align="center">댕댕백과 페이지 구현</td>
+      <td align="center">입양사전테스트페이지<p>댕댕백과 페이지 구현</td>
       <td align="center">프래그먼트 연결</td>
    </tr>
 </table>
