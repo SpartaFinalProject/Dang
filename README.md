@@ -1,5 +1,7 @@
 #  Dang 
-<img src="https://user-images.githubusercontent.com/139092987/272443524-cbf7b049-05fc-4941-9ea4-e7339ff92274.png" width="50%" />
+<<img src="https://github.com/SpartaFinalProject/Dang/assets/91948969/5de258e1-234d-4cb4-845e-05fad1de988a.png"
+width="30%" />
+
 
 
 <div align="center">
@@ -102,13 +104,10 @@
 ## 프로젝트 업무 관리
 Github의 Project의 칸반 보드를 통해 Issue를 생성하고,   
 완료 된 Issue는 Pull Request와 연결하여 관리   
-[YMd_PJ](https://github.com/orgs/YMedia8/projects/2)
+[DANG_PJ](https://github.com/orgs/SpartaFinalProject/projects/3)
 
 ![is](https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white)
 ![is](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white)
 ![is](https://img.shields.io/badge/Netflix-E50914?style=for-the-badge&logo=netflix&logoColor=white)
 ![is](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
 
-
-## 영상
-https://github.com/YMedia8/YMD/assets/81506621/011a9143-2897-479f-a493-6ac87bac77ef
