@@ -49,9 +49,6 @@ width="30%" />
    </tr>
 </table>
 
-## Figma를 이용한 Wire Frame
-<img src="https://user-images.githubusercontent.com/139092987/272431719-25b4ed05-a308-4499-b31c-cbe07595460f.png" width="100%" />
-
 ## 페이지별 기능 설명
 <details>
     <summary>home</summary>
