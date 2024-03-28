@@ -31,7 +31,7 @@ width="30%" />
       <td align="center"><a href="https://github.com/werds7890">권용일</a></td>
       <td align="center"><a href="https://github.com/wonjun3026">조원준</a></td>
       <td align="center"><a href="https://github.com/khjgggg">김현정</a></td>
-      <td align="center"><a href="https://github.com/kwonkyungun">이예원</a></td>
+      <td align="center"><a href="https://github.com/scarletyewon">이예원</a></td>
    </tr>
       <tr>
       <td align="center">homeFragment</td>
