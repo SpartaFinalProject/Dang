@@ -24,7 +24,7 @@ width="30%" />
       <td align="center"><img src="https://github.com/werds7890.png" width="100"></td>
     <td align="center"><img src="https://github.com/wonjun3026.png" width="100"/></td>
       <td align="center"><img src="https://github.com/khjgggg.png" width="100"/></td>
-      <td align="center"><img src="https://github.com/kwonkyungun.png" width="100"/></td>
+      <td align="center"><img src="https://github.com/scarletyewon.png" width="100"/></td>
    </tr>   
    <tr>
       <td align="center"><a href="https://github.com/nsojin">소준선</a> </td>
