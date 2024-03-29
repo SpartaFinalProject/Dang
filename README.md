@@ -104,7 +104,4 @@ Github의 Project의 칸반 보드를 통해 Issue를 생성하고,
 [DANG_PJ](https://github.com/orgs/SpartaFinalProject/projects/3)
 
 ![is](https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white)
-![is](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white)
-![is](https://img.shields.io/badge/Netflix-E50914?style=for-the-badge&logo=netflix&logoColor=white)
-![is](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
 
