@@ -41,7 +41,7 @@ width="30%" />
       <td align="center">Main/UI</td>
    </tr>
       <tr>
-      <td align="center">댕찜 페이지 구현</td>
+      <td align="center">메인/댕찜 페이지 구현</td>
       <td align="center">카카오 맵 구현</td>
       <td align="center">디테일 페이지 구현</td>
       <td align="center">입양사전테스트페이지<p>댕댕백과 페이지 구현</td>
