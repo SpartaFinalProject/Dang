@@ -21,8 +21,8 @@ https://www.figma.com/file/07KiqxjjtPWmEMXHS5k7UQ/Dang?type=design&node-id=0%3A1
 # Application Version
 
 - SDK version : Android 12
-- compileSDK : 33
-- minSDK : 26
+- compileSDK : 34
+- minSDK : 31
 - targetSDK :33
 
 ## 팀원 소개
