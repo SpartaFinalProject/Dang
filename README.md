@@ -10,7 +10,7 @@
 ## WireFrame
 https://www.figma.com/file/07KiqxjjtPWmEMXHS5k7UQ/Dang?type=design&node-id=0%3A1&mode=design&t=vZHE7ifKKrlSsc6D-1
 
-<img width="913" alt="스크린샷 2024-03-30 오전 12 21 25" src="https://github.com/SpartaFinalProject/Dang/assets/81704418/162b9c88-f314-4fb5-b1de-1bb8acafbbde">
+<img width="911" alt="스크린샷 2024-03-30 오전 12 22 58" src="https://github.com/SpartaFinalProject/Dang/assets/81704418/9cf8519b-81f9-47f0-a8e2-8920b9c2d6f9">
 
 
 # Development Environment
