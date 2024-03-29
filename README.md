@@ -1,4 +1,4 @@
-#  Dang 
+#  SpartaFinalProject_Dang 
 <div align="center">
    <h2>유기견 정보 검색 앱</h2>
    <p>Dang - 유기견 정보 검색 앱 
@@ -7,7 +7,7 @@
    <br>
 </div>
 
-## WireFrame
+# WireFrame
 https://www.figma.com/file/07KiqxjjtPWmEMXHS5k7UQ/Dang?type=design&node-id=0%3A1&mode=design&t=vZHE7ifKKrlSsc6D-1
 
 <img width="911" alt="스크린샷 2024-03-30 오전 12 22 58" src="https://github.com/SpartaFinalProject/Dang/assets/81704418/9cf8519b-81f9-47f0-a8e2-8920b9c2d6f9">
@@ -25,7 +25,14 @@ https://www.figma.com/file/07KiqxjjtPWmEMXHS5k7UQ/Dang?type=design&node-id=0%3A1
 - minSDK : 31
 - targetSDK :33
 
-## 팀원 소개
+# Tools
+
+- notion
+- figma
+- github project
+- slack
+
+# members
 <table>
    <tr>
     <td align="center"><img src="https://github.com/cow-98.png" width="100"></td>
@@ -43,7 +50,7 @@ https://www.figma.com/file/07KiqxjjtPWmEMXHS5k7UQ/Dang?type=design&node-id=0%3A1
    </tr>
 </table>
 
-## 페이지별 기능 설명
+# Function
 <details>
     <summary>home</summary>
     <div markdown="1"> 
@@ -91,11 +98,6 @@ https://www.figma.com/file/07KiqxjjtPWmEMXHS5k7UQ/Dang?type=design&node-id=0%3A1
         &nbsp;&nbsp;&nbsp;&nbsp; ▪️ 하단 “보호소 연락하기” 버튼 클릭시 해당 유기견을 보호하고 있는 보호센터의 전화번호가 자동으로 입력이 된 상태로 기본 전화앱을 활성화 합니다. <br/>
         </div>
 </details>
-
-## 프로젝트 업무 관리
-Github의 Project의 칸반 보드를 통해 Issue를 생성하고,   
-완료 된 Issue는 Pull Request와 연결하여 관리   
-[DANG_PJ](https://github.com/orgs/SpartaFinalProject/projects/3)
 
 ![is](https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white)
 
