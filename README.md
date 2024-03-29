@@ -1,9 +1,4 @@
 #  Dang 
-<<img src="https://github.com/SpartaFinalProject/Dang/assets/91948969/5de258e1-234d-4cb4-845e-05fad1de988a.png"
-width="30%" />
-
-
-
 <div align="center">
    <h2>유기견 정보 검색 앱</h2>
    <p>Dang - 유기견 정보 검색 앱 
@@ -11,12 +6,6 @@ width="30%" />
       공공데이터 포털을 이용한 유기견 앱 -  7조 </p>
    <br>
 </div>
-
-
-## 🔳 팀 소개 및 개요
-◼ 팀 소개 - 무난무난한 5명이 모인 팀
-
-◼ 개요 - 유기동물 정보 조회 Api를 가져와 다양한 유기견을 소개해주는 앱
 
 <table>
    <tr>
@@ -32,20 +21,6 @@ width="30%" />
       <td align="center"><a href="https://github.com/wonjun3026">조원준</a></td>
       <td align="center"><a href="https://github.com/khjgggg">김현정</a></td>
       <td align="center"><a href="https://github.com/scarletyewon">이예원</a></td>
-   </tr>
-      <tr>
-      <td align="center">homeFragment</td>
-      <td align="center">shelterFragment/UI</td>
-      <td align="center">searchFragment</td>
-      <td align="center">pretest/dictionary/UI</td>
-      <td align="center">Main/UI</td>
-   </tr>
-      <tr>
-      <td align="center">메인/댕찜 페이지 구현</td>
-      <td align="center">카카오 맵 구현</td>
-      <td align="center">디테일 페이지 구현</td>
-      <td align="center">입양사전테스트페이지<p>댕댕백과 페이지 구현</td>
-      <td align="center">프래그먼트 연결</td>
    </tr>
 </table>
 
