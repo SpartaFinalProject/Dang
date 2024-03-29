@@ -16,11 +16,11 @@ https://www.figma.com/file/07KiqxjjtPWmEMXHS5k7UQ/Dang?type=design&node-id=0%3A1
 # Development Environment
 
 - Android Studio
-- Kotlin 1.8.0
+- Kotlin 1.9.0
 
 # Application Version
 
-- SDK version : Android 12
+- SDK version : Android 14
 - compileSDK : 34
 - minSDK : 31
 - targetSDK :33
