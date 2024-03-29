@@ -7,6 +7,22 @@
    <br>
 </div>
 
+## WireFrame
+https://www.figma.com/file/07KiqxjjtPWmEMXHS5k7UQ/Dang?type=design&node-id=0%3A1&mode=design&t=vZHE7ifKKrlSsc6D-1
+
+# Development Environment
+
+- Android Studio
+- Kotlin 1.8.0
+
+# Application Version
+
+- SDK version : Android 12
+- compileSDK : 33
+- minSDK : 26
+- targetSDK :33
+
+## 팀원 소개
 <table>
    <tr>
     <td align="center"><img src="https://github.com/cow-98.png" width="100"></td>
