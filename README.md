@@ -20,14 +20,14 @@ width="30%" />
 
 <table>
    <tr>
-    <td align="center"><img src="https://github.com/nsojin.png" width="100"></td>
+    <td align="center"><img src="https://github.com/cow-98.png" width="100"></td>
       <td align="center"><img src="https://github.com/werds7890.png" width="100"></td>
     <td align="center"><img src="https://github.com/wonjun3026.png" width="100"/></td>
       <td align="center"><img src="https://github.com/khjgggg.png" width="100"/></td>
       <td align="center"><img src="https://github.com/scarletyewon.png" width="100"/></td>
    </tr>   
    <tr>
-      <td align="center"><a href="https://github.com/nsojin">소준선</a> </td>
+      <td align="center"><a href="https://github.com/cow-98">소준선</a> </td>
       <td align="center"><a href="https://github.com/werds7890">권용일</a></td>
       <td align="center"><a href="https://github.com/wonjun3026">조원준</a></td>
       <td align="center"><a href="https://github.com/khjgggg">김현정</a></td>
