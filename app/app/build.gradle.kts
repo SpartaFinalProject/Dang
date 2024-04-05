@@ -13,8 +13,8 @@ android {
         applicationId = "com.sparta.dang"
         minSdk = 31
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 5
+        versionName = "5.0"
         ndk {
             abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
         }
@@ -73,5 +73,4 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
 
     implementation ("androidx.fragment:fragment-ktx:1.6.1")
-
 }

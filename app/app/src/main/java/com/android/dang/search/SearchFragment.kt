@@ -82,7 +82,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         viewModel()
 
         //댕댕백과에서 품종이름이 넘어오면 설정
-        if(!isActionBreedName()) {
+        if (!isActionBreedName()) {
             //댕댕백과 품종이 없는 경우, 이전 검색결과 남기지 않도록 초기화했어요.(필요없으면 수정하세요)
             //상세화면 갔다 검색화면으로 돌아오면 검색이 다시 그려지지 않도록 했습니다.
             //롤백 상세 좋아요 선택 후 돌아가면 화면 갱신이 뷰리스토어를 기반으로 두고 있어서 롤백
@@ -188,13 +188,13 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
         }
         searchAdapter.itemClick = this
 
-        if (ageText != ""){
+        if (ageText != "") {
             binding.textAge.text = ageText
         }
-        if (genderText != ""){
+        if (genderText != "") {
             binding.textGender.text = genderText
         }
-        if (sizeText != ""){
+        if (sizeText != "") {
             binding.textSize.text = sizeText
         }
         binding.progressDictionary.visibility = View.GONE
@@ -265,15 +265,21 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
 
         applyBtn.setOnClickListener {
 
-            val min = minAge?.text.toString().toInt()
-            val max = maxAge?.text.toString().toInt()
+            val min = minAge.text.toString().toIntOrNull() ?: 0
+            val max = maxAge.text.toString().toIntOrNull() ?: 0
 
             val minYear = year - min
             val maxYear = year - max
-            searchViewModel.ageFilter(maxYear, minYear)
-            binding.textAge.text = "$min ~ $max 살"
-            ageText = "$min ~ $max 살"
-            dialog.dismiss()
+
+            if (max != 0) {
+                searchViewModel.ageFilter(maxYear, minYear)
+                binding.textAge.text = "$min ~ $max 살"
+                ageText = "$min ~ $max 살"
+                dialog.dismiss()
+            } else {
+                toast("값을 다시 입력해주세요.")
+            }
+
         }
 
         resetBtn.setOnClickListener {
@@ -399,7 +405,10 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             dialog.dismiss()
         }
 
-        dialog.show()
+        dialog.dismiss()
+        if (genderView != "") {
+            binding.textGender.text = "성별"
+        }
     }
 
     private fun sizeDialog() {
@@ -429,15 +438,20 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             maxSize.setText("30")
         }
         applyBtn.setOnClickListener {
+            val min = minSize.text.toString().toIntOrNull() ?: 0
+            val max = maxSize.text.toString().toIntOrNull() ?: 0
 
+            Log.d("aaa", minSize.toString())
+            Log.d("aaa", maxSize.toString())
 
-            val min = minSize?.text.toString().toInt()
-            val max = maxSize?.text.toString().toInt()
-
-            searchViewModel.sizeFilter(min, max)
-            binding.textSize.text = "$min ~ $max KG"
-            sizeText = "$min ~ $max KG"
-            dialog.dismiss()
+            if (max != 0) {
+                searchViewModel.sizeFilter(min, max)
+                binding.textSize.text = "$min ~ $max KG"
+                sizeText = "$min ~ $max KG"
+                dialog.dismiss()
+            } else {
+                toast("값을 다시 입력해주세요.")
+            }
         }
 
         resetBtn.setOnClickListener {
@@ -458,7 +472,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             kind
         ).enqueue(object : Callback<AbandonedDog?> {
             override fun onResponse(call: Call<AbandonedDog?>, response: Response<AbandonedDog?>) {
-                if(!isAdded) return
+                if (!isAdded) return
                 if (response.isSuccessful) {
                     val abandonedDog = response.body()
                     abandonedDog?.response?.body?.items?.item?.forEach { item ->
@@ -467,8 +481,8 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                         val age = item.age
                         val careAddr = item.careAddr
                         val processState = item.processState
-                        val sexCd = item.sexCd
-                        val neuterYn = item.neuterYn
+                        var sexCd = item.sexCd
+                        var neuterYn = item.neuterYn
                         val weight = item.weight
                         val specialMark = item.specialMark
                         val noticeNo = item.noticeNo
@@ -477,12 +491,27 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                         val careNm = item.careNm
                         val careTel = item.careTel
 
+                        val parts = careAddr?.split(" ")
+                        val result = "#${parts?.get(0)} ${parts?.get(1)}"
+
+                        val result2 = kindCd?.replace("[개] ", "")
+
+                        sexCd = when (sexCd) {
+                            "M" -> "#수컷"
+                            "F" -> "#암컷"
+                            else -> "#미상"
+                        }
+                        neuterYn = when (neuterYn) {
+                            "Y" -> "#중성화"
+                            "N" -> ""
+                            else -> "#미상"
+                        }
                         searchItem.add(
                             SearchDogData(
                                 image,
-                                kindCd,
+                                result2,
                                 age,
-                                careAddr,
+                                result,
                                 processState,
                                 sexCd,
                                 neuterYn,
@@ -497,12 +526,13 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
                             )
                         )
                     } ?: run {
-                        val errorMsg = response.body()?.response?.header?.errorMsg?.let { existErrorMsg ->
-                            when (existErrorMsg) {
-                                "kind=null → 품종코드 요청변수 오류 - 품종 조회 OPEN API 참조" -> "해당 품종은 조회되지 않습니다."
-                                else -> existErrorMsg
-                            }
-                        } ?: "검색 결과가 없습니다."
+                        val errorMsg =
+                            response.body()?.response?.header?.errorMsg?.let { existErrorMsg ->
+                                when (existErrorMsg) {
+                                    "kind=null → 품종코드 요청변수 오류 - 품종 조회 OPEN API 참조" -> "해당 품종은 조회되지 않습니다."
+                                    else -> existErrorMsg
+                                }
+                            } ?: "검색 결과가 없습니다."
                         toast(errorMsg)
                     }
                 } else {
@@ -513,7 +543,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             }
 
             override fun onFailure(call: Call<AbandonedDog?>, t: Throwable) {
-                if(!isAdded) return
+                if (!isAdded) return
                 Log.e("#api1", "실패: ${t.message}")
             }
 
@@ -531,7 +561,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             Constants.AUTH_HEADER
         ).enqueue(object : Callback<Kind?> {
             override fun onResponse(call: Call<Kind?>, response: Response<Kind?>) {
-                if(!isAdded) return
+                if (!isAdded) return
                 if (response.isSuccessful) {
                     val kind = response.body()
                     kind?.response?.body?.items?.item?.forEach { item ->
@@ -549,7 +579,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.ItemCli
             }
 
             override fun onFailure(call: Call<Kind?>, t: Throwable) {
-                if(!isAdded) return
+                if (!isAdded) return
                 Log.e("#api1", "실패: ${t.message}")
                 binding.progressDictionary.visibility = View.GONE
             }

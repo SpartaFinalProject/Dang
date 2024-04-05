@@ -70,31 +70,17 @@ class SearchAdapter(private val mContext: Context) : RecyclerView.Adapter<Recycl
 
                 val searchHolder = holder as SearchHolder
 
-                val address = currentItem.careAddr
-                val parts = address?.split(" ")
-                val result = "#${parts?.get(0)} ${parts?.get(1)}"
-
                 Glide.with(searchHolder.itemView.context)
                     .load(currentItem.popfile)
                     .into(searchHolder.image)
 
-                val text2 = currentItem.kindCd
-                val result2 = text2?.replace("[개] ", "")
-                searchHolder.dogKind.text = result2
+                searchHolder.dogKind.text = currentItem.kindCd
 
                 var text1 = "#${currentItem.age}"
-                text1 += result
+                text1 += currentItem.careAddr
                 text1 += "#${currentItem.processState}"
-                text1 += when (currentItem.sexCd) {
-                    "M" -> "#수컷"
-                    "F" -> "#암컷"
-                    else -> "#미상"
-                }
-                text1 += when (currentItem.neuterYn) {
-                    "Y" -> "#중성화"
-                    "N" -> ""
-                    else -> "#미상"
-                }
+                text1 += currentItem.sexCd
+                text1 += currentItem.neuterYn
                 text1 += "#${currentItem.weight}"
                 text1 += "\n#${currentItem.specialMark}"
                 searchHolder.age.text = text1

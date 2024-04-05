@@ -25,7 +25,7 @@ import java.security.MessageDigest
 
 
 class MainActivity : AppCompatActivity(), SearchFragment.DogData, HomeFragment.DogData,
-    OnDictionaryListener, OnBannerListener, LikeFragment.DogData, ShelterResultFragment.DogData{
+    OnDictionaryListener, OnBannerListener, LikeFragment.DogData, ShelterResultFragment.DogData {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val dogDetailFragment = DogDetailFragment()
