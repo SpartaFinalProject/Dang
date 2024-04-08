@@ -62,9 +62,6 @@ class SearchAdapter(private val mContext: Context) : RecyclerView.Adapter<Recycl
 
         when (typeOne) {
             0 -> {
-                holder.itemView.setOnClickListener {
-                    itemClick?.onClick(it, position)
-                }
 
                 val currentItem = searchesList[position]
 
@@ -130,6 +127,12 @@ class SearchAdapter(private val mContext: Context) : RecyclerView.Adapter<Recycl
         val dogKind = binding.dogName
         val age = binding.dogTag
         val like = binding.dogLike
+
+        init {
+            itemView.setOnClickListener{
+                itemClick?.onClick(it, position)
+            }
+        }
 
     }
 
